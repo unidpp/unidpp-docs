@@ -58,7 +58,7 @@ jobs:
           path: unidpp-console
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - name: Install
         run: npm ci
       - name: Regenerate the API reference from the routers
