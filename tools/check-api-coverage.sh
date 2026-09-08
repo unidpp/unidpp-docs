@@ -25,8 +25,10 @@ for spec in $SERVICES; do
 import re, sys
 src, page = sys.argv[1:3]
 routes = set()
-for m in re.finditer(r'\.route\(\s*"([^"]+)"\s*,\s*([a-z]+(?:\.[a-z]+)*)\(', open(src).read()):
-    for method in m.group(2).split("."):
+for m in re.finditer(
+        r'\.route\(\s*"([^"]+)"\s*,\s*([a-z]+\([^)]*\)(?:\.[a-z]+\([^)]*\))*)\s*,?\s*\)',
+        open(src).read()):
+    for method in re.findall(r'\b(get|post|put|delete|patch)\(', m.group(2)):
         routes.add((method.upper(), m.group(1)))
 doc = open(page).read()
 missing = [f"{m} {p}" for m, p in sorted(routes) if f"| {m} | `{p}` |" not in doc]

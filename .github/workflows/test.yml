@@ -1,0 +1,65 @@
+name: test
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: unidpp-docs
+    steps:
+      # The API reference is GENERATED from the family's routers —
+      # check them out side by side so gen/check can read the truth.
+      - uses: actions/checkout@v4
+        with:
+          path: unidpp-docs
+      - uses: actions/checkout@v4
+        repository: unidpp/unidpp-config
+        path: unidpp-config
+      - uses: actions/checkout@v4
+        repository: unidpp/unidpp-registry
+        path: unidpp-registry
+      - uses: actions/checkout@v4
+        repository: unidpp/unidpp-trust
+        path: unidpp-trust
+      - uses: actions/checkout@v4
+        repository: unidpp/unidpp-log
+        path: unidpp-log
+      - uses: actions/checkout@v4
+        repository: unidpp/unidpp-issuer
+        path: unidpp-issuer
+      - uses: actions/checkout@v4
+        repository: unidpp/unidpp-projector
+        path: unidpp-projector
+      - uses: actions/checkout@v4
+        repository: unidpp/unidpp-gateway
+        path: unidpp-gateway
+      - uses: actions/checkout@v4
+        repository: unidpp/unidpp-archive
+        path: unidpp-archive
+      - uses: actions/checkout@v4
+        repository: unidpp/unidpp-resolver
+        path: unidpp-resolver
+      - uses: actions/checkout@v4
+        repository: unidpp/unidpp-console
+        path: unidpp-console
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install
+        run: npm ci
+      - name: Regenerate the API reference from the routers
+        run: npm run gen:api
+      - name: A drifted API page fails the build
+        run: |
+          git diff --exit-code -- src/content/docs/api \
+            || (echo 'the generated API pages drifted — run npm run gen:api and commit' >&2; exit 1)
+      - name: Every routed endpoint documented
+        run: npm run check:api
+      - name: Every manifest field documented
+        run: npm run check:manifest
+      - name: Build
+        run: npm run build

@@ -15,6 +15,7 @@ source of truth; regenerate with `tools/gen-api-reference.sh`.
 | POST | `/admin/dark` |  |
 | GET | `/admin/identifiers/{*identifier}` |  |
 | POST | `/admin/linksets` |  |
+| PUT | `/admin/linksets` |  |
 | GET | `/admin/log` |  |
 | POST | `/admin/revocations` |  |
 | GET | `/healthz` |  |

@@ -11,11 +11,14 @@ source of truth; regenerate with `tools/gen-api-reference.sh`.
 | Method | Path | Description |
 |---|---|---|
 | GET | `/` |  |
+| GET | `/admin/applicability` |  |
 | POST | `/admin/applicability` |  |
 | GET | `/admin/log` |  |
+| GET | `/admin/profiles` |  |
 | POST | `/admin/profiles` |  |
 | GET | `/healthz` |  |
 | GET | `/keyring` | the public anchors a verifier pins |
+| GET | `/passports` |  |
 | POST | `/passports` | create: identity, type ref, config vector, capability class → passport id + empty log |
 | GET | `/passports/{id}` | core + manifest (config vector) + log head |
 | POST | `/passports/{id}/events` | append a typed event; server-signed (Ed25519) → `TrustMarker::Attested`; illegal status transitions rejected (I6) |

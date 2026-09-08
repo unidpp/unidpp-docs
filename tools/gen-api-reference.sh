@@ -38,9 +38,10 @@ text = open(src).read()
 
 # The router: every .route("PATH", get(h).post(h)...) call.
 routes = []
-for m in re.finditer(r'\.route\(\s*"([^"]+)"\s*,\s*([a-z]+(?:\.[a-z]+)*)\(', text):
+for m in re.finditer(
+        r'\.route\(\s*"([^"]+)"\s*,\s*([a-z]+\([^)]*\)(?:\.[a-z]+\([^)]*\))*)\s*,?\s*\)', text):
     path, chain = m.group(1), m.group(2)
-    for method in chain.split("."):
+    for method in re.findall(r'\b(get|post|put|delete|patch)\(', chain):
         routes.append((method.upper(), path))
 
 # Module-doc endpoint tables: `//! | `GET /path` | description |`.

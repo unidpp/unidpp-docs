@@ -15,7 +15,8 @@ source of truth; regenerate with `tools/gen-api-reference.sh`.
 | GET | `/healthz` | liveness |
 | GET | `/keyring` | the notary anchor a verifier pins |
 | GET | `/snapshots` |  |
+| POST | `/snapshots` | ingest: notarize an as-of snapshot (SIP → AIP) |
 | GET | `/snapshots/{id}` | access: re-serve the AIP byte-identically |
 
 > The module docs describe these without a matching route —
-> check the source: `GET /snapshots?passport_id=&at=`, `POST /snapshots`
+> check the source: `GET /snapshots?passport_id=&at=`
