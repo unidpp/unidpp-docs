@@ -21,6 +21,7 @@ export default defineConfig({
             { label: 'Five-minute tour', slug: 'get-started/tour' },
             { label: 'Run the reference stack', slug: 'get-started/reference-stack' },
             { label: 'Your first passport, pack, and verification', slug: 'get-started/first-passport' },
+            { label: 'Tutorial: stand up a whitelabel tenant', slug: 'get-started/tenant-walkthrough' },
           ],
         },
         {

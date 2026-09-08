@@ -16,6 +16,7 @@ source of truth; regenerate with `tools/gen-api-reference.sh`.
 | POST | `/backups` |  |
 | POST | `/backups/drill` |  |
 | GET | `/branding` |  |
+| POST | `/branding` |  |
 | GET | `/config` |  |
 | POST | `/config` |  |
 | GET | `/config/env` |  |
