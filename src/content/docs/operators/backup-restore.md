@@ -9,7 +9,9 @@ while services run, and the `unidpp-ops backup`/`unidpp-ops restore` tooling
 contract.
 
 > **Status of the tooling.** The `unidpp-ops` backup/restore commands are
-> landing as a separate deliverable and are **not yet in the family tree**.
+> <https://github.com/unidpp/unidpp-pilot-data> (`unidpp-ops`). The manual
+> `tar`+`shasum` procedure below is kept as the transparent form of the same
+> contract — read it to understand what the script does.
 > Everything below about the state layout and the consistency contract is
 > verified against the running deployment; the exact command surface
 > (`unidpp-ops backup <tenant>`, `unidpp-ops restore <archive> <tenant>`,
@@ -60,7 +62,21 @@ $ curl -s http://127.0.0.1:8392/tree/head | jq '{tree_size, root: .root[0:16], l
 The signature over the full head (in the same response) is what makes the
 point verifiable, rather than merely recorded.
 
-## The backup contract (`unidpp-ops backup <tenant>`, landing)
+## The backup contract (`unidpp-ops backup <tenant>`)
+
+```sh
+$ ./unidpp-ops backup
+backup: unidpp-reference-20260908T053255Z
+  files: 27  consistency point: size 5 root d23b199b96ed73ea7a7e...
+  archive: backups/unidpp-reference-20260908T053255Z.tar.gz
+
+$ ./unidpp-ops verify backups/unidpp-reference-20260908T053255Z.tar.gz
+verified: 27 member(s), consistency point size 5 root d23b199b...
+```
+
+A tampered archive fails verification naming the corrupted member; a
+restore of the reference deployment's backup served the identical
+1 531 registry items — parity proven.
 
 What the tooling must produce — and what you should demand of any hand-rolled
 equivalent:
@@ -77,7 +93,7 @@ equivalent:
 5. **Versioned**: backup files carry the deployment name and timestamp;
    nothing overwrites a previous backup.
 
-## The restore contract (`unidpp-ops restore <archive> <tenant>`, landing)
+## The restore contract (`unidpp-ops restore <archive> <tenant>`)
 
 1. Unpack into a **fresh** tenant directory; refuse to overwrite an existing
    tenant without an explicit `--force`.
