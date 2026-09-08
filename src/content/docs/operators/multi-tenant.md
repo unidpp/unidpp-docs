@@ -169,3 +169,20 @@ changed.
 
 The full procedure with branding, tokens, and tunnel is
 [the 15-minute whitelabel deployment](/quickstart-whitelabel/).
+
+## Taking a tenant on-prem: the bundle
+
+Whitelabel as a separate deployment ships as one verified artifact:
+
+```sh
+./unidpp-ops bundle acme-cn
+```
+
+The bundle carries the tenant's manifest (secrets stay `${VAR}`
+references — nothing sensitive is embedded), its journals, the
+release binaries for exactly the services the manifest declares, the
+tenant runner, an `.env` template, and a runbook. Its sidecar lists
+every member's SHA-256 — a bundle verifies exactly like a backup
+(`./unidpp-ops verify <bundle>.tar.gz`), so the receiving host
+proves integrity independently of its producer. First boot on the
+target: validate, fill `.env`, `./up.sh <tenant> start`.
