@@ -17,35 +17,45 @@ jobs:
         with:
           path: unidpp-docs
       - uses: actions/checkout@v4
-        repository: unidpp/unidpp-config
-        path: unidpp-config
+        with:
+          repository: unidpp/unidpp-config
+          path: unidpp-config
       - uses: actions/checkout@v4
-        repository: unidpp/unidpp-registry
-        path: unidpp-registry
+        with:
+          repository: unidpp/unidpp-registry
+          path: unidpp-registry
       - uses: actions/checkout@v4
-        repository: unidpp/unidpp-trust
-        path: unidpp-trust
+        with:
+          repository: unidpp/unidpp-trust
+          path: unidpp-trust
       - uses: actions/checkout@v4
-        repository: unidpp/unidpp-log
-        path: unidpp-log
+        with:
+          repository: unidpp/unidpp-log
+          path: unidpp-log
       - uses: actions/checkout@v4
-        repository: unidpp/unidpp-issuer
-        path: unidpp-issuer
+        with:
+          repository: unidpp/unidpp-issuer
+          path: unidpp-issuer
       - uses: actions/checkout@v4
-        repository: unidpp/unidpp-projector
-        path: unidpp-projector
+        with:
+          repository: unidpp/unidpp-projector
+          path: unidpp-projector
       - uses: actions/checkout@v4
-        repository: unidpp/unidpp-gateway
-        path: unidpp-gateway
+        with:
+          repository: unidpp/unidpp-gateway
+          path: unidpp-gateway
       - uses: actions/checkout@v4
-        repository: unidpp/unidpp-archive
-        path: unidpp-archive
+        with:
+          repository: unidpp/unidpp-archive
+          path: unidpp-archive
       - uses: actions/checkout@v4
-        repository: unidpp/unidpp-resolver
-        path: unidpp-resolver
+        with:
+          repository: unidpp/unidpp-resolver
+          path: unidpp-resolver
       - uses: actions/checkout@v4
-        repository: unidpp/unidpp-console
-        path: unidpp-console
+        with:
+          repository: unidpp/unidpp-console
+          path: unidpp-console
       - uses: actions/setup-node@v4
         with:
           node-version: 20
