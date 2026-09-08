@@ -37,6 +37,14 @@ answer from `GET /revocations` on the trust service — including the
 retroactivity semantics and the evidentiary cutoff that protects
 pre-declaration verifiers.
 
+## The deployment itself is lost
+
+The disk, the host, the room. Recovery is
+[`recover`](/operations/backups/#disaster-recovery-recover): stop
+everything, verify + unpack the newest backup at its original shape,
+restart, `status`. The proof you can do this under pressure is
+`drill --recover` — run it in your routine, not your incident.
+
 ## Suspicion of state corruption
 
 1. `./unidpp-ops verify <latest-archive>` — is the last good backup

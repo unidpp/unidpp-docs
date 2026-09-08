@@ -170,6 +170,21 @@ changed.
 The full procedure with branding, tokens, and tunnel is
 [the 15-minute whitelabel deployment](/quickstart-whitelabel/).
 
+## The lifecycle's end: decommission
+
+Retiring a tenant is the doctrine-shaped act — prove, then move
+aside, never delete:
+
+```sh
+./unidpp-ops decommission northwind
+#   stopped (if running) -> a final VERIFIED data-only bundle
+#   -> tenants/northwind -> tenants/northwind.retired.<stamp>
+#   reversal:  mv back && ./tenants/up.sh northwind start
+```
+
+The bundle is the audit artifact; the rename-aside is the reversal
+path; nothing is ever destroyed.
+
 ## Taking a tenant on-prem: the bundle
 
 Whitelabel as a separate deployment ships as one verified artifact:

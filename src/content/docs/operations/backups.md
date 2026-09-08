@@ -49,6 +49,29 @@ infrastructure change. If it ever fails: do not touch production
 restore until the failure is understood — a failed drill is the
 cheapest possible discovery of a broken backup.
 
+## Disaster recovery: recover
+
+`restore` lands a backup as a *tenant* — right for migration and
+rehearsal. When the deployment itself is lost, `recover` brings it
+back at its ORIGINAL shape:
+
+```sh
+./stack.sh stop                    # recover refuses while services run
+./unidpp-ops recover <archive>     # verify -> rename aside -> unpack
+./stack.sh start && ./stack.sh status
+```
+
+Safety shape: every checksum verified first; any running service is
+refused (journals are held open); the current live state is renamed
+aside (`*.pre-recover.<stamp>`, never deleted); an interrupted
+recovery's leftovers refuse to be overwritten without `--force`.
+Members unpack at their original paths — no tenant rewriting, no
+manifest rewriting: the same deployment, standing up again.
+
+Rehearse it like everything else: `./unidpp-ops drill --recover`
+unpacks and byte-verifies the backup at its original relative shape
+under a scratch root, touching nothing live.
+
 ## Restoring for real
 
 ```sh
