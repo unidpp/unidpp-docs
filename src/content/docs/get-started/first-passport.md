@@ -126,10 +126,15 @@ is 363 bytes at QR version 15-M with two suites co-signing.
 ## 5. Verify offline
 
 Verification is an offline operation: the pack plus the issuer's published
-anchor. Nothing else. Pin the anchor from the issuer's keyring (an operator
-would pin it at onboarding, not fetch it ad hoc):
+anchor. Nothing else. First put the carrier bytes in a file (the pack
+response's `pack` member is the hex string), then pin the anchor from the
+issuer's keyring (an operator would pin it at onboarding, not fetch it
+ad hoc):
 
 ```sh
+$ curl -s -X POST http://127.0.0.1:9393/passports/urn%3Aacme%3Apassport%3Adocs-demo-1/pack \
+    -H 'content-type: application/json' -d '{}' -o pack-response.json
+$ jq -r '.pack' pack-response.json > pack.hex
 $ anchor=$(curl -s http://127.0.0.1:9393/keyring | jq -r '.roles.pack.public')
 $ echo "${anchor:0:24}…"
 04d90cd961d7afccc4b4b65f…
