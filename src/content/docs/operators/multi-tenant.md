@@ -50,6 +50,35 @@ tenant acme (stop):
 `already running` and left alone. `stop` kills by pid file; journals are
 never touched — a stopped tenant restarts with its state replayed.
 
+## Upgrades
+
+An upgrade is new binaries over unchanged state. The compatibility contract
+is the journal: every service replays its append-only JSONL on start, and
+the manifest's API version (`unidpp.org/v1`) is pinned — a launcher or
+manifest the running schema does not accept is a loud error, not a
+silent-misconfiguration risk.
+
+The procedure, per the launcher's own behavior:
+
+1. **Stop** — `./tenants/up.sh <name> stop` (or `./stack.sh stop` for the
+   reference deployment). Journals are preserved by both; nothing is wiped.
+2. **Build the new binaries** — `cargo build --release` per repository.
+   `stack.sh` rebuilds only when a binary is missing; force a rebuild of a
+   present-but-stale tree with `UNIDPP_FORCE_BUILD=1 ./stack.sh start`.
+3. **Start** — the same start command; every service replays its journal
+   (`stack.sh status` shows the journal record and item counts).
+4. **Verify** — same acceptance as a
+   [restore](/operators/backup-restore/): the registry serves the same item
+   count as before the upgrade, and the log verifies its head
+   (`GET /tree/head` — tree heads are monotonic by construction; a head
+   that moved backwards is a hard fault).
+
+Between stop and start there is no migration step to forget: if the new
+binary can read the journal, the deployment is up; if it cannot, it says so
+at replay, before serving. Take a [backup](/operators/backup-restore/)
+first when the jump is large — the restore procedure is the rollback.
+
+
 The console needs one variable the manifest cannot express (its own manifest
 path), which `up.sh` supplies: `UNIDPP_CONSOLE_MANIFEST=tenants/<name>/unidpp-operator.yaml`.
 
