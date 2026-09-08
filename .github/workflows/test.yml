@@ -57,6 +57,13 @@ jobs:
         run: |
           git diff --exit-code -- src/content/docs/api \
             || (echo 'the generated API pages drifted — run npm run gen:api and commit' >&2; exit 1)
+      - name: The published schema matches the model
+        run: |
+          ../unidpp-config/target/release/unidpp-config schema > /tmp/schema.json 2>/dev/null \
+            || cargo build --release --manifest-path ../unidpp-config/Cargo.toml \
+              && ../unidpp-config/target/release/unidpp-config schema > /tmp/schema.json
+          cmp public/operator-manifest.schema.json /tmp/schema.json \
+            || (echo 'the published schema drifted from unidpp-config — regenerate it' >&2; exit 1)
       - name: Every routed endpoint documented
         run: npm run check:api
       - name: Every manifest field documented

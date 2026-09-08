@@ -593,6 +593,23 @@ The console's manifest **path** is environment, not manifest:
 
 ### Common service knobs
 
+## The machine-readable schema
+
+The manifest's shape is published as a JSON Schema (draft 2020-12),
+generated from the model itself — never hand-maintained:
+
+- This page's companion artifact:
+  [`/operator-manifest.schema.json`](/operator-manifest.schema.json)
+- Regenerate after changing unidpp-config:
+  `unidpp-config schema > public/operator-manifest.schema.json`
+  (the docs CI fails on drift)
+
+The schema is exactly as strict as `unidpp-config load` (unknown
+fields are rejected everywhere). It describes **shape only**:
+semantic validation — `${VAR}` secret substitution, hex colors, the
+sovereign egress rule — stays with the CLI's `validate`, which is
+what editors' CI preflight should call for the final word.
+
 These four knobs appear on every service block (`registry`, `trust`,
 `projector`, `archive`, `console` carry exactly these; `log`, `issuer`,
 `gateway` add the knobs listed above).

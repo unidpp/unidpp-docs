@@ -1,0 +1,534 @@
+{
+  "$defs": {
+    "Branding": {
+      "additionalProperties": false,
+      "description": "The whitelabel surface.",
+      "properties": {
+        "footer": {
+          "$ref": "#/$defs/Footer",
+          "default": {
+            "contact_url": null,
+            "legal_url": null
+          },
+          "description": "Footer links."
+        },
+        "logo": {
+          "default": null,
+          "description": "A logo the console/explorer serve (path or data URI).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "organization": {
+          "default": "UniDPP",
+          "description": "The operating organization's legal/display name.",
+          "type": "string"
+        },
+        "product_name": {
+          "default": "UniDPP Platform",
+          "description": "The product name shown in chrome (login, titles, footers).",
+          "type": "string"
+        },
+        "theme": {
+          "$ref": "#/$defs/Theme",
+          "default": {
+            "accent": "#08bdba",
+            "primary": "#0f62fe"
+          },
+          "description": "The theme (hex colors; validated)."
+        }
+      },
+      "type": "object"
+    },
+    "Deployment": {
+      "additionalProperties": false,
+      "description": "The deployment identity and shape.",
+      "properties": {
+        "base_url": {
+          "description": "The public base URL of the deployment's primary surface.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The deployment's name (tenant name; unique per operator).",
+          "type": "string"
+        },
+        "profile": {
+          "$ref": "#/$defs/Profile",
+          "description": "`reference` (the public one), `whitelabel` (an org's own), or\n`sovereign` (on-prem, jurisdiction-pinned)."
+        }
+      },
+      "required": [
+        "name",
+        "profile",
+        "base_url"
+      ],
+      "type": "object"
+    },
+    "EgressPolicy": {
+      "description": "The egress policy.",
+      "oneOf": [
+        {
+          "const": "none",
+          "description": "Nothing leaves the box.",
+          "type": "string"
+        },
+        {
+          "const": "tsa-only",
+          "description": "Only the RFC 3161 TSA submission.",
+          "type": "string"
+        },
+        {
+          "const": "external",
+          "description": "Upstream fetches permitted (the reference deployment).",
+          "type": "string"
+        }
+      ]
+    },
+    "Features": {
+      "additionalProperties": false,
+      "description": "Cross-cutting toggles (absent = the documented default).",
+      "properties": {
+        "cddal_negotiation": {
+          "default": true,
+          "description": "Serve the CDDAL dictionary form on content negotiation\n(default true).",
+          "type": "boolean"
+        },
+        "presentation_render": {
+          "default": true,
+          "description": "Serve the presentation render on the projector (default true).",
+          "type": "boolean"
+        },
+        "untp_ingest": {
+          "default": true,
+          "description": "Accept UNTP ingest on the gateway (default true).",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "Footer": {
+      "additionalProperties": false,
+      "description": "Footer links (legal, contact).",
+      "properties": {
+        "contact_url": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "legal_url": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "GatewayService": {
+      "additionalProperties": false,
+      "description": "The gateway (adds the upstream).",
+      "properties": {
+        "admin_token": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bind": {
+          "type": "string"
+        },
+        "issuer_url": {
+          "default": null,
+          "description": "The issuer upstream whose passports the gateway renders.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "public_url": {
+          "default": null,
+          "description": "The service's public URL when a tunnel/ingress fronts it.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "bind"
+      ],
+      "type": "object"
+    },
+    "IssuerService": {
+      "additionalProperties": false,
+      "description": "The issuer (adds the pack-suite policy).",
+      "properties": {
+        "admin_token": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bind": {
+          "type": "string"
+        },
+        "pack_suites": {
+          "additionalProperties": false,
+          "default": [
+            "ecdsa-p256"
+          ],
+          "description": "The sovereign pack-signing policy: one suite or the\nco-signature set (e.g. `[\"ecdsa-p256\", \"sm2\"]`).",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "public_url": {
+          "default": null,
+          "description": "The service's public URL when a tunnel/ingress fronts it.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "registry_url": {
+          "default": null,
+          "description": "The registry to forward registrations to.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state_file": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "bind"
+      ],
+      "type": "object"
+    },
+    "LogService": {
+      "additionalProperties": false,
+      "description": "The transparency log (adds the external anchor knob).",
+      "properties": {
+        "admin_token": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bind": {
+          "type": "string"
+        },
+        "external_tsa_url": {
+          "default": null,
+          "description": "RFC 3161 TSA endpoint; absent = no external anchoring.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "log_id": {
+          "default": "unidpp-log-1",
+          "description": "The log's identity.",
+          "type": "string"
+        },
+        "public_url": {
+          "default": null,
+          "description": "The service's public URL when a tunnel/ingress fronts it.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state_file": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "bind"
+      ],
+      "type": "object"
+    },
+    "Profile": {
+      "description": "Deployment profiles.",
+      "oneOf": [
+        {
+          "const": "reference",
+          "description": "The hosted reference deployment.",
+          "type": "string"
+        },
+        {
+          "const": "whitelabel",
+          "description": "An organization's own branded instance.",
+          "type": "string"
+        },
+        {
+          "const": "sovereign",
+          "description": "On-prem, jurisdiction-pinned, external calls off.",
+          "type": "string"
+        }
+      ]
+    },
+    "ServiceCommon": {
+      "additionalProperties": false,
+      "description": "The knobs every service shares.",
+      "properties": {
+        "admin_token": {
+          "default": null,
+          "description": "The admin bearer token (an `${VAR}` reference).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bind": {
+          "description": "`host:port` to bind.",
+          "type": "string"
+        },
+        "public_url": {
+          "default": null,
+          "description": "The service's public URL when a tunnel/ingress fronts it\n(e.g. `https://registry.unidpp.org`). Absent = loopback-only.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state_file": {
+          "default": null,
+          "description": "The journal/state file (services that persist one).",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "bind"
+      ],
+      "type": "object"
+    },
+    "Services": {
+      "additionalProperties": false,
+      "description": "Every service block. Absent service = that service is not part of\nthis deployment.",
+      "properties": {
+        "archive": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ServiceCommon"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "console": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ServiceCommon"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "gateway": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GatewayService"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "issuer": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/IssuerService"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "log": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LogService"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "projector": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ServiceCommon"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "registry": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ServiceCommon"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "trust": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ServiceCommon"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "type": "object"
+    },
+    "Sovereignty": {
+      "additionalProperties": false,
+      "description": "The sovereignty declaration: what may leave the box.",
+      "properties": {
+        "data_residency": {
+          "default": null,
+          "description": "The jurisdiction this deployment pins data to (`EU`, `JP`, ...).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "egress_override_reason": {
+          "default": null,
+          "description": "Required when a sovereign profile permits egress: the recorded\nreason (auditable, not silent).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "external_calls": {
+          "$ref": "#/$defs/EgressPolicy",
+          "default": "none",
+          "description": "The egress policy: `none`, `tsa-only`, or `external`."
+        }
+      },
+      "type": "object"
+    },
+    "Theme": {
+      "additionalProperties": false,
+      "description": "Theme colors (six-digit hex, `#`-prefixed).",
+      "properties": {
+        "accent": {
+          "default": "#08bdba",
+          "type": "string"
+        },
+        "primary": {
+          "default": "#0f62fe",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "A complete deployment declaration.",
+  "properties": {
+    "api_version": {
+      "description": "Must equal [`API_VERSION`].",
+      "type": "string"
+    },
+    "branding": {
+      "$ref": "#/$defs/Branding",
+      "default": {
+        "footer": {
+          "contact_url": null,
+          "legal_url": null
+        },
+        "logo": null,
+        "organization": "UniDPP",
+        "product_name": "UniDPP Platform",
+        "theme": {
+          "accent": "#08bdba",
+          "primary": "#0f62fe"
+        }
+      },
+      "description": "The whitelabel surface (organization identity, theme)."
+    },
+    "deployment": {
+      "$ref": "#/$defs/Deployment",
+      "description": "Which deployment this names."
+    },
+    "features": {
+      "$ref": "#/$defs/Features",
+      "default": {
+        "cddal_negotiation": false,
+        "presentation_render": false,
+        "untp_ingest": false
+      },
+      "description": "Cross-cutting feature toggles."
+    },
+    "services": {
+      "$ref": "#/$defs/Services",
+      "default": {
+        "archive": null,
+        "console": null,
+        "gateway": null,
+        "issuer": null,
+        "log": null,
+        "projector": null,
+        "registry": null,
+        "trust": null
+      },
+      "description": "Per-service configuration blocks."
+    },
+    "sovereignty": {
+      "$ref": "#/$defs/Sovereignty",
+      "default": {
+        "data_residency": null,
+        "egress_override_reason": null,
+        "external_calls": "none"
+      },
+      "description": "The sovereignty declaration (what may leave the box)."
+    }
+  },
+  "required": [
+    "api_version",
+    "deployment"
+  ],
+  "title": "UniDPP operator manifest (unidpp.org/v1)",
+  "type": "object"
+}
