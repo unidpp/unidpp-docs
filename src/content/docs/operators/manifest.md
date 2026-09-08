@@ -593,7 +593,7 @@ The console's manifest **path** is environment, not manifest:
 
 ### Common service knobs
 
-These three knobs appear on every service block (`registry`, `trust`,
+These four knobs appear on every service block (`registry`, `trust`,
 `projector`, `archive`, `console` carry exactly these; `log`, `issuer`,
 `gateway` add the knobs listed above).
 
@@ -638,6 +638,21 @@ start. Absent = no persistence across restarts. Paths are relative to the
 process working directory; `stack.sh` and `tenants/up.sh` launch from the
 pilot-data root, which is why the reference manifest says
 `registry-journal.jsonl` for one service and `run/…` for others.
+
+<a id="services-common-public_url"></a>
+#### `public_url`
+
+| | |
+|---|---|
+| Type | string (URL), optional |
+| Default | absent (the service is loopback-only) |
+| Example | `public_url: https://registry.unidpp.org` |
+
+The service's public hostname when a tunnel or ingress fronts it. The
+console's services matrix renders it as the service's public link;
+absent renders loopback-only — the console invents nothing. Declaring
+it does not create the tunnel: provisioning (tunnel token + DNS
+record) is an operator act, documented in the pilot repo's README.
 
 The gateway declares no `state_file` (it is stateless by design); the
 console's is accepted by the schema but the console's own state is the

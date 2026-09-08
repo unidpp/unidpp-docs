@@ -6,10 +6,13 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev",
+    "astro": "astro",
     "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "check:api": "tools/check-api-coverage.sh",
+    "check:manifest": "tools/check-manifest-coverage.sh",
+    "dev": "astro dev",
+    "gen:api": "tools/gen-api-reference.sh",
+    "preview": "astro preview"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.42.0",

@@ -1,0 +1,57 @@
+---
+title: "Operations: monitoring"
+description: "What to watch: stack.sh status, the console's dashboard, and how to read the public probes."
+---
+
+# Monitoring
+
+The stack observes itself with three honest surfaces — no metrics
+infrastructure required, and each degrades visibly rather than lying.
+
+## stack.sh status
+
+The one-command truth ([deployment](/operations/deploy/)): every
+service's health **and identity** (a healthy listener of the wrong
+service fails), journal state (items replayed, the log tree head),
+and every public hostname probed through its tunnel. Exit status is
+monitoring-ready: non-zero means something needs a human. The cron
+watch pattern runs `start` (the idempotent repair) on the same
+schedule.
+
+## The admin console
+
+`console.unidpp.org` in the reference deployment — every fact on it
+comes from the service APIs or the manifest, never a second brain:
+
+- **Dashboard cards** — registry items, UNTDED data elements,
+  passports, the log tree size; an unreachable service renders `—`,
+  never a stale guess.
+- **The services matrix** — one row per manifest service: bind, role,
+  the manifest-declared public URL (loopback-only when absent), and a
+  live health probe.
+- **Egress inventory** — what may leave the box, derived from the
+  manifest's sovereignty policy; sealed rows where a policy forbids
+  the call.
+
+The console is read-driven: its probes are short-timeout loopback
+calls, so a down service costs a dash, not an outage of the page.
+
+## Reading the public probes
+
+- **502 through a tunnel** — cloudflared is alive but the origin
+  service is down: restart via `./stack.sh start`; the journal
+  replays.
+- **000 / no route to host** — the tunnel process itself is down or
+  the DNS record is missing: re-ensure with `./stack.sh start`
+  (tunnels restart from their token files) and check the tunnel
+  provisioning block in the pilot README.
+- **`/healthz` 200 but wrong data** — a stale binary or a foreign
+  listener took the port: `status` catches this via the service
+  identity check; stop by PID (`run/*.pid`), never by name.
+
+## What there is deliberately not
+
+No central telemetry, no outbound beacon: the reference deployment's
+monitoring is local-first by doctrine. A sovereign deployment can run
+the whole surface air-gapped; the same three commands are the whole
+observability contract.

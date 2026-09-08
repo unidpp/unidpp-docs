@@ -15,7 +15,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-LIB_RS="${1:-$SCRIPT_DIR/../unidpp-config/src/lib.rs}"
+LIB_RS="${1:-$SCRIPT_DIR/../../unidpp-config/src/lib.rs}"
 MANIFEST_MD="${2:-$SCRIPT_DIR/../src/content/docs/operators/manifest.md}"
 
 [ -f "$LIB_RS" ] || { echo "cannot read schema at $LIB_RS" >&2; exit 2; }

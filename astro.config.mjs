@@ -35,8 +35,23 @@ export default defineConfig({
           ],
         },
         {
+          label: 'Operations',
+          items: [
+            { label: 'Deployment and the always-on loop', slug: 'operations/deploy' },
+            { label: 'Production keys', slug: 'operations/production-keys' },
+            { label: 'Backups and restore drills', slug: 'operations/backups' },
+            { label: 'Upgrades', slug: 'operations/upgrades' },
+            { label: 'Monitoring', slug: 'operations/monitoring' },
+            { label: 'Incident response', slug: 'operations/incidents' },
+          ],
+        },
+        {
           label: 'Service references',
           items: [{ autogenerate: { directory: 'services' } }],
+        },
+        {
+          label: 'API reference',
+          items: [{ autogenerate: { directory: 'api' } }],
         },
         {
           label: 'Architecture',
