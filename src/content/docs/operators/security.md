@@ -54,7 +54,9 @@ Rules that hold across all of them:
 
 The console is the one surface with a login. See [the console manual](/operators/console/#the-auth-model)
 for the full model; in brief: token → (constant-time compare) → HttpOnly
-SameSite=Strict session cookie, 8-hour lifetime, server-side revocation on
+SameSite=Strict session cookie (`Secure` whenever the manifest declares
+`services.console.public_url` — the edge-TLS fact), 8-hour lifetime,
+server-side revocation on
 logout, and **exactly one mutation gated behind it** (manifest save).
 Without a token configured, the console is read-only by construction — no
 session can be minted, so the save path cannot be reached.
