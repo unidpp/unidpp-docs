@@ -69,3 +69,12 @@ archive) are defined in the framework's
 [tiers and trust specification part](https://www.unidpp.org/specs/);
 operationally, Tier A is what the CLI verifies offline, Tier B is what the
 issuer serves, Tier C is what the archive notarizes and anchors.
+
+## The specification
+
+The framework specification — the model, tiers, trust, federation,
+conformance classes, and the operations-and-durability clause — is
+published at
+[www.unidpp.org/unidpp-spec](https://www.unidpp.org/unidpp-spec/),
+compiled from the [unidpp-spec](https://github.com/unidpp/unidpp-spec)
+repository on every push (a broken clause fails its CI).
