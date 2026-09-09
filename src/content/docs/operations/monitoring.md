@@ -14,9 +14,14 @@ The one-command truth ([deployment](/operations/deploy/)): every
 service's health **and identity** (a healthy listener of the wrong
 service fails), journal state (items replayed, the log tree head),
 and every public hostname probed through its tunnel. Exit status is
-monitoring-ready: non-zero means something needs a human. The cron
-watch pattern runs `start` (the idempotent repair) on the same
-schedule.
+monitoring-ready: non-zero means something needs a human. The watch is
+installed, not just prescribed:
+
+```sh
+./unidpp-ops schedule --watch --install   # */10, idempotent
+./unidpp-ops schedule --status            # both lines: backup + watch
+# removal: crontab -l | grep -v 'unidpp-ops: always-on watch' | crontab -
+```
 
 ## The admin console
 
