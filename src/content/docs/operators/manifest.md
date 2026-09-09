@@ -152,7 +152,8 @@ The whitelabel surface. The console (and any explorer surface) renders its
 chrome from these values — see [the console manual](/operators/console/#branding)
 for the preview. Fields: [`organization`](#branding-organization),
 [`product_name`](#branding-product_name), [`logo`](#branding-logo),
-[`theme`](#branding-theme), [`footer`](#branding-footer).
+[`theme`](#branding-theme), [`footer`](#branding-footer),
+[`locale`](#branding-locale).
 
 <a id="services"></a>
 ### `services`
@@ -289,6 +290,21 @@ accepted (the sovereign CN tenant ships its product name in Chinese).
 
 A logo the console and explorer serve. Consumed by the console chrome: when
 set, an `<img class="logo">` renders before the organization name.
+
+<a id="branding-locale"></a>
+### `branding.locale`
+
+| | |
+|---|---|
+| Type | string, optional |
+| Default | `en` |
+| Example | `locale: zh-CN` |
+
+The console chrome's language: nav, titles, login, cards, badges,
+and the primary buttons render through the console's i18n table
+(`en`, `zh-CN` today; validated). A new language is a table entry
+plus the config crate's `SUPPORTED_LOCALES` — not a code change.
+Body prose is English in v1 (chrome-level i18n, honestly scoped).
 
 <a id="branding-theme"></a>
 ### `branding.theme`

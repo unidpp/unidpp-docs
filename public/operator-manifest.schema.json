@@ -12,6 +12,11 @@
           },
           "description": "Footer links."
         },
+        "locale": {
+          "default": "en",
+          "description": "The console chrome's language (the whitelabel surface speaks\nthe tenant's language; adding one is a table entry in the\nconsole's i18n module, not a code change).",
+          "type": "string"
+        },
         "logo": {
           "default": null,
           "description": "A logo the console/explorer serve (path or data URI).",
@@ -478,6 +483,7 @@
           "contact_url": null,
           "legal_url": null
         },
+        "locale": "en",
         "logo": null,
         "organization": "UniDPP",
         "product_name": "UniDPP Platform",
