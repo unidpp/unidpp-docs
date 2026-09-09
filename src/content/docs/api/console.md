@@ -30,3 +30,4 @@ source of truth; regenerate with `tools/gen-api-reference.sh`.
 | GET | `/registry` |  |
 | GET | `/tenants` |  |
 | POST | `/tenants` |  |
+| GET | `/trust` |  |
