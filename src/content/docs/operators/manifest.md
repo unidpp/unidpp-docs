@@ -672,6 +672,23 @@ process working directory; `stack.sh` and `tenants/up.sh` launch from the
 pilot-data root, which is why the reference manifest says
 `registry-journal.jsonl` for one service and `run/…` for others.
 
+<a id="services-resolver"></a>
+### `services.resolver`
+
+| | |
+|---|---|
+| Type | object ([`ResolverService`](#services-resolver)), optional |
+| Default | absent (no resolver) |
+
+The identifier-resolution service — the ninth declarable service.
+Fields: `bind`, [`admin_token`](#services-common-admin_token),
+[`state_file`](#services-common-state_file), `upstream`
+(national-intermediary mode: the upstream resolver base URL),
+`cache_ttl_secs` (default 300),
+[`public_url`](#services-common-public_url). `render-env` emits the
+resolver's own generic `UNIDPP_BIND` / `UNIDPP_UPSTREAM` / … names —
+the binary is unchanged.
+
 <a id="services-common-public_url"></a>
 #### `public_url`
 

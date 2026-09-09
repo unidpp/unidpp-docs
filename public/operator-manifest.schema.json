@@ -291,6 +291,54 @@
         }
       ]
     },
+    "ResolverService": {
+      "additionalProperties": false,
+      "description": "The resolver (the identifier-resolution service; its knobs are\nits own — the binary's env names are the generic UNIDPP_ ones it\nhas always read, unchanged).",
+      "properties": {
+        "admin_token": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bind": {
+          "type": "string"
+        },
+        "cache_ttl_secs": {
+          "default": 300,
+          "format": "int64",
+          "type": "integer"
+        },
+        "public_url": {
+          "default": null,
+          "description": "The service's public URL when a tunnel/ingress fronts it.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state_file": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "upstream": {
+          "default": null,
+          "description": "National-intermediary mode: the upstream resolver base URL.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "bind"
+      ],
+      "type": "object"
+    },
     "ServiceCommon": {
       "additionalProperties": false,
       "description": "The knobs every service shares.",
@@ -410,6 +458,17 @@
           ],
           "default": null
         },
+        "resolver": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ResolverService"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "trust": {
           "anyOf": [
             {
@@ -517,6 +576,7 @@
         "log": null,
         "projector": null,
         "registry": null,
+        "resolver": null,
         "trust": null
       },
       "description": "Per-service configuration blocks."

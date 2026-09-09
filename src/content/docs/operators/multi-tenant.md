@@ -195,9 +195,12 @@ Whitelabel as a separate deployment ships as one verified artifact:
 
 The bundle carries the tenant's manifest (secrets stay `${VAR}`
 references — nothing sensitive is embedded), its journals, the
-release binaries for exactly the services the manifest declares, the
-tenant runner, an `.env` template, and a runbook. Its sidecar lists
+release binaries for exactly the services the manifest declares, its
+own runner (`run.sh` — binaries from `./bin`, manifest at the
+bundle root), an `.env` template, and a runbook. Its sidecar lists
 every member's SHA-256 — a bundle verifies exactly like a backup
 (`./unidpp-ops verify <bundle>.tar.gz`), so the receiving host
 proves integrity independently of its producer. First boot on the
-target: validate, fill `.env`, `./up.sh <tenant> start`.
+target: `./bin/unidpp-config validate`, fill `.env`, `./run.sh
+start` — the bundle starts from its own contents (CI smokes exactly
+this).
