@@ -78,3 +78,29 @@ published at
 [www.unidpp.org/unidpp-spec](https://www.unidpp.org/unidpp-spec/),
 compiled from the [unidpp-spec](https://github.com/unidpp/unidpp-spec)
 repository on every push (a broken clause fails its CI).
+
+## The grid and the cross-border seam
+
+Phase 1 and 2 of the build contract are implemented and
+demonstrated on every merge (the G-GRID beat in `make demo`):
+
+- **The segment grid** — one subject, parallel policy-defined
+  sovereignty segments (open, pairing-gated, origin-sealed,
+  escrowed), each governed by an authority-SIGNED policy object; a
+  commitment spine proves existence, currency and append-only
+  growth without opening any segment ([unidpp-grid] in core,
+  signing in signatif).
+- **S13** — the cross-border choreography: request → policy
+  evaluation → permit / deny / attestation offer / escalation,
+  denial stated never silent, responses citing the governing
+  policy (core's `unidpp-s13`).
+- **Sovereign attestation substitution** — statements ABOUT sealed
+  commitments (never contents), high-stakes claims quorum
+  co-signed, verified under the verifier's own anchors; verdicts
+  grade evidence verified-direct / attested-by-authority
+  (signatif's sovereign seam).
+
+Run it: `unidpp grid` — the CN battery case (static verified-direct,
+dynamic attested under policy cn-dynamic-bms) in fourteen checks.
+
+[unidpp-grid]: https://github.com/unidpp/unidpp-core/tree/main/crates/grid
