@@ -99,8 +99,23 @@ demonstrated on every merge (the G-GRID beat in `make demo`):
   co-signed, verified under the verifier's own anchors; verdicts
   grade evidence verified-direct / attested-by-authority
   (signatif's sovereign seam).
+- **Acceptance + coverage reports** — the RECEIVING profile decides
+  what counts as evidence (anchored services, claim classes, quorum
+  strength, freshness, per-element truth modes); the verdict is a
+  first-class coverage report object naming the governing policies.
+- **Document orientation** — the dossier: everything a foreign
+  verifier needs as signed documents; `unidpp dossier <path>`
+  re-derives the verdict offline with zero calls to foreign
+  systems. The spine anchors in the transparency log (one chain)
+  and the receipt rides the dossier.
+- **Canonical interop** — Annex B of the spec states the canonical
+  encoding and domain separation normatively; golden vectors are
+  CI-replayed, so an independent implementation reproducing their
+  digests is conformant.
 
 Run it: `unidpp grid` — the CN battery case (static verified-direct,
-dynamic attested under policy cn-dynamic-bms) in fourteen checks.
+dynamic attested under policy cn-dynamic-bms, acceptance decided) in
+fifteen checks; `unidpp grid --dossier <path>` + `unidpp dossier
+<path>` for the offline verdict.
 
 [unidpp-grid]: https://github.com/unidpp/unidpp-core/tree/main/crates/grid
