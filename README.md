@@ -43,6 +43,20 @@ tools/check-manifest-coverage.sh ../unidpp-config/src/lib.rs \
 Expected output ends `coverage: 46/46 fields documented`. A schema change
 without a docs change fails the check.
 
+## Deployment
+
+docs.unidpp.org is a Cloudflare Pages project (`unidpp-docs`) with
+NO git integration — deploys are manual, through wrangler:
+
+```sh
+npm run build
+npx wrangler pages deploy dist --project-name unidpp-docs --branch main
+```
+
+CI compiles and checks coverage on every push; the deploy step is
+the operator's publish act (wrangler authenticates with the
+`unidpp` account's OAuth).
+
 ## Conventions
 
 - Every command shown in the pages was executed against the running pilot
