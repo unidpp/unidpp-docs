@@ -25,6 +25,10 @@ export default defineConfig({
           ],
         },
         {
+          label: 'Adoption paths',
+          items: [{ autogenerate: { directory: 'adoption' } }],
+        },
+        {
           label: "Operator's manual",
           items: [
             { label: 'The operator manifest reference', slug: 'operators/manifest' },

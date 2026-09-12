@@ -12,14 +12,19 @@ source of truth; regenerate with `tools/gen-api-reference.sh`.
 |---|---|---|
 | GET | `/` |  |
 | GET | `/.well-known/unidpp-service` |  |
+| GET | `/archival` |  |
+| POST | `/archival` |  |
 | GET | `/backups` |  |
 | POST | `/backups` |  |
 | POST | `/backups/drill` |  |
 | GET | `/branding` |  |
 | POST | `/branding` |  |
+| GET | `/carrier` |  |
 | GET | `/config` |  |
 | POST | `/config` |  |
 | GET | `/config/env` |  |
+| GET | `/coverage` |  |
+| GET | `/declarations` |  |
 | GET | `/egress` |  |
 | GET | `/healthz` |  |
 | GET | `/login` |  |
@@ -27,6 +32,8 @@ source of truth; regenerate with `tools/gen-api-reference.sh`.
 | POST | `/logout` |  |
 | GET | `/passports` |  |
 | POST | `/passports` |  |
+| GET | `/profiles` |  |
+| POST | `/profiles` |  |
 | GET | `/registry` |  |
 | GET | `/tenants` |  |
 | POST | `/tenants` |  |
