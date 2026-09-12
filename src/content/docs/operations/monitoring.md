@@ -54,6 +54,29 @@ calls, so a down service costs a dash, not an outage of the page.
   listener took the port: `status` catches this via the service
   identity check; stop by PID (`run/*.pid`), never by name.
 
+## Performance: the NF-1 bench
+
+The performance requirement's three numbers are measured, not
+asserted — `unidpp-e2e` `scripts/bench-nf1.sh` (harness test 10 in
+CI):
+
+| Number | Bar | Reference measurement |
+|---|---|---|
+| Tier-A offline verification | the order of milliseconds | p95 0.7 ms (in-process, the officer's terminal's own pipeline) |
+| Served profile views | p95 under 300 ms at reference scale | p95 5.6 ms (512 passports, 400 requests, fixture profile) |
+| Roll-up verification over deep graphs | without full traversal | inclusion proof 6 µs vs 57 ms full traversal; the proof is log₂(N) hashes, gated structurally |
+
+Run it on your own class of machine:
+
+```sh
+$ cd unidpp-e2e && UNIDPP_BENCH_VIEWS=1 ./scripts/bench-nf1.sh
+```
+
+The two offline numbers gate (a regression fails the harness); the
+served-views p95 is the reference-class measurement — CI reports it
+without gating, because a shared runner is not the reference
+machine class.
+
 ## What there is deliberately not
 
 No central telemetry, no outbound beacon: the reference deployment's
