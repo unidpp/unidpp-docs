@@ -80,3 +80,5 @@ jobs:
         run: npm run check:manifest
       - name: Build
         run: npm run build
+      - name: No broken internal links
+        run: npm run check:links
