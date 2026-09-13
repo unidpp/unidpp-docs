@@ -136,6 +136,28 @@ copy: the file either validates or the deployment does not start.
 4. Backups do not contain secrets by design — see
    [backup and restore](/operators/backup-restore/#what-backups-do-not-include).
 
+## The per-surface review register
+
+One row per surface, each cell naming its enforcing mechanism or its
+honest absence — the register is the review, kept with the code and
+re-read at each service change (NF-4). "Token" means the
+`Authorization: Bearer` admin gate refusing with the resource named.
+
+| Surface | Mutations | Reads | Secrets at rest | Isolation | The proofs |
+|---|---|---|---|---|---|
+| registry | token-gated (items, services, bindings) | public, point-in-time `at=` | none (journal is public data) | per-deployment journal; cross-tenant credentials refused (harness test 9) | registry tests; SV-7 e2e |
+| issuer | token-gated in production (dev mode states itself on every start) | public passports; keyring publishes anchors | event/pack seeds via `${VAR}` only | per-tenant journals (tenants are manifests) | issuer tests; the seeded-dev warning |
+| trust | token-gated (lists, master entries) | signed responses only — tree-head domain | none | deployment-scoped graph | trust tests: every response carries its signature |
+| log | token-gated commitments | public receipts + tree heads | none (a transparency log is public by design) | deployment-scoped tree | log tests; the independent receipt check |
+| archive | token-gated (snapshot intake) | public snapshots | notary seed via `${VAR}` | deployment-scoped | archive tests (notary seal, anchoring) |
+| projector | none (read-only by design) | public views/renders | none | serves declared sources | projector tests (two-lens parity) |
+| gateway | **none on the ingest path** — an honest dev-pilot posture; production fronts it with the edge | public bindings | none | stateless render; ingest is per-subject idempotent | gateway tests (AD-3 parity, ingest idempotence) |
+| resolver | token-gated (linkset writes) | public, `x-as-of`; **dark identities unresolvable publicly** | none | deployment-scoped linksets | resolver tests (RT-1: the dark-id absence) |
+| hub | none exist — the relay is stateless, willingness is the gate | public keyring + discovery | relay seed via `${VAR}` | nothing held to isolate | hub tests (the WILL gap, restart statelessness) |
+| console | session-gated (login, constant-time token compare, expiry) | public pages degrade honestly | the token lives in env, renders only as `${VAR}` | the manifest-boundary confinement (state paths confined per tenant, traversal refused) | console tests incl. the SV-7 isolation suite |
+| CLI | n/a (offline) | verifies under the operator's own pinned anchors | anchors are inputs, never fetched | n/a | the verify pipeline tests |
+| edge | reveal-gated reads per the segment policy | contact dumps gated by the policy object | device keys in the device | segment policies | the device drill; clause 5 g-h |
+
 ## The operator's production checklist
 
 - [ ] Every deployed service block has `admin_token: ${…}` set (no open dev
