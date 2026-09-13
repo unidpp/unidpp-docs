@@ -12,7 +12,8 @@
     "check:manifest": "tools/check-manifest-coverage.sh",
     "dev": "astro dev",
     "gen:api": "tools/gen-api-reference.sh",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check:links": "tools/check-internal-links.py"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.42.0",
