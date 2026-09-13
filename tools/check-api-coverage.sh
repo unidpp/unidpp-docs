@@ -12,7 +12,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 FAMILY="${UNIDPP_FAMILY_DIR:-$SCRIPT_DIR/../../}"
 DOCS_API="$SCRIPT_DIR/../src/content/docs/api"
 
-SERVICES="registry:api.rs trust:api.rs log:api.rs issuer:api.rs projector:api.rs gateway:api.rs archive:api.rs resolver:api.rs console:lib.rs"
+SERVICES="registry:api.rs trust:api.rs log:api.rs issuer:api.rs projector:api.rs gateway:api.rs archive:api.rs resolver:api.rs hub:lib.rs console:lib.rs"
 
 failed=0
 for spec in $SERVICES; do

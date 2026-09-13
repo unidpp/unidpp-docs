@@ -21,7 +21,7 @@ FAMILY="${UNIDPP_FAMILY_DIR:-$SCRIPT_DIR/../../}"
 mkdir -p "$DOCS_API"
 
 # <service> <router-file> <title-blurb>
-SERVICES="registry:api.rs trust:api.rs log:api.rs issuer:api.rs projector:api.rs gateway:api.rs archive:api.rs resolver:api.rs console:lib.rs"
+SERVICES="registry:api.rs trust:api.rs log:api.rs issuer:api.rs projector:api.rs gateway:api.rs archive:api.rs resolver:api.rs hub:lib.rs console:lib.rs"
 
 for spec in $SERVICES; do
   service="${spec%%:*}"
