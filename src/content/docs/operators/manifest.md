@@ -700,10 +700,14 @@ the binary is unchanged.
 The translation hub — the tenth declarable service: a stateless
 signed relay between willing pairs divided by protocols (SI-3's
 hub contract). Fields: `bind`,
-[`admin_token`](#services-common-admin_token) (unused — the hub has
-no mutations to gate), `state_file` (unused — nothing persists;
-after a relay the hub holds nothing),
-[`public_url`](#services-common-public_url).
+[`admin_token`](#services-common-admin_token) (future-proof — the
+hub has no mutations to gate), `hub_id` (the hub's trust-graph node
+id, what relay signatures name; default `unidpp-hub-1`), `seed`
+(the relay-signing seed, an `${VAR}` reference in production;
+absent = seeded-dev mode, which says so on every start),
+[`public_url`](#services-common-public_url). Nothing persists —
+after a relay the hub holds nothing. `render-env` emits the hub's
+own names: `UNIDPP_HUB_BIND`, `UNIDPP_HUB_ID`, `UNIDPP_HUB_SEED`.
 
 <a id="services-common-public_url"></a>
 #### `public_url`

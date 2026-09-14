@@ -169,6 +169,49 @@
       ],
       "type": "object"
     },
+    "HubService": {
+      "additionalProperties": false,
+      "description": "The translation hub: a stateless signed relay whose only real\nknobs are its identity and its relay-signing seed. No state file\n(after a relay the hub holds nothing); no admin surface (no\nmutations to gate).",
+      "properties": {
+        "admin_token": {
+          "default": null,
+          "description": "Future-proof: the hub has no mutations to gate today.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bind": {
+          "description": "`host:port` to bind.",
+          "type": "string"
+        },
+        "hub_id": {
+          "default": "unidpp-hub-1",
+          "description": "The hub's trust-graph node id (what relay signatures name).",
+          "type": "string"
+        },
+        "public_url": {
+          "default": null,
+          "description": "The service's public URL when a tunnel/ingress fronts it.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "seed": {
+          "default": null,
+          "description": "The relay-signing seed (an `${VAR}` reference in production;\nabsent = seeded-dev mode, which says so on every start).",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "bind"
+      ],
+      "type": "object"
+    },
     "IssuerService": {
       "additionalProperties": false,
       "description": "The issuer (adds the pack-suite policy).",
@@ -417,7 +460,7 @@
         "hub": {
           "anyOf": [
             {
-              "$ref": "#/$defs/ServiceCommon"
+              "$ref": "#/$defs/HubService"
             },
             {
               "type": "null"
