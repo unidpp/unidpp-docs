@@ -689,6 +689,22 @@ Fields: `bind`, [`admin_token`](#services-common-admin_token),
 resolver's own generic `UNIDPP_BIND` / `UNIDPP_UPSTREAM` / … names —
 the binary is unchanged.
 
+<a id="services-hub"></a>
+### `services.hub`
+
+| | |
+|---|---|
+| Type | object ([`ServiceCommon`](#services-common)), optional |
+| Default | absent (no hub) |
+
+The translation hub — the tenth declarable service: a stateless
+signed relay between willing pairs divided by protocols (SI-3's
+hub contract). Fields: `bind`,
+[`admin_token`](#services-common-admin_token) (unused — the hub has
+no mutations to gate), `state_file` (unused — nothing persists;
+after a relay the hub holds nothing),
+[`public_url`](#services-common-public_url).
+
 <a id="services-common-public_url"></a>
 #### `public_url`
 

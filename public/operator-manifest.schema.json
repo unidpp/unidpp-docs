@@ -414,6 +414,18 @@
           ],
           "default": null
         },
+        "hub": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ServiceCommon"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The translation hub (stateless signed relay; no state file —\nnothing persists)."
+        },
         "issuer": {
           "anyOf": [
             {
@@ -572,6 +584,7 @@
         "archive": null,
         "console": null,
         "gateway": null,
+        "hub": null,
         "issuer": null,
         "log": null,
         "projector": null,
