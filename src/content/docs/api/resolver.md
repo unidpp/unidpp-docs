@@ -12,12 +12,17 @@ source of truth; regenerate with `tools/gen-api-reference.sh`.
 |---|---|---|
 | GET | `/` |  |
 | GET | `/.well-known/unidpp-resolver` |  |
+| POST | `/admin/correlations` | record a same-subject correlation (spec 6.3 k): identifierA (known here) ↔ identifierB (well-formed, cross-registry); both sides indexed |
 | POST | `/admin/dark` |  |
 | GET | `/admin/identifiers/{*identifier}` |  |
 | POST | `/admin/linksets` |  |
 | PUT | `/admin/linksets` |  |
 | GET | `/admin/log` |  |
 | POST | `/admin/revocations` |  |
+| POST | `/admin/supersessions` | record identity rotation: successor + effectiveAt + authority + reason; stated on every non-dark response |
 | GET | `/healthz` |  |
 | POST | `/normalize` |  |
 | GET | `/resolve` |  |
+
+> The module docs describe these without a matching route —
+> check the source: `GET /resolve?identifier=&asof=`
