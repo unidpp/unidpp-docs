@@ -18,6 +18,26 @@ binds `127.0.0.1:8395` with the issuer upstream at 8393.
 | `GET /untp/product/{id}?freshness=` | the UNTP verifiable-credential triad + verdict |
 | `POST /untp/ingest` | the import direction: a UNTP passport VC (or triad) mints a core passport; idempotent per subject |
 | `GET /en18222/v1/dppsByProductId/{gtin}?representation=full\|compressed` | the EN 18222 REST render (default compressed, per the EN) |
+| `POST /feedback` | the consumer report channel (TODO 224): typed reports, journaled, receipted |
+| `GET /feedback/{seq}` | the public citation form (contact withheld, stated) |
+| `GET /admin/feedback` | the full listing (admin-guarded when a token is set) |
+| `POST /scan-tokens` | issue a scan token under the declared scan policy |
+
+## The consumer edge
+
+The gateway is also the public edge tier. The **consumer report
+channel** (`POST /feedback`, MobileQR's 投诉反馈 pattern) takes typed
+reports — goods-mismatch, advertising-mismatch, or a stated other —
+journals them append-only with a receipt (sequence + instant), and
+cites them publicly with the reporter's contact withheld by a stated
+omission. Admission control is a pluggable interface, never
+architecture: the in-repo per-identifier rate window, or a
+deployment's captcha + SMS behind the same trait. The **scan-token
+gate** is declared deployment data in the [operator
+manifest](/operators/manifest/#services-gateway-scan_policy): absent
+policy = the gate is open (public resolution is the default
+doctrine), and every gate refusal states itself. See the
+[API reference](/api/gateway/).
 
 ## Examples (recorded)
 

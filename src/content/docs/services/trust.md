@@ -12,6 +12,21 @@ verifier picks the right public keys from `/keyring`.
 In the reference deployment it binds `127.0.0.1:8391`. Reads are public;
 mutations and `/admin/log` require `UNIDPP_TRUST_ADMIN_TOKEN` when set.
 
+
+## Gated evidence and the operator surface
+
+Evidence documents (the bytes behind attestations — certificate PDFs,
+inspection reports) are never bare URLs: each is registered with a
+**required scope**, listed metadata-only, and released only under the
+scope — the exact bytes, signed by the service keyring, with every
+release journaled as the access decision. An absent or unsatisfying
+scope is a stated 403 naming the required scope, never a silent 404.
+The **operator surface** (`GET /operators/{node}`) renders one
+operator's credential directory from the same registries: identity
+and keys, delegation position, trust-list memberships with their
+validity windows, master-list attestations, revocation standing.
+See the [API reference](/api/trust/).
+
 ## Endpoints
 
 | Endpoint | What |
@@ -31,6 +46,9 @@ mutations and `/admin/log` require `UNIDPP_TRUST_ADMIN_TOKEN` when set.
 | `GET /revocations?at=&known_by=&window=&subject=&retroactive=` | revocation declarations, both readings |
 | `POST /revocations` | declare a revocation |
 | `POST /nodes` · `POST /edges` | graph registration |
+| `GET /evidence` · `GET /evidence/{id}?scope=` | the gated evidence catalogue and scoped release (TODO 224) |
+| `POST /admin/evidence` | register a gated evidence document |
+| `GET /operators/{node}?at=` | the operator surface: credentials with validity windows |
 | `GET /admin/log?limit=&offset=` | audit log (admin) |
 
 ## Example (recorded against the reference deployment)

@@ -551,9 +551,47 @@ The interop gateway. See the [gateway reference](/services/gateway/).
 | `bind` | `UNIDPP_GATEWAY_BIND` |
 | `admin_token` | `UNIDPP_GATEWAY_ADMIN_TOKEN` |
 | `issuer_url` | `UNIDPP_ISSUER_URL` |
+| `feedback.journal` | `UNIDPP_GATEWAY_FEEDBACK_JOURNAL` |
+| `feedback.rate_per_minute` | `UNIDPP_GATEWAY_FEEDBACK_RATE` |
+| `scan_policy.token_ttl_secs` | `UNIDPP_GATEWAY_SCAN_TTL_SECS` |
+| `scan_policy.issue_limit_per_minute` | `UNIDPP_GATEWAY_SCAN_LIMIT_PER_MIN` |
 
-The gateway keeps no state — it renders, it does not store — so its block
-declares no `state_file`.
+The gateway renders rather than stores — it declares no `state_file`.
+Its one journal is the consumer-report channel (below), append-only
+and replayed on start like every other service journal.
+
+<a id="services-gateway-feedback"></a>
+### `services.gateway.feedback`
+
+| | |
+|---|---|
+| Type | object (`FeedbackPolicy`), optional (defaults: no journal, no rate) |
+| Example | `feedback: { journal: run/feedback-journal.jsonl, rate_per_minute: 10 }` |
+
+The consumer report channel's deployment policy. `journal` is the
+append-only JSONL path (absent = in-memory only, dev mode);
+`rate_per_minute` is the per-identifier admission window (0/absent =
+permissive — MobileQR's captcha + SMS verification is a deployment's
+pluggable choice behind the same interface, never architecture).
+Reports are receipted with sequence and instant; the public citation
+form withholds the reporter's contact by a stated omission.
+
+<a id="services-gateway-scan_policy"></a>
+### `services.gateway.scan_policy`
+
+| | |
+|---|---|
+| Type | object (`ScanPolicy`), optional |
+| Example | `scan_policy: { token_ttl_secs: 300, issue_limit_per_minute: 60 }` |
+
+The scan-token gate: short-TTL bearer tokens with per-source issuance
+throttling guarding the render routes, declared as data — never
+per-service code. **Absent = the gate is open**: public resolution is
+the default doctrine, and gating is what a deployment under load opts
+into (the reference pilot declares none). Every gate refusal states
+itself: an absent, unknown or expired token names the policy window
+(401); an over-limit issuance is a stated 429; issuance with no
+policy configured is a stated 409.
 
 <a id="services-gateway-issuer_url"></a>
 ### `services.gateway.issuer_url`
