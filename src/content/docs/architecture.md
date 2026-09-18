@@ -1,10 +1,11 @@
 ---
 title: Architecture pointers
-description: Where the framework lives — the fourteen invariants, layers, seams, and tiers on the main site — and the running deployment map.
+description: Where the framework lives, covering the fourteen invariants, the layers, the seams and the tiers on the main site, together with the running deployment map.
 ---
 
-The framework itself — the fourteen invariants, the six layers, the lens
-model, profile axes, capability classes, the twin axis, the trust model — is
+The framework itself, which comprises the fourteen invariants, the six
+layers, the lens model, the profile axes, the capability classes, the
+twin axis and the trust model, is
 documented on [the main site](https://www.unidpp.org/framework/). These docs
 do not duplicate it; they point at it and map it onto the running deployment
 you operate.
@@ -20,9 +21,9 @@ you operate.
   [the twin axis](https://www.unidpp.org/framework/#twin),
   [resilience and the degradation ladder](https://www.unidpp.org/framework/#resilience),
   [the trust model](https://www.unidpp.org/framework/#trust).
-- [Framework structure](https://www.unidpp.org/framework/structure/) — the
+- [Framework structure](https://www.unidpp.org/framework/structure/): the
   seams between components.
-- [Standards map](https://www.unidpp.org/framework/standards/) — every layer
+- [Standards map](https://www.unidpp.org/framework/standards/): every layer
   as an existing international standard or published open system; the
   framework adds no proprietary layer.
 - [Trust model](https://www.unidpp.org/framework/trust/).
@@ -41,10 +42,10 @@ into them in these docs:
 | Append-only event sourcing | every service journal; [backup and restore](/operators/backup-restore/) |
 | State-machine legitimacy (I6) | the [issuer](/services/issuer/) rejects lifecycle events that do not follow the machine |
 | Graded trust (I9) | the [projector](/services/projector/)'s per-element trust markers and selection gates |
-| No-load-bearing-proprietary layer | the whole [manifest](/operators/manifest/) — a deployment is data, rendered into open processes' environments |
+| No-load-bearing-proprietary layer | the whole [manifest](/operators/manifest/), which is a deployment is data, rendered into open processes' environments |
 
 The numbered invariants are enumerated on
-[the framework page](https://www.unidpp.org/framework/#invariants) — the
+[the framework page](https://www.unidpp.org/framework/#invariants), which is the
 authoritative list, not this table.
 
 ## The running deployment map
@@ -62,7 +63,7 @@ each occupies:
 | [gateway](/services/gateway/) | 8395 | interop | UNTP triad + EN 18222 renders, UNTP ingest |
 | [archive](/services/archive/) | 8396 | Tier-C | OAIS notarized snapshots, log-anchored |
 | [console](/services/console/) | 8389 | operations | the manifest surface |
-| registry (JP peer) | 8399 | federation | the national-peer node — see [running a national peer](/federation/jp-peer/) |
+| registry (JP peer) | 8399 | federation | the national-peer node, which is see [running a national peer](/federation/jp-peer/) |
 
 The tiers (A: the offline pack; B: the online passport; C: the notarized
 archive) are defined in the framework's
@@ -72,8 +73,8 @@ issuer serves, Tier C is what the archive notarizes and anchors.
 
 ## The specification
 
-The framework specification — the model, tiers, trust, federation,
-conformance classes, and the operations-and-durability clause — is
+The framework specification, which is the model, tiers, trust, federation,
+conformance classes, and the operations-and-durability clause, which is is
 published at
 [www.unidpp.org/unidpp-spec](https://www.unidpp.org/unidpp-spec/),
 compiled from the [unidpp-spec](https://github.com/unidpp/unidpp-spec)
@@ -84,36 +85,36 @@ repository on every push (a broken clause fails its CI).
 Phase 1 and 2 of the build contract are implemented and
 demonstrated on every merge (the G-GRID beat in `make demo`):
 
-- **The segment grid** — one subject, parallel policy-defined
+- *The segment grid*: one subject, parallel policy-defined
   sovereignty segments (open, pairing-gated, origin-sealed,
   escrowed), each governed by an authority-SIGNED policy object; a
   commitment spine proves existence, currency and append-only
   growth without opening any segment ([unidpp-grid] in core,
   signing in signatif).
-- **S13** — the cross-border choreography: request → policy
+- *S13*: the cross-border choreography: request → policy
   evaluation → permit / deny / attestation offer / escalation,
   denial stated never silent, responses citing the governing
   policy (core's `unidpp-s13`).
-- **Sovereign attestation substitution** — statements ABOUT sealed
+- *Sovereign attestation substitution*: statements ABOUT sealed
   commitments (never contents), high-stakes claims quorum
   co-signed, verified under the verifier's own anchors; verdicts
   grade evidence verified-direct / attested-by-authority
   (signatif's sovereign seam).
-- **Acceptance + coverage reports** — the RECEIVING profile decides
+- *Acceptance + coverage reports*: the RECEIVING profile decides
   what counts as evidence (anchored services, claim classes, quorum
   strength, freshness, per-element truth modes); the verdict is a
   first-class coverage report object naming the governing policies.
-- **Document orientation** — the dossier: everything a foreign
+- *Document orientation*: the dossier: everything a foreign
   verifier needs as signed documents; `unidpp dossier <path>`
   re-derives the verdict offline with zero calls to foreign
   systems. The spine anchors in the transparency log (one chain)
   and the receipt rides the dossier.
-- **Canonical interop** — Annex B of the spec states the canonical
+- *Canonical interop*: Annex B of the spec states the canonical
   encoding and domain separation normatively; golden vectors are
   CI-replayed, so an independent implementation reproducing their
   digests is conformant.
 
-Run it: `unidpp grid` — the CN battery case (static verified-direct,
+Run it: `unidpp grid`, which is the CN battery case (static verified-direct,
 dynamic attested under policy cn-dynamic-bms, acceptance decided) in
 fifteen checks; `unidpp grid --dossier <path>` + `unidpp dossier
 <path>` for the offline verdict.
