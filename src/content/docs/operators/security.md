@@ -1,4 +1,5 @@
 ---
+spec_clauses: ["5"]
 title: Security posture
 description: Tokens, sessions, egress rules, key material, and what is hardened versus what is dev-mode by design.
 ---

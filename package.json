@@ -13,7 +13,8 @@
     "dev": "astro dev",
     "gen:api": "node tools/gen-api-reference.mjs",
     "preview": "astro preview",
-    "check:links": "tools/check-internal-links.py"
+    "check:links": "tools/check-internal-links.py",
+    "check:citations": "node tools/check-spec-citations.mjs"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.42.0",
