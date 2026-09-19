@@ -1,12 +1,12 @@
 # Writing style
 
 This document defines the professional technical writing style for all
-published prose in the OIML SMART estate: website pages, product interfaces,
+published prose of the OIML SMART program: website pages, product interfaces,
 panel and dialogue copy, documentation summaries, release notes and public
 announcements. Every sentence written for a reader follows the rules in this
-document. The style is observed in two corpora that the estate maintains: the
+document. The style is observed in two corpora that the program maintains: the
 press releases at `www.ribose.com` and the editorial prose of the ISO and
-ISO/IEC standards the estate authors (`iso-19135-2025`, `iso-8601-1-2026`).
+ISO/IEC standards the program authors (`iso-19135-2025`, `iso-8601-1-2026`).
 The technical register applies to explanation and the announcement register
 applies to news.
 
