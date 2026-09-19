@@ -15,7 +15,7 @@ src/content/docs/
 ├── architecture.md             pointers to unidpp.org framework pages
 ├── federation/                 JP peer · cross-register mappings · UNTP/EN 18222
 └── quickstart-whitelabel.md    the 15-minute whitelabel deployment
-tools/check-manifest-coverage.sh  schema-vs-docs completeness check
+tools/check-manifest-coverage.mjs  schema-vs-docs completeness check
 ```
 
 ## Commands
@@ -26,7 +26,7 @@ tools/check-manifest-coverage.sh  schema-vs-docs completeness check
 | `npm run dev` | local dev server at `localhost:4321` |
 | `npm run build` | production build to `./dist/` |
 | `npm run preview` | preview the build locally |
-| `tools/check-manifest-coverage.sh [lib.rs] [manifest.md]` | verify the manifest reference covers every schema field |
+| `tools/check-manifest-coverage.mjs` | verify the manifest reference covers every schema name |
 
 ## The coverage check
 
@@ -36,7 +36,7 @@ must document every field of the schema in `unidpp-config`
 from the schema source and greps the reference page for each:
 
 ```sh
-tools/check-manifest-coverage.sh ../unidpp-config/src/lib.rs \
+npm run check:manifest
     src/content/docs/operators/manifest.md
 ```
 
