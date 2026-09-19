@@ -1,5 +1,90 @@
 {
   "$defs": {
+    "ArchiveService": {
+      "additionalProperties": false,
+      "description": "The archive (adds the snapshot directory and the log anchor).",
+      "properties": {
+        "admin_token": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bind": {
+          "type": "string"
+        },
+        "dev_seed": {
+          "default": null,
+          "description": "The development seed fixture.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "log_timeout_ms": {
+          "default": null,
+          "description": "The log anchor timeout, milliseconds.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "log_token": {
+          "default": null,
+          "description": "The log's bearer token when the log is guarded.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "log_url": {
+          "default": null,
+          "description": "The transparency log to anchor snapshots to.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "public_url": {
+          "default": null,
+          "description": "The service's public URL when a tunnel/ingress fronts it.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sign_seed": {
+          "default": null,
+          "description": "The snapshot signing seed.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "snapshot_dir": {
+          "default": null,
+          "description": "The snapshots directory.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state_file": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "bind"
+      ],
+      "type": "object"
+    },
     "Branding": {
       "additionalProperties": false,
       "description": "The whitelabel surface.",
@@ -44,6 +129,49 @@
           "description": "The theme (hex colors; validated)."
         }
       },
+      "type": "object"
+    },
+    "ConsoleService": {
+      "additionalProperties": false,
+      "description": "The console (adds the manifest path it loads).",
+      "properties": {
+        "admin_token": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bind": {
+          "type": "string"
+        },
+        "manifest": {
+          "default": null,
+          "description": "The operator manifest the console loads and edits.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "public_url": {
+          "default": null,
+          "description": "The service's public URL when a tunnel/ingress fronts it.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state_file": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "bind"
+      ],
       "type": "object"
     },
     "Deployment": {
@@ -204,6 +332,16 @@
           ],
           "default": null,
           "description": "The scan-token policy (TODO.impl 224): short-TTL bearer scan\ntokens with issuance throttling, enforced at this edge tier.\nAbsent = open (public resolution is the default doctrine);\ndeployments under load opt in."
+        },
+        "timeout_ms": {
+          "default": null,
+          "description": "The upstream request timeout, milliseconds.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
         }
       },
       "required": [
@@ -268,6 +406,32 @@
         "bind": {
           "type": "string"
         },
+        "event_seed": {
+          "default": null,
+          "description": "The event-log signing seed.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "max_age": {
+          "default": null,
+          "description": "The maximum age of accepted upstream material, seconds.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "pack_seed": {
+          "default": null,
+          "description": "The pack signing seed.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "pack_suites": {
           "additionalProperties": false,
           "default": [
@@ -287,9 +451,25 @@
             "null"
           ]
         },
+        "registry_token": {
+          "default": null,
+          "description": "The registry bearer token when the registry is guarded.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "registry_url": {
           "default": null,
           "description": "The registry to forward registrations to.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "seed": {
+          "default": null,
+          "description": "The service's general development seed.",
           "type": [
             "string",
             "null"
@@ -343,8 +523,24 @@
             "null"
           ]
         },
+        "seed": {
+          "default": null,
+          "description": "The tree-head signing seed.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "state_file": {
           "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "suite": {
+          "default": null,
+          "description": "The signature suite of the tree head (default ed25519).",
           "type": [
             "string",
             "null"
@@ -375,6 +571,140 @@
           "type": "string"
         }
       ]
+    },
+    "ProjectorService": {
+      "additionalProperties": false,
+      "description": "The projector (adds the resolution sources and the roll-up sealer).",
+      "properties": {
+        "admin_token": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bind": {
+          "type": "string"
+        },
+        "passports_dir": {
+          "default": null,
+          "description": "The pinned passports directory (absent = the built-in fixture).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "primmel_dir": {
+          "default": null,
+          "description": "The pinned Primmel package directory.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "public_url": {
+          "default": null,
+          "description": "The service's public URL when a tunnel/ingress fronts it.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "registry_token": {
+          "default": null,
+          "description": "The registry bearer token when the registry is guarded.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "registry_url": {
+          "default": null,
+          "description": "The registry the lenses resolve against (absent = fixtures).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rollup_attester": {
+          "default": null,
+          "description": "The roll-up attester identity.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rollup_seed": {
+          "default": null,
+          "description": "The roll-up sealing seed (absent = roll-ups off).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state_file": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "bind"
+      ],
+      "type": "object"
+    },
+    "RegistryService": {
+      "additionalProperties": false,
+      "description": "The registry (adds the seed knobs; absent = the service's own\ndefaults).",
+      "properties": {
+        "admin_token": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bind": {
+          "type": "string"
+        },
+        "public_url": {
+          "default": null,
+          "description": "The service's public URL when a tunnel/ingress fronts it.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "seed_express": {
+          "default": null,
+          "description": "Seed the EXPRESS development corpus at start.",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "seed_on_demand": {
+          "default": null,
+          "description": "Seed the development corpus on demand (`POST /admin/seed`).",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "state_file": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "bind"
+      ],
+      "type": "object"
     },
     "ResolverService": {
       "additionalProperties": false,
@@ -447,44 +777,6 @@
       ],
       "type": "object"
     },
-    "ServiceCommon": {
-      "additionalProperties": false,
-      "description": "The knobs every service shares.",
-      "properties": {
-        "admin_token": {
-          "default": null,
-          "description": "The admin bearer token (an `${VAR}` reference).",
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "bind": {
-          "description": "`host:port` to bind.",
-          "type": "string"
-        },
-        "public_url": {
-          "default": null,
-          "description": "The service's public URL when a tunnel/ingress fronts it\n(e.g. `https://registry.unidpp.org`). Absent = loopback-only.",
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "state_file": {
-          "default": null,
-          "description": "The journal/state file (services that persist one).",
-          "type": [
-            "string",
-            "null"
-          ]
-        }
-      },
-      "required": [
-        "bind"
-      ],
-      "type": "object"
-    },
     "Services": {
       "additionalProperties": false,
       "description": "Every service block. Absent service = that service is not part of\nthis deployment.",
@@ -492,7 +784,7 @@
         "archive": {
           "anyOf": [
             {
-              "$ref": "#/$defs/ServiceCommon"
+              "$ref": "#/$defs/ArchiveService"
             },
             {
               "type": "null"
@@ -503,7 +795,7 @@
         "console": {
           "anyOf": [
             {
-              "$ref": "#/$defs/ServiceCommon"
+              "$ref": "#/$defs/ConsoleService"
             },
             {
               "type": "null"
@@ -559,7 +851,7 @@
         "projector": {
           "anyOf": [
             {
-              "$ref": "#/$defs/ServiceCommon"
+              "$ref": "#/$defs/ProjectorService"
             },
             {
               "type": "null"
@@ -570,7 +862,7 @@
         "registry": {
           "anyOf": [
             {
-              "$ref": "#/$defs/ServiceCommon"
+              "$ref": "#/$defs/RegistryService"
             },
             {
               "type": "null"
@@ -592,7 +884,7 @@
         "trust": {
           "anyOf": [
             {
-              "$ref": "#/$defs/ServiceCommon"
+              "$ref": "#/$defs/TrustService"
             },
             {
               "type": "null"
@@ -644,6 +936,73 @@
           "type": "string"
         }
       },
+      "type": "object"
+    },
+    "TrustService": {
+      "additionalProperties": false,
+      "description": "The trust service (adds the fixture and signing-seed knobs).",
+      "properties": {
+        "admin_token": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bind": {
+          "type": "string"
+        },
+        "dev_seed": {
+          "default": null,
+          "description": "The development seed fixture.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "no_seed_fixtures": {
+          "default": null,
+          "description": "Run without the seed fixtures (the no-seed posture).",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "public_url": {
+          "default": null,
+          "description": "The service's public URL when a tunnel/ingress fronts it.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sign_seed": {
+          "default": null,
+          "description": "The operator keyring's Ed25519 signing seed.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sign_seed_p256": {
+          "default": null,
+          "description": "The operator keyring's P-256 signing seed.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state_file": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "bind"
+      ],
       "type": "object"
     }
   },

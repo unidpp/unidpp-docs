@@ -391,8 +391,7 @@ knobs; the service-specific knobs come after.
 
 | | |
 |---|---|
-| Type | object ([`ServiceCommon`](#services-common-bind)) |
-| Example | `registry: { bind: 127.0.0.1:8390, admin_token: ${ACME_REGISTRY_TOKEN}, state_file: tenants/acme/registry-journal.jsonl }` |
+| Type | object (`RegistryService` = [common](#services-common-bind) + the seed knobs) |
 
 The ISO 19135 item + discovery registry. See the
 [registry reference](/services/registry/).
@@ -402,13 +401,15 @@ The ISO 19135 item + discovery registry. See the
 | `bind` | `UNIDPP_REGISTRY_BIND` |
 | `admin_token` | `UNIDPP_REGISTRY_ADMIN_TOKEN` |
 | `state_file` | `UNIDPP_REGISTRY_STATE_FILE` |
+| `seed_on_demand` | `UNIDPP_REGISTRY_SEED_ON_DEMAND` |
+| `seed_express` | `UNIDPP_REGISTRY_SEED_EXPRESS` |
 
 <a id="services-trust"></a>
 ### `services.trust`
 
 | | |
 |---|---|
-| Type | object ([`ServiceCommon`](#services-common-bind)) |
+| Type | object (`TrustService` = [common](#services-common-bind) + the fixture and signing-seed knobs) |
 
 The SIGNATIF trust-graph service. See the
 [trust reference](/services/trust/).
@@ -418,6 +419,10 @@ The SIGNATIF trust-graph service. See the
 | `bind` | `UNIDPP_TRUST_BIND` |
 | `admin_token` | `UNIDPP_TRUST_ADMIN_TOKEN` |
 | `state_file` | `UNIDPP_TRUST_STATE_FILE` |
+| `no_seed_fixtures` | `UNIDPP_TRUST_NO_SEED_FIXTURES` |
+| `dev_seed` | `UNIDPP_TRUST_DEV_SEED` |
+| `sign_seed` | `UNIDPP_TRUST_SIGN_SEED` |
+| `sign_seed_p256` | `UNIDPP_TRUST_SIGN_SEED_P256` |
 
 <a id="services-log"></a>
 ### `services.log`
@@ -436,6 +441,8 @@ The transparency-log anchor service. See the
 | `state_file` | `UNIDPP_LOG_STATE_FILE` |
 | `log_id` | `UNIDPP_LOG_ID` |
 | `external_tsa_url` | `UNIDPP_LOG_EXTERNAL_TSA_URL` |
+| `suite` | `UNIDPP_LOG_SUITE` |
+| `seed` | `UNIDPP_LOG_SEED` |
 
 Note the token's variable name: the log calls it the **append token**
 (`UNIDPP_LOG_APPEND_TOKEN`) because appending commitments is its only
@@ -487,6 +494,11 @@ The passport lifecycle issuer. See the [issuer reference](/services/issuer/).
 | `state_file` | `UNIDPP_ISSUER_STATE_FILE` |
 | `pack_suites` | `UNIDPP_ISSUER_PACK_SUITE` (comma-joined) |
 | `registry_url` | `UNIDPP_ISSUER_REGISTRY_URL` |
+| `registry_token` | `UNIDPP_ISSUER_REGISTRY_TOKEN` |
+| `max_age` | `UNIDPP_ISSUER_MAX_AGE` |
+| `event_seed` | `UNIDPP_ISSUER_EVENT_SEED` |
+| `pack_seed` | `UNIDPP_ISSUER_PACK_SEED` |
+| `seed` | `UNIDPP_ISSUER_SEED` |
 
 <a id="services-issuer-pack_suites"></a>
 ### `services.issuer.pack_suites`
@@ -521,7 +533,7 @@ forward on success). Absent = the issuer keeps profiles locally.
 
 | | |
 |---|---|
-| Type | object ([`ServiceCommon`](#services-common-bind)) |
+| Type | object (`ProjectorService` = [common](#services-common-bind) + the resolution sources and the roll-up sealer) |
 
 The lens projection service. See the
 [projector reference](/services/projector/).
@@ -531,6 +543,12 @@ The lens projection service. See the
 | `bind` | `UNIDPP_PROJECTOR_BIND` |
 | `admin_token` | `UNIDPP_PROJECTOR_ADMIN_TOKEN` |
 | `state_file` | `UNIDPP_PROJECTOR_STATE_FILE` |
+| `registry_url` | `UNIDPP_REGISTRY_URL` |
+| `registry_token` | `UNIDPP_PROJECTOR_REGISTRY_TOKEN` |
+| `passports_dir` | `UNIDPP_PROJECTOR_PASSPORTS_DIR` |
+| `primmel_dir` | `UNIDPP_PROJECTOR_PRIMMEL_DIR` |
+| `rollup_seed` | `UNIDPP_PROJECTOR_ROLLUP_SEED` |
+| `rollup_attester` | `UNIDPP_PROJECTOR_ROLLUP_ATTESTER` |
 
 The projector reads passports, profiles, units, and transforms from its own
 environment (`UNIDPP_PROJECTOR_PASSPORTS_DIR`, `UNIDPP_REGISTRY_URL`, …) —
@@ -542,7 +560,7 @@ those are deployment environment, not manifest fields; see the
 
 | | |
 |---|---|
-| Type | object (`GatewayService` = [common](#services-common-bind) minus `state_file` + [`issuer_url`](#services-gateway-issuer_url)) |
+| Type | object (`GatewayService` = [common](#services-common-bind) minus `state_file` + [`issuer_url`](#services-gateway-issuer_url) + the report/scan/timeout knobs) |
 
 The interop gateway. See the [gateway reference](/services/gateway/).
 
@@ -555,6 +573,7 @@ The interop gateway. See the [gateway reference](/services/gateway/).
 | `feedback.rate_per_minute` | `UNIDPP_GATEWAY_FEEDBACK_RATE` |
 | `scan_policy.token_ttl_secs` | `UNIDPP_GATEWAY_SCAN_TTL_SECS` |
 | `scan_policy.issue_limit_per_minute` | `UNIDPP_GATEWAY_SCAN_LIMIT_PER_MIN` |
+| `timeout_ms` | `UNIDPP_GATEWAY_TIMEOUT_MS` |
 
 The gateway renders rather than stores, and it declares no `state_file`.
 Its one journal is the consumer-report channel (below), append-only
@@ -612,7 +631,7 @@ so in the render metadata).
 
 | | |
 |---|---|
-| Type | object ([`ServiceCommon`](#services-common-bind)) |
+| Type | object (`ArchiveService` = [common](#services-common-bind) + the snapshot directory and the log anchor) |
 
 The Tier-C notarized snapshot service. See the
 [archive reference](/services/archive/).
@@ -622,6 +641,12 @@ The Tier-C notarized snapshot service. See the
 | `bind` | `UNIDPP_ARCHIVE_BIND` |
 | `admin_token` | `UNIDPP_ARCHIVE_ADMIN_TOKEN` |
 | `state_file` | `UNIDPP_ARCHIVE_STATE_FILE` |
+| `snapshot_dir` | `UNIDPP_ARCHIVE_SNAPSHOT_DIR` |
+| `dev_seed` | `UNIDPP_ARCHIVE_DEV_SEED` |
+| `sign_seed` | `UNIDPP_ARCHIVE_SIGN_SEED` |
+| `log_url` | `UNIDPP_LOG_URL` |
+| `log_token` | `UNIDPP_ARCHIVE_LOG_TOKEN` |
+| `log_timeout_ms` | `UNIDPP_ARCHIVE_LOG_TIMEOUT_MS` |
 
 The archive's snapshot directory (`UNIDPP_ARCHIVE_SNAPSHOT_DIR`) and its log
 upstream (`UNIDPP_LOG_URL`) are deployment environment; see the
@@ -632,7 +657,7 @@ upstream (`UNIDPP_LOG_URL`) are deployment environment; see the
 
 | | |
 |---|---|
-| Type | object ([`ServiceCommon`](#services-common-bind)) |
+| Type | object (`ConsoleService` = [common](#services-common-bind) + the manifest path) |
 
 The admin console. See the [console manual](/operators/console/).
 
@@ -641,6 +666,7 @@ The admin console. See the [console manual](/operators/console/).
 | `bind` | `UNIDPP_CONSOLE_BIND` |
 | `admin_token` | `UNIDPP_CONSOLE_ADMIN_TOKEN` |
 | `state_file` | `UNIDPP_CONSOLE_STATE_FILE` |
+| `manifest` | `UNIDPP_CONSOLE_MANIFEST` |
 
 The console's manifest **path** is environment, not manifest:
 `UNIDPP_CONSOLE_MANIFEST` points the console at the file it manages.
