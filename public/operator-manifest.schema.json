@@ -112,6 +112,28 @@
       },
       "type": "object"
     },
+    "FeedbackPolicy": {
+      "additionalProperties": false,
+      "description": "The consumer-report channel's deployment policy.",
+      "properties": {
+        "journal": {
+          "default": null,
+          "description": "Append-only JSONL journal path (absent = in-memory only).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rate_per_minute": {
+          "default": 0,
+          "description": "Per-identifier reports per minute (0 = permissive).",
+          "format": "uint",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
     "Footer": {
       "additionalProperties": false,
       "description": "Footer links (legal, contact).",
@@ -147,6 +169,14 @@
         "bind": {
           "type": "string"
         },
+        "feedback": {
+          "$ref": "#/$defs/FeedbackPolicy",
+          "default": {
+            "journal": null,
+            "rate_per_minute": 0
+          },
+          "description": "The consumer-report channel's knobs (TODO.impl 224): the\njournal path and the per-identifier rate window (absent/0 =\npermissive)."
+        },
         "issuer_url": {
           "default": null,
           "description": "The issuer upstream whose passports the gateway renders.",
@@ -162,6 +192,18 @@
             "string",
             "null"
           ]
+        },
+        "scan_policy": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ScanPolicy"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The scan-token policy (TODO.impl 224): short-TTL bearer scan\ntokens with issuance throttling, enforced at this edge tier.\nAbsent = open (public resolution is the default doctrine);\ndeployments under load opt in."
         }
       },
       "required": [
@@ -379,6 +421,29 @@
       },
       "required": [
         "bind"
+      ],
+      "type": "object"
+    },
+    "ScanPolicy": {
+      "additionalProperties": false,
+      "description": "The scan-token policy (TODO.impl 224): the MobileQR bearer-token\npattern as declared deployment data — never per-service code.",
+      "properties": {
+        "issue_limit_per_minute": {
+          "description": "Tokens issued per source per minute (the throttle).",
+          "format": "uint",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "token_ttl_secs": {
+          "description": "Token time-to-live, seconds (a scan session's window).",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "token_ttl_secs",
+        "issue_limit_per_minute"
       ],
       "type": "object"
     },
