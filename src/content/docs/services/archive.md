@@ -1,6 +1,6 @@
 ---
 title: Archive
-description: "The unidpp-archive service: Tier-C notarized snapshots with OAIS metadata, Ed
+description: "The unidpp-archive service, which provides Tier-C notarized snapshots with OAIS metadata, Ed25519 notarization and transparency-log anchoring."
 ---
 
 The Tier-C notarized archive: as-of snapshot packs with OAIS-style metadata,

@@ -1,6 +1,6 @@
 ---
 title: Registry
-description: "The unidpp-registry service: an ISO 19135 item and discovery registry (endpo
+description: "The unidpp-registry service, an ISO 19135 item and discovery registry, with its endpoints, environment and semantics."
 ---
 
 The registry is the register service: item registration under ISO 19135

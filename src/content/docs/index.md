@@ -3,7 +3,7 @@ title: UniDPP documentation
 description: Operator documentation for the UniDPP digital product passport platform.
 template: splash
 hero:
-tagline: A deployment is data, and the operator manifest is the product.
+  tagline: A deployment is data, and the operator manifest is the product.
   actions:
     - text: Five-minute tour
       link: /get-started/tour/
