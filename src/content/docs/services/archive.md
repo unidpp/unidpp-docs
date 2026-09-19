@@ -1,6 +1,6 @@
 ---
 title: Archive
-description: "The unidpp-archive service — Tier-C notarized snapshots: OAIS metadata, Ed25519 notarization, transparency-log anchoring."
+description: "The unidpp-archive service: Tier-C notarized snapshots with OAIS metadata, Ed
 ---
 
 The Tier-C notarized archive: as-of snapshot packs with OAIS-style metadata,
@@ -21,7 +21,7 @@ head + digests), and access re-serves it byte-identically.
 | `GET /keyring` | the notarization keyring |
 | `POST /snapshots` | ingest: validate, timestamp, notarize, optionally anchor into the log |
 | `GET /snapshots?passport_id=&at=` | the as-of catalogue (a snapshot lists when `notarized_at <= at`) |
-| `GET /snapshots/{id}` | re-serve a snapshot — byte-identical, strong ETag |
+| `GET /snapshots/{id}` | re-serve a snapshot, byte-identical, with a strong ETag |
 | `GET /admin/log?limit=&offset=` | audit log (admin) |
 
 Ingest requires `UNIDPP_ARCHIVE_ADMIN_TOKEN` when set (open in dev mode).
@@ -37,7 +37,7 @@ $ curl -s http://127.0.0.1:8392/receipt/0 | jq '{seq, subject}'
 ```
 
 That is the anchoring visible end to end: the archive's first snapshot is
-the transparency log's leaf 0 — notarized (Ed25519, tree-head domain) and
+the transparency log's leaf 0, notarized (Ed25519, tree-head domain) and
 anchored (signed inclusion receipt, tree size, root riding the snapshot's
 provenance).
 
@@ -85,7 +85,7 @@ Direct environment:
   log yields `status: unanchored` with the reason recorded; the snapshot
   remains notarized. The AIP always carries its signature.
 - **Re-serve is byte-identical by construction**: `GET /snapshots/{id}`
-  re-renders from the journaled record, pinned by a strong ETag — access
+re-renders from the journaled record, pinned by a strong ETag, and access
   never changes the AIP.
 - **Journal + snapshot store cross-check on start**: AIP files are verified
   against the journal, re-materialized when missing; a mismatch is a hard

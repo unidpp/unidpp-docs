@@ -1,6 +1,6 @@
 ---
 title: Multi-tenant operations
-description: Running whitelabel and sovereign deployments side by side — the tenant directory, up.sh, and what isolation means.
+description: Running whitelabel and sovereign deployments side by side, covering the tenant directory, up.sh, and what isolation means.
 ---
 
 A tenant is a directory: one operator manifest plus its journals. Nothing
@@ -48,35 +48,35 @@ tenant acme (stop):
 
 `start` is idempotent: a service with a live pid file is reported
 `already running` and left alone. `stop` kills by pid file; journals are
-never touched — a stopped tenant restarts with its state replayed.
+never touched, so a stopped tenant restarts with its state replayed.
 
 ## Upgrades
 
 An upgrade is new binaries over unchanged state. The compatibility contract
 is the journal: every service replays its append-only JSONL on start, and
-the manifest's API version (`unidpp.org/v1`) is pinned — a launcher or
+the manifest's API version (`unidpp.org/v1`) is pinned, and a launcher or
 manifest the running schema does not accept is a loud error, not a
 silent-misconfiguration risk.
 
 The procedure, per the launcher's own behavior:
 
-1. **Stop** — `./tenants/up.sh <name> stop` (or `./stack.sh stop` for the
+1. **Stop**: `./tenants/up.sh <name> stop` (or `./stack.sh stop` for the
    reference deployment). Journals are preserved by both; nothing is wiped.
-2. **Build the new binaries** — `cargo build --release` per repository.
+2. **Build the new binaries**: `cargo build --release` per repository.
    `stack.sh` rebuilds only when a binary is missing; force a rebuild of a
    present-but-stale tree with `UNIDPP_FORCE_BUILD=1 ./stack.sh start`.
-3. **Start** — the same start command; every service replays its journal
+3. **Start**: the same start command; every service replays its journal
    (`stack.sh status` shows the journal record and item counts).
-4. **Verify** — same acceptance as a
+4. **Verify**: same acceptance as a
    [restore](/operators/backup-restore/): the registry serves the same item
    count as before the upgrade, and the log verifies its head
-   (`GET /tree/head` — tree heads are monotonic by construction; a head
+   count as before the upgrade, and the log verifies its head
    that moved backwards is a hard fault).
 
 Between stop and start there is no migration step to forget: if the new
 binary can read the journal, the deployment is up; if it cannot, it says so
 at replay, before serving. Take a [backup](/operators/backup-restore/)
-first when the jump is large — the restore procedure is the rollback.
+first when the jump is large, because the restore procedure is the rollback.
 
 
 The console needs one variable the manifest cannot express (its own manifest
@@ -84,7 +84,7 @@ path), which `up.sh` supplies: `UNIDPP_CONSOLE_MANIFEST=tenants/<name>/unidpp-op
 
 ## What a tenant declares
 
-A minimal tenant manifest declares registry + issuer + console — enough to
+A minimal tenant manifest declares registry + issuer + console, which is enough to
 issue passports, mint packs, and manage itself:
 
 ```sh
@@ -112,13 +112,13 @@ What separates tenants from each other and from the reference deployment:
   collision is a manifest fix.
 - **Keys.** Each issuer derives its keyring from its seed environment.
   Two tenants' packs verify against two different published anchors. (Dev
-  seeds are shared by default — see [security posture](/operators/security/);
+  seeds are shared by default; see [security posture](/operators/security/);
   production tenants set per-tenant seeds.)
 - **Branding and policy.** Per-tenant manifest: names, theme, footer, pack
   suites, residency, egress.
 
 What is **not** isolated: the binaries (shared, by design), the host, and —
-unless you say otherwise in `sovereignty` — the egress boundary. A tenant is
+What is **not** isolated: the binaries (shared, by design), the host, and,
 a process group on your box; treat host access accordingly.
 
 ## Port allocation
@@ -138,7 +138,7 @@ tenant, pick a decade and stay in it.
 ## Operating against a tenant
 
 Everything in the [service references](/services/registry/) applies to a
-tenant's services — same endpoints, same shapes, tenant bind. Example: the
+tenant's services, with the same endpoints and shapes on the tenant bind. Example: the
 whitelabel tenant's issuer answers on 9393 exactly as the reference issuer
 answers on 8393:
 
@@ -161,7 +161,7 @@ changed.
 ## Adding a tenant
 
 1. `mkdir tenants/<name>` and write `unidpp-operator.yaml` (start from
-   `tenants/acme/` — the closest profile).
+   `tenants/acme/`, the closest profile).
 2. `unidpp-config validate tenants/<name>/unidpp-operator.yaml` until it
    passes.
 3. `./tenants/up.sh <name> start`.
@@ -172,7 +172,7 @@ The full procedure with branding, tokens, and tunnel is
 
 ## The lifecycle's end: decommission
 
-Retiring a tenant is the doctrine-shaped act — prove, then move
+Retiring a tenant is the doctrine-shaped act: prove, then move
 aside, never delete:
 
 ```sh
@@ -194,13 +194,13 @@ Whitelabel as a separate deployment ships as one verified artifact:
 ```
 
 The bundle carries the tenant's manifest (secrets stay `${VAR}`
-references — nothing sensitive is embedded), its journals, the
+The bundle carries the tenant's manifest (secrets stay `${VAR}`
 release binaries for exactly the services the manifest declares, its
-own runner (`run.sh` — binaries from `./bin`, manifest at the
+own runner (`run.sh`, with binaries from `./bin` and manifest at the
 bundle root), an `.env` template, and a runbook. Its sidecar lists
-every member's SHA-256 — a bundle verifies exactly like a backup
+every member's SHA-256, and a bundle verifies exactly like a backup
 (`./unidpp-ops verify <bundle>.tar.gz`), so the receiving host
 proves integrity independently of its producer. First boot on the
 target: `./bin/unidpp-config validate`, fill `.env`, `./run.sh
-start` — the bundle starts from its own contents (CI smokes exactly
+start`; the bundle starts from its own contents (CI smokes exactly
 this).

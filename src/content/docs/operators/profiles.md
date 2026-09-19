@@ -1,6 +1,6 @@
 ---
 title: Deployment profiles
-description: The three deployment shapes — reference, whitelabel, sovereign — and what each one commits to.
+description: The three deployment shapes, reference, whitelabel and sovereign, and what each on
 ---
 
 The manifest's [`deployment.profile`](/operators/manifest/#deployment-profile)
@@ -22,7 +22,7 @@ schema, different validated guarantees.
 The public demonstration deployment: seven services, loopback binds, one
 tunnel to the public registry URL. Egress is `external` because the stack's
 services call each other as upstreams (issuer → registry, gateway → issuer,
-archive → log). It runs in dev mode — open mutations, seeded-dev keyrings —
+archive → log). It runs in dev mode, with open mutations and seeded-dev keyrings,
 because it exists to be probed, not trusted.
 
 ## `whitelabel`
@@ -58,14 +58,14 @@ sovereignty:
   external_calls: none
 ```
 
-Three services, EU residency, egress sealed. The full walkthrough — including
-the console serving the branded chrome — is
+Three services, EU residency, egress sealed. The full walkthrough, including
+the console serving the branded chrome, is
 [the 15-minute whitelabel deployment](/quickstart-whitelabel/).
 
 ## `sovereign`
 
 The on-prem, jurisdiction-pinned shape. Two hard rules the validator
-enforces (not conventions — load-time refusals):
+enforces (these are load-time refusals, not conventions):
 
 1. **Egress needs a reason.** A sovereign manifest with
    `external_calls: tsa-only` or `external` must carry a non-empty
@@ -73,7 +73,7 @@ enforces (not conventions — load-time refusals):
    the recorded justification is part of the deployment record.
 2. **The log cannot contradict the policy.** A sovereign deployment with a
    [`external_tsa_url`](/operators/manifest/#services-log-external_tsa_url)
-   set while `external_calls` is `none` is refused — even with an override
+set while `external_calls` is `none` is refused, even with an override
    reason on record.
 
 The pilot workspace runs one sovereign tenant, `acme-cn`:
@@ -99,14 +99,14 @@ sovereignty:
   external_calls: none
 ```
 
-Note the pack policy: `pack_suites: [sm2]` — every pack this issuer mints is
+Note the pack policy: `pack_suites: [sm2]`, so every pack this issuer mints is
 signed with the SM2 suite, and nothing else. A verifier in that jurisdiction
 pins the SM2 anchor from the issuer's keyring and verifies accordingly.
 
 ## Choosing ports
 
 Reference services occupy 8389-8396 and 8399 (the JP peer). Tenants take
-their own ranges — the acme tenants use 939x, the CN tenant 959x — declared
+their own ranges; the acme tenants use 939x, the CN tenant 959x, declared
 per service block in the manifest. A tenant's ports are its own; collisions
 between tenants are a manifest problem you find at validation or launch, not
 a runtime surprise.

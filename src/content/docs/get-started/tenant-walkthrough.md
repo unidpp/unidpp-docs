@@ -8,12 +8,12 @@ description: "Create a tenant, brand it, start it, issue and verify a passport, 
 Every step below runs against the
 [reference pilot](/get-started/reference-stack/). A tenant is a
 directory: `tenants/<name>/unidpp-operator.yaml` + journals. No code,
-no forks — the manifest is the deployment.
+no forks, because the manifest is the deployment.
 
 ## 1. Create the tenant
 
 Either through the console (**Tenants → new tenant**: name, base
-port, profile — the wizard validates before it writes), or by hand:
+port, profile, which the wizard validates before it writes), or by hand:
 
 ```sh
 mkdir -p tenants/northwind
@@ -23,8 +23,8 @@ $EDITOR tenants/northwind/unidpp-operator.yaml   # model it on tenants/acme
 ```
 
 Copy an existing tenant's manifest and change `deployment.name`,
-`branding`, the binds (each tenant owns its port range), and — if
-sovereign — `sovereignty` and `services.issuer.pack_suites`
+`branding`, the binds (each tenant owns its port range), and, if
+sovereign, `sovereignty` and `services.issuer.pack_suites`
 (`[sm2]` for a CN-profile tenant).
 
 ## 2. Brand it (the admin interface configures itself)
@@ -32,7 +32,7 @@ sovereign — `sovereignty` and `services.issuer.pack_suites`
 Open the tenant's console (the bind its manifest declares) →
 **Branding** → set organization, product name, logo URL, primary and
 accent hex colors, footer links → *Save branding*. The save goes
-through the validated path — an invalid hex is refused, and nothing
+through the validated path, so an invalid hex is refused and nothing
 outside the branding block is touched. Every console surface
 re-renders in the new colors on the next load.
 
@@ -67,7 +67,7 @@ curl -s -X POST http://127.0.0.1:<issuer-bind>/passports/urn:unidpp:passport:iss
 
 ## 5. Verify offline, the verifier's way
 
-Pin the issuer's published anchor — use `public_serialized` (the
+Pin the issuer's published anchor; use `public_serialized` (the
 suite-certain `suite:hex` form; 65-byte keys need it, since SM2 and
 P-256 points are indistinguishable by length):
 
@@ -81,7 +81,7 @@ unidpp verify pack.hex --anchor ecdsa-p256:04d90cd961…
 Expect the honest verdict: a tenant issuer without a wired
 transparency log produces packs that verify **cryptographically**
 but degrade **evidentiarily** (no log-head commitment). Wire
-`UNIDPP_LOG_URL` for the full chain — degradation is explicit,
+`UNIDPP_LOG_URL` for the full chain, with degradation explicit,
 never silent.
 
 ## 6. Take the tenant elsewhere
@@ -95,7 +95,7 @@ never silent.
 ```
 
 The full bundle (drop `--data-only`) additionally packs the release
-binaries for exactly the services the manifest declares — the
+binaries for exactly the services the manifest declares; the
 air-gapped sovereign artifact.
 
 ## 7. Prove the restore path
@@ -110,9 +110,9 @@ is a hope, not a capability.
 
 ## Where to go next
 
-- [Multi-tenant operations](/operators/multi-tenant/) — the tenant
+- [Multi-tenant operations](/operators/multi-tenant/): the tenant
   model in depth.
-- [The manifest reference](/operators/manifest/) — every field, and
+- [The manifest reference](/operators/manifest/): every field, and
   the [JSON Schema](/operator-manifest.schema.json).
-- [Backups and restore drills](/operations/backups/) — the whole
+- [Backups and restore drills](/operations/backups/): the whole
   durability routine.

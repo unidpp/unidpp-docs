@@ -27,7 +27,7 @@ binds `127.0.0.1:8395` with the issuer upstream at 8393.
 
 The gateway is also the public edge tier. The **consumer report
 channel** (`POST /feedback`, MobileQR's 投诉反馈 pattern) takes typed
-reports — goods-mismatch, advertising-mismatch, or a stated other —
+reports (goods-mismatch, advertising-mismatch, or a stated other),
 journals them append-only with a receipt (sequence + instant), and
 cites them publicly with the reporter's contact withheld by a stated
 omission. Admission control is a pluggable interface, never
@@ -56,7 +56,7 @@ $ curl -s -G 'http://127.0.0.1:8395/untp/product/urn%3Aunidpp%3Apassport%3Apilot
 }
 ```
 
-The UNTP render is the VC triad — DigitalProductPassport VC, Digital
+The UNTP render is the VC triad, comprising the DigitalProductPassport VC, Digital
 Conformity Credentials, and a link-resolver entry anchored at the log head —
 with identifier mapping (core `cpid:` ↔ `https://unidpp.org/id/`, GS1 family
 ↔ `https://gs1.org/voc/` with `(01)/(10)/(21)` application identifiers). See
@@ -67,7 +67,7 @@ with identifier mapping (core `cpid:` ↔ `https://unidpp.org/id/`, GS1 family
 - As-of stamped responses (`x-as-of` header; `as_of` body member except on
   the frozen EN 18222 wire).
 - **No-information 404s**: identical bytes for unknown and deliberately
-  unresolvable ids — a foreign client learns nothing about existence policy.
+unresolvable ids, so a foreign client learns nothing about existence policy.
 - Render and ingest are **inverse projections**: imported documents carry a
   deterministic identity, an empty event log (their events live in the source
   regime), and a receipt recording the origin.
@@ -96,7 +96,7 @@ Direct environment:
   silently into stale upstream data.
 - **Timeouts** on upstream fetches degrade the same way (fixture fallback
   with the source stated).
-- The gateway keeps **no state** — nothing to journal, nothing to lose;
+- The gateway keeps **no state**: nothing to journal, nothing to lose;
   restart is free.
 
 ## Fixtures

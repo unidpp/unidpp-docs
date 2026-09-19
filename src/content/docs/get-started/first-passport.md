@@ -6,7 +6,7 @@ description: Issue a passport, append a lifecycle event, mint the offline Tier-A
 This page walks the write path end to end: create a passport, append a typed
 event, mint the offline Tier-A pack, and verify the pack offline against the
 issuer's published anchor. The transcript was recorded against a tenant
-issuer (the whitelabel `acme` tenant, loopback `127.0.0.1:9393`) — the same
+issuer (the whitelabel `acme` tenant, loopback `127.0.0.1:9393`), the same
 calls work against any [issuer](/services/issuer/) deployment, including a
 reference stack you own. Point a fresh tenant at the commands and its journals
 stay isolated: see [the 15-minute whitelabel deployment](/quickstart-whitelabel/).
@@ -27,8 +27,8 @@ $ curl -s http://127.0.0.1:9393/keyring | jq '{mode, roles: (.roles | keys)}'
 ```
 
 The keyring is the trust anchor set: `event` (Ed25519, signs lifecycle
-events), `pack` (the pack suite — ECDSA P-256 here, SM2 on a Chinese
-sovereign tenant — declared in the tenant's
+events), `pack` (the pack suite, ECDSA P-256 here and SM2 on a Chinese
+sovereign tenant, declared in the tenant's
 [operator manifest](/operators/manifest/#services-issuer-pack_suites)).
 
 ## 2. Create the passport
@@ -61,7 +61,7 @@ The fields:
 | `eo_id` | the economic operator. |
 | `resolver_uri` | where a resolver redirects to this passport. |
 | `passport_id` | your URN for the passport; must be unused (409 otherwise). |
-| `config` | the profile manifest — the jurisdiction/sector/characteristic profiles this passport carries. Empty here; the pilot demo carries `["urn:unidpp:profile:eu-machinery-battery", "urn:unidpp:profile:jp-road-traffic"]`. |
+| `config` | the profile manifest, covering the jurisdiction/sector/characteristic profiles this passp
 
 A bad identity scheme fails loudly:
 
@@ -105,7 +105,7 @@ that violates the state machine is rejected, not coerced. Corrections carry
 ## 4. Mint the Tier-A pack
 
 The pack is the offline carrier: a compact binary rendering of the passport's
-readings plus the pack signature — sized to print as a QR code.
+readings plus the pack signature, sized to print as a QR code.
 
 ```sh
 $ curl -s -X POST http://127.0.0.1:9393/passports/urn%3Aacme%3Apassport%3Adocs-demo-1/pack \
@@ -119,7 +119,7 @@ $ curl -s -X POST http://127.0.0.1:9393/passports/urn%3Aacme%3Apassport%3Adocs-d
 ```
 
 The response also carries `pack` (the hex carrier bytes), `signature` /
-`signatures` (the pack signature block — one per configured suite), and
+`signatures` (the pack signature block, one per configured suite), and
 `anchor` / `anchors` (the public keys that verify it). The pilot's demo pack
 is 363 bytes at QR version 15-M with two suites co-signing.
 
@@ -169,13 +169,13 @@ $ curl -s 'http://127.0.0.1:9393/admin/log' | jq '{total, first_op: .records[0].
 ```
 
 And in the issuer's journal (`tenants/acme/issuer-journal.jsonl` for the
-tenant), which replays on restart — the audit trail is the state.
+tenant), which replays on restart, so the audit trail is the state.
 
 ## Where to go next
 
-- [The issuer reference](/services/issuer/) — every endpoint, the verdict
+- [The issuer reference](/services/issuer/): every endpoint, the verdict
   legs, event typing.
-- [The projector](/services/projector/) — rendering a passport under a
+- [The projector](/services/projector/): rendering a passport under a
   registered profile.
-- [The 15-minute whitelabel deployment](/quickstart-whitelabel/) — the full
+- [The 15-minute whitelabel deployment](/quickstart-whitelabel/): the full
   tenant procedure this page borrowed an issuer from.

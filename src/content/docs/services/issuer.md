@@ -11,7 +11,7 @@ to the registry at 8390; the whitelabel tenant's issuer binds 9393.
 
 Mutations require `UNIDPP_ISSUER_ADMIN_TOKEN` when set (open in dev mode).
 Events are signed Ed25519 (SIGNATIF infrastructure suite); packs are signed
-with the configured pack suite(s) — ECDSA P-256 by default, SM2 on sovereign
+with the configured pack suite or suites (ECDSA P-256 by default, SM2 on sovereign
 CN deployments, or a co-signature set.
 
 ## Endpoints
@@ -52,7 +52,7 @@ $ curl -s 'http://127.0.0.1:8393/passports/urn%3Aunidpp%3Apassport%3Apilot-e8-j0
 }
 ```
 
-The legs: **Tier-A** (the pack verdict — carrier, signature, coverage),
+The legs: **Tier-A** (the pack verdict, covering carrier, signature and coverage),
 **log** (evidentiary chain: events, corrections, recalls, security flags,
 freshness window, cryptographic anchor), and **event-signature audit**
 (signatures verified against the keyring's event anchor).
@@ -61,7 +61,7 @@ semantics); the default comes from the deployment environment.
 
 ## Audit log shape
 
-`GET /admin/log` answers `{total, offset, records}` — each record is
+`GET /admin/log` answers `{total, offset, records}`, and each record is
 `{seq, op, recorded_at}` where `op` is the typed operation
 (`CreatePassport`, event appends, packs, …) with its full payload:
 
@@ -103,7 +103,7 @@ Direct environment:
   `handle:`, `doi:`, `uri:`, `local:<tag>`).
 - **Registry forwarding degrades explicitly.** When `registry_url` is set
   but the registry is unreachable, the local registration stands and the
-  forwarding failure is reported — the issuer does not pretend the registry
+forwarding failure is reported, because the issuer does not pretend the registry
   holds what it does not.
 - **Packs are signed with real keys**, never placeholders; a multi-suite
   policy co-signs one body per suite.

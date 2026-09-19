@@ -3,7 +3,7 @@ title: Running a national peer (JP)
 description: The peer doctrine and the JP walkthrough — a jurisdiction's registry as a peer, not a child.
 ---
 
-National registries are **peers, not children** — the ePassport doctrine. A
+National registries are **peers, not children**, which is the ePassport doctrine. A
 jurisdiction's registry holds the jurisdiction's own data in its own journal,
 served from its own register; the global registry keeps what is global
 (scheme namespaces, cross-register mappings). Jurisdiction-shaped data lives
@@ -18,7 +18,7 @@ named tunnel.
 
 ### 1. The node is a service block, not a fork
 
-`stack.sh` starts the JP node with the rest of the stack — same binary,
+`stack.sh` starts the JP node with the rest of the stack, with the same binary,
 different journal, different port:
 
 ```sh
@@ -32,7 +32,7 @@ No code differs from the global registry. A peer is a deployment decision.
 ### 2. Seed the jurisdiction's own data
 
 `seed-jp.sh` registers the JP road-traffic profile and its binding **on the
-JP node** — JP data, decided in JP:
+JP node**, carrying JP data decided in JP:
 
 ```sh
 $ ./seed-jp.sh
@@ -64,7 +64,7 @@ consumer that must reconcile both uses
 The JP node reaches the public internet the way every UniDPP surface does:
 a named tunnel, ingress `registry-jp.unidpp.org` → `127.0.0.1:8399`, adopted
 or started by `stack.sh` when `jp-tunnel.token` is present. No token, no
-tunnel — the node stays loopback, which is itself a valid (sovereign)
+tunnel, and the node stays loopback, which is itself a valid (sovereign)
 posture.
 
 ## What lives where
@@ -92,5 +92,5 @@ second peer on the same host is running a second registry block:
 4. Its seed assets in the pilot's case; your jurisdiction's items in yours.
 
 In a manifest-shaped deployment, a peer is a tenant directory whose manifest
-declares exactly one service block (`registry`) — the sovereign profile with
+declares exactly one service block (`registry`), the sovereign profile with
 `data_residency` pinned to the jurisdiction fits naturally.

@@ -1,10 +1,10 @@
 ---
 title: The admin console
-description: The console manual — every page, the auth model, read-only dev mode, and what the console can and cannot do.
+description: The console manual, covering every page, the auth model, read-only dev mode, and what the c
 ---
 
 The admin console is one branded pane over a deployment. Its doctrine:
-**a surface, not a second brain** — every fact it shows comes from a
+**a surface, not a second brain**, in that every fact it shows comes from a
 service's own API or from the operator manifest; every capability is a call
 to an existing endpoint. It adds no domain logic. It is itself configured by
 the same manifest it manages: branding, bind, and the admin token all come
@@ -39,7 +39,7 @@ console.
 
 ## The identity check
 
-The console identifies itself at the well-known path — this is what stack
+The console identifies itself at the well-known path, which is what stack
 orchestrators probe to tell it apart from other listeners:
 
 ```sh
@@ -60,17 +60,17 @@ one binary, two deployments, the manifest is the difference.
 
 ### Dashboard (`/`)
 
-The deployment summary — name, profile, base URL, egress policy (with
-residency when pinned) — and a per-service health table: every service the
+The deployment summary (name, profile, base URL, egress policy, and
+residency when pinned) and a per-service health table: every service the
 manifest declares, its bind, its role, and a live probe of its `/healthz`.
-Health is honest: `healthy`, the HTTP status, or `unreachable` — the console
+Health is honest: `healthy`, the HTTP status, or `unreachable`, and the console
 reports what it can reach, it does not infer.
 
 ### Configuration (`/config`)
 
 The operator manifest as an editable YAML textarea. The rules:
 
-- **The editor shows the file as stored** — secrets remain `${VAR}`
+- **The editor shows the file as stored**, so secrets remain `${VAR}`
   references; resolved values never render anywhere in the console.
 - **Saving validates first.** A manifest that fails schema or semantic
   validation is rejected with the error verbatim, and **nothing is written**
@@ -78,9 +78,9 @@ The operator manifest as an editable YAML textarea. The rules:
   truncates the live one).
 - **Unset secret variables are explained, not fatal-looking.** A referenced
   `${VAR}` that is not in the console's environment produces a note: export
-  it (or let the service runner export it) and save again — the manifest
+it (or let the service runner export it) and save again, and the manifest
   itself is fine to stage.
-- **Rendered environment** — pick a service from the dropdown and the page
+- **Rendered environment**: pick a service from the dropdown and the page
   shows the exact `UNIDPP_*` environment the manifest produces for it
   (`render-env` in the browser).
 
@@ -95,16 +95,16 @@ registry says so.
 
 Three things from the issuer:
 
-1. **Lookup** — fetch one passport document by id (the issuer's
+1. **Lookup**: fetch one passport document by id (the issuer's
    `GET /passports/{id}`), pretty-printed.
-2. **The audit tail** — recent lifecycle actions from the issuer's audit log.
-3. **Inline pack verification** — paste or fetch a pack and verify it through
+2. **The audit tail**: recent lifecycle actions from the issuer's audit log.
+3. **Inline pack verification**: paste or fetch a pack and verify it through
    the CLI's own pipeline against the issuer's published keyring anchors; the
    verdict renders on the page.
 
 ### Branding
 
-`/branding` — the whitelabel preview: organization, product name, theme swatches, a chrome
+`/branding`, the whitelabel preview: organization, product name, theme swatches, a chrome
 mock (header/card/footer) that inherits the colors, and the manifest's
 branding block for copy-back. This page is why a whitelabel deployment can be
 handed to a marketing team safely: the preview is live from the manifest, and
@@ -148,13 +148,13 @@ required), preview branding, render any service's environment.
 
 **Cannot**: mint packs, create passports, register items, revoke keys, rotate
 secrets, restart services, or modify anything in any service. The console has
-exactly one write path — its own configuration file — and that path is
+exactly one write path, its own configuration file, and that path is
 session-gated and validation-gated. Operational mutations remain operator
 actions against service APIs (where they are audited, journaled, and
 token-guarded by each service's own rules).
 
 This is deliberate. An admin surface with implicit write-through to domain
-services would be a second brain — a path around every service's audit
+services would be a second brain, which is a path around every service's audit
 discipline. The console shows; the services do.
 
 ## Escaping HTML

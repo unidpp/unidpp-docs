@@ -1,12 +1,12 @@
 ---
 title: Registry participant adoption
-description: Run the registry alone — profiles in their signed form, data elements, transforms, cross-register mappings and deposited models, under the ISO 19135 item lifecycle.
+description: Run the registry alone, with profiles in their signed form, data elements, tran
 ---
 
 The registry participant operates a register, not a passport
 system: profiles, data elements, units, transforms, trust anchors,
 crypto suites, cross-register mappings and deposited semantic
-models — each item versioned under the ISO 19135 lifecycle, each
+models, each item versioned under the ISO 19135 lifecycle and each
 mutation audited. A jurisdiction running its profile catalogue, a
 standards body running a data-element directory, a sector body
 running mappings between two vocabularies: all registry
@@ -18,7 +18,7 @@ that applies them belongs to other paths).
 
 ## What the adopter holds
 
-- The `unidpp-registry` binary, a state file, and — for mutations —
+- The `unidpp-registry` binary, a state file, and, for mutations,
   an admin token.
 
 ```sh
@@ -66,8 +66,8 @@ walks the same intake as a form.
 
 ## The 19135 discipline
 
-Items move through the lifecycle — valid, superseded,
-retired — by versioning, never by editing: supersession chains are
+Items move through the lifecycle (valid, superseded,
+retired) by versioning and never by editing: supersession chains are
 served at `/{class}/{id}/supersession`, and applicability bindings
 (`/applicability`) carry legal-as-of semantics with dated effective
 windows. Reads accept `at=` for point-in-time state; the current

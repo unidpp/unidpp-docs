@@ -1,12 +1,12 @@
 ---
 title: Full-host adoption
-description: The reference stack — registry, issuer, resolver, projector, trust, log, archive, gateway and console — operated as one deployment.
+description: The reference stack (registry, issuer, resolver, projector, trust, log, ar
 ---
 
 The full host operates the reference stack: the whole family, one
 deployment, one console. This is the path of an operator whose
 mission spans issuance, registration, verification, transparency,
-archival and federation — a national platform operator, a sector
+archival and federation; a national platform operator, a sector
 body, a large economic operator running its own estate.
 
 ## What the adopter holds
@@ -34,8 +34,8 @@ starts the family; [the five-minute tour](/get-started/tour/) walks
 the five queries that show the shape; [your first
 passport](/get-started/first-passport/) walks the write path; the
 [whitelabel walkthrough](/get-started/tenant-walkthrough/) stands up
-a branded tenant. The end-to-end story — including the cross-border
-battery case — runs as `make demo` in `unidpp-e2e`, and the same
+a branded tenant. The end-to-end story, including the cross-border
+battery case, runs as `make demo` in `unidpp-e2e`, and the same
 harness runs the three partial-adoption quickstarts beside it: the
 full host is never more than the sum of the paths, and the harness
 proves the paths hold on their own.
@@ -55,7 +55,7 @@ the isolation.
 
 The partial paths lend the host nothing it does not already carry:
 every capability available here is available at the same class
-level to each partial adopter — the no-orphan rule. What the full
+level to each partial adopter under the no-orphan rule. What the full
 host adds is duties: [production keys](/operations/production-keys/),
 [backups and restore drills](/operations/backups/),
 [upgrades](/operations/upgrades/), [incident

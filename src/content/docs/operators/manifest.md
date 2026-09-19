@@ -1,10 +1,10 @@
 ---
 title: The operator manifest reference
-description: Every knob of the operator manifest — typed, with defaults, examples, constraints, and the environment each renders.
+description: Every knob of the operator manifest, typed and documented with defaults, examples, constraints, and the environment each renders.
 ---
 
-A UniDPP deployment is data. One versioned, validated file — the **operator
-manifest** (`unidpp-operator.yaml`) — declares every knob of every service:
+A UniDPP deployment is data. One versioned, validated file, which is the **operator
+manifest** (`unidpp-operator.yaml`), declares every knob of every service:
 binds, secrets, feature toggles, crypto-suite policy, branding, and the
 sovereignty declaration. Processes stay plain environment-configured; the
 manifest is rendered into their environment at launch. Zero code differs
@@ -12,7 +12,7 @@ between the reference deployment and a tenant: the manifest is the product.
 
 This page documents **every field** of the manifest schema
 (`api_version: unidpp.org/v1`). Each knob below has an anchor (`#api_version`,
-`#services-issuer-pack_suites`, …) — the field list is machine-checked against
+`#services-issuer-pack_suites`, …), and the field list is machine-checked against
 the schema's struct definitions by the coverage script in the docs repository.
 
 ## The file
@@ -62,7 +62,7 @@ sovereignty:
 Four rules the loader enforces before anything starts:
 
 1. **Unknown knobs are loud.** A typo is a schema error naming the field and
-   the legal alternatives — never a silent no-op:
+   the legal alternatives, so that a typo is never a silent no-op:
 
    ```sh
    $ unidpp-config validate bad-manifest.yaml
@@ -77,7 +77,7 @@ Four rules the loader enforces before anything starts:
    suites, and the profile × egress rule (below) are checked.
 4. **Profiles constrain.** A `sovereign` deployment with any egress beyond
    `none` refuses to validate unless [`egress_override_reason`](#sovereignty-egress_override_reason)
-   records why — data-sovereignty claims are validated, not aspirational.
+   records why, because data-sovereignty claims are validated rather than aspirational.
 
 ## The tool
 
@@ -108,7 +108,7 @@ UNIDPP_LOG_STATE_FILE=run/log-journal.jsonl
 named service's own environment-based configuration reads, one `KEY=value`
 per line in stable order. It fails when the deployment declares no such
 service block or the name is unknown. `stack.sh` and `tenants/up.sh` launch
-processes from this rendering — manifests drive unmodified binaries.
+processes from this rendering, which is how manifests drive unmodified binaries.
 
 ---
 
@@ -124,7 +124,7 @@ processes from this rendering — manifests drive unmodified binaries.
 | Constraint | must equal `unidpp.org/v1` |
 | Example | `api_version: unidpp.org/v1` |
 
-The manifest's API version — the only version this generation of the schema
+The manifest's API version, which is the only version this generation of the schema
 speaks. Anything else is refused at load with the offending value named.
 
 <a id="deployment"></a>
@@ -149,7 +149,7 @@ The deployment identity and shape. Fields: [`name`](#deployment-name),
 | Default | organization `UniDPP`, product name `UniDPP Platform`, no logo, default theme, empty footer |
 
 The whitelabel surface. The console (and any explorer surface) renders its
-chrome from these values — see [the console manual](/operators/console/#branding)
+chrome from these values; see [the console manual](/operators/console/#branding)
 for the preview. Fields: [`organization`](#branding-organization),
 [`product_name`](#branding-product_name), [`logo`](#branding-logo),
 [`theme`](#branding-theme), [`footer`](#branding-footer),
@@ -165,7 +165,7 @@ for the preview. Fields: [`organization`](#branding-organization),
 | Default | no services |
 
 Per-service configuration blocks. **An absent service block means that
-service is not part of this deployment** — the launcher will neither start it
+service is not part of this deployment**, and the launcher will neither start it
 nor render its environment. Present blocks:
 [`registry`](#services-registry), [`trust`](#services-trust), [`log`](#services-log),
 [`issuer`](#services-issuer), [`projector`](#services-projector),
@@ -185,7 +185,7 @@ Cross-cutting toggles. Fields: [`untp_ingest`](#features-untp_ingest),
 [`cddal_negotiation`](#features-cddal_negotiation),
 [`presentation_render`](#features-presentation_render).
 
-> **Status — declared, not yet consumed.** The `features` block is part of the
+> **Status: declared, not yet consumed.** The `features` block is part of the
 > schema (typed, validated, unknown keys rejected), but as of this writing no
 > service in the running stack reads it and `render-env` does not emit it.
 > The toggles below describe the intent each knob will govern. Set them only
@@ -219,7 +219,7 @@ The sovereignty declaration: what may leave the box. Fields:
 | Constraint | must not be empty (or whitespace) |
 | Example | `name: acme-eu` |
 
-The deployment's name — the tenant name, unique per operator. It appears in
+The deployment's name, which is the tenant name, unique per operator. It appears in
 the console's identity document and dashboard.
 
 <a id="deployment-profile"></a>
@@ -248,7 +248,7 @@ The deployment shape. See [deployment profiles](/operators/profiles/):
 | Example | `base_url: https://dpp.acme-mobility.example.org` |
 
 The public base URL of the deployment's primary surface. Informational for
-now — used in the console dashboard; the deployment's own binds and upstreams
+now and is used in the console dashboard; the deployment's own binds and upstreams
 are declared per service.
 
 ---
@@ -276,7 +276,7 @@ chrome (header, login card) and carried by every branded surface.
 | Default | `UniDPP Platform` |
 | Example | `product_name: ACME 产品数字护照` |
 
-The product name shown in chrome — login, page titles, footers. Unicode is
+The product name shown in chrome, which covers login, page titles and footers. Unicode is
 accepted (the sovereign CN tenant ships its product name in Chinese).
 
 <a id="branding-logo"></a>
@@ -303,7 +303,7 @@ set, an `<img class="logo">` renders before the organization name.
 The console chrome's language: nav, titles, login, cards, badges,
 and the primary buttons render through the console's i18n table
 (`en`, `zh-CN` today; validated). A new language is a table entry
-plus the config crate's `SUPPORTED_LOCALES` — not a code change.
+plus the config crate's `SUPPORTED_LOCALES`, and it is not a code change.
 Body prose is English in v1 (chrome-level i18n, honestly scoped).
 
 <a id="branding-theme"></a>
@@ -324,9 +324,9 @@ Two hex colors. Fields: [`primary`](#branding-theme-primary),
 |---|---|
 | Type | string |
 | Default | `#0f62fe` |
-| Constraint | six-digit hex, `#`-prefixed (`#rrggbb`) — anything else is refused |
+| Constraint | six-digit hex, `#`-prefixed (`#rrggbb`); anything else is refused |
 
-The primary color — headers, badges, the login card border.
+The primary color, used for headers, badges and the login card border.
 
 <a id="branding-theme-accent"></a>
 ### `branding.theme.accent`
@@ -451,7 +451,7 @@ mutation.
 | Constraint | 1-64 printable ASCII characters |
 | Example | `log_id: unidpp-pilot-log-1` |
 
-The log's identity — the `log_id` inside every signed tree head and receipt,
+The log's identity, which is the `log_id` inside every signed tree head and receipt
 and what a verifier pins along with the operator key.
 
 <a id="services-log-external_tsa_url"></a>
@@ -464,7 +464,7 @@ and what a verifier pins along with the operator key.
 | Example | `external_tsa_url: http://timestamp.digicert.com` |
 
 An RFC 3161 timestamp-authority endpoint; every append's tree head is also
-anchored there. An unreachable TSA **degrades explicitly** — the submission
+anchored there. An unreachable TSA **degrades explicitly**: the submission
 failure is recorded, never silently skipped.
 
 Setting this on a `sovereign` deployment whose [`external_calls`](#sovereignty-external_calls)
@@ -556,7 +556,7 @@ The interop gateway. See the [gateway reference](/services/gateway/).
 | `scan_policy.token_ttl_secs` | `UNIDPP_GATEWAY_SCAN_TTL_SECS` |
 | `scan_policy.issue_limit_per_minute` | `UNIDPP_GATEWAY_SCAN_LIMIT_PER_MIN` |
 
-The gateway renders rather than stores — it declares no `state_file`.
+The gateway renders rather than stores, and it declares no `state_file`.
 Its one journal is the consumer-report channel (below), append-only
 and replayed on start like every other service journal.
 
@@ -571,7 +571,7 @@ and replayed on start like every other service journal.
 The consumer report channel's deployment policy. `journal` is the
 append-only JSONL path (absent = in-memory only, dev mode);
 `rate_per_minute` is the per-identifier admission window (0/absent =
-permissive — MobileQR's captcha + SMS verification is a deployment's
+permissive; MobileQR's captcha + SMS verification is a deployment's
 pluggable choice behind the same interface, never architecture).
 Reports are receipted with sequence and instant; the public citation
 form withholds the reporter's contact by a stated omission.
@@ -585,7 +585,7 @@ form withholds the reporter's contact by a stated omission.
 | Example | `scan_policy: { token_ttl_secs: 300, issue_limit_per_minute: 60 }` |
 
 The scan-token gate: short-TTL bearer tokens with per-source issuance
-throttling guarding the render routes, declared as data — never
+throttling guarding the render routes, declared as data rather than
 per-service code. **Absent = the gate is open**: public resolution is
 the default doctrine, and gating is what a deployment under load opts
 into (the reference pilot declares none). Every gate refusal states
@@ -650,7 +650,7 @@ The console's manifest **path** is environment, not manifest:
 ## The machine-readable schema
 
 The manifest's shape is published as a JSON Schema (draft 2020-12),
-generated from the model itself — never hand-maintained:
+generated from the model itself and never hand-maintained:
 
 - This page's companion artifact:
   [`/operator-manifest.schema.json`](/operator-manifest.schema.json)
@@ -660,8 +660,8 @@ generated from the model itself — never hand-maintained:
 
 The schema is exactly as strict as `unidpp-config load` (unknown
 fields are rejected everywhere). It describes **shape only**:
-semantic validation — `${VAR}` secret substitution, hex colors, the
-sovereign egress rule — stays with the CLI's `validate`, which is
+fields are rejected everywhere). It describes **shape only**;
+semantic validation, which covers `${VAR}` secret substitution, hex colors and the
 what editors' CI preflight should call for the final word.
 
 These four knobs appear on every service block (`registry`, `trust`,
@@ -689,7 +689,7 @@ The address the service listens on. `render-env` emits it as the service's
 | Example | `admin_token: ${ACME_ISSUER_TOKEN}` |
 
 The Bearer token guarding the service's mutations and `/admin/*` endpoints.
-**Absent = open dev mode** — every mutation endpoint answers without
+**Absent = open dev mode**: every mutation endpoint answers without
 authentication. This is the pilot posture; it is not a production posture.
 The value should always be an `${VAR}` reference; inline secrets work at load
 time but defeat the doctrine (the console editor, for one, is built around
@@ -704,7 +704,7 @@ references never resolving on screen).
 | Default | absent (state lives in memory only) |
 | Example | `state_file: run/issuer-journal.jsonl` |
 
-The service's append-only JSONL journal — the audit log that replays on
+The service's append-only JSONL journal, which is the audit log that replays on
 start. Absent = no persistence across restarts. Paths are relative to the
 process working directory; `stack.sh` and `tenants/up.sh` launch from the
 pilot-data root, which is why the reference manifest says
@@ -718,7 +718,7 @@ pilot-data root, which is why the reference manifest says
 | Type | object ([`ResolverService`](#services-resolver)), optional |
 | Default | absent (no resolver) |
 
-The identifier-resolution service — the ninth declarable service.
+The identifier-resolution service, which is the ninth declarable service.
 Fields: `bind`, [`admin_token`](#services-common-admin_token),
 [`state_file`](#services-common-state_file), `upstream`
 (national-intermediary mode: the upstream resolver base URL),
@@ -735,10 +735,10 @@ the binary is unchanged.
 | Type | object ([`ServiceCommon`](#services-common)), optional |
 | Default | absent (no hub) |
 
-The translation hub — the tenth declarable service: a stateless
+The translation hub, which is the tenth declarable service: a stateless
 signed relay between willing pairs divided by protocols (SI-3's
 hub contract). Fields: `bind`,
-[`admin_token`](#services-common-admin_token) (future-proof — the
+[`admin_token`](#services-common-admin_token) (kept for future use, because the
 hub has no mutations to gate), `hub_id` (the hub's trust-graph node
 id, what relay signatures name; default `unidpp-hub-1`), `seed`
 (the relay-signing seed, an `${VAR}` reference in production;
@@ -758,7 +758,7 @@ own names: `UNIDPP_HUB_BIND`, `UNIDPP_HUB_ID`, `UNIDPP_HUB_SEED`.
 
 The service's public hostname when a tunnel or ingress fronts it. The
 console's services matrix renders it as the service's public link;
-absent renders loopback-only — the console invents nothing. Declaring
+absent renders loopback-only, and the console invents nothing. Declaring
 it does not create the tunnel: provisioning (tunnel token + DNS
 record) is an operator act, documented in the pilot repo's README.
 
@@ -781,7 +781,7 @@ manifest file itself plus in-memory sessions.
 | Type | boolean |
 | Default | `true` |
 
-Accept UNTP ingest on the gateway (`POST /untp/ingest` — see
+Accept UNTP ingest on the gateway (`POST /untp/ingest`; see
 [UNTP interop](/federation/untp/)).
 
 <a id="features-cddal_negotiation"></a>
@@ -793,7 +793,7 @@ Accept UNTP ingest on the gateway (`POST /untp/ingest` — see
 | Default | `true` |
 
 Serve the CDDAL dictionary form on content negotiation (registry collection
-reads with `Accept: text/cddal` — see the
+reads with `Accept: text/cddal`; see the
 [registry reference](/services/registry/#content-negotiation)).
 
 <a id="features-presentation_render"></a>
@@ -804,7 +804,7 @@ reads with `Accept: text/cddal` — see the
 | Type | boolean |
 | Default | `true` |
 
-Serve the presentation render on the projector (`GET /render` — see the
+Serve the presentation render on the projector (`GET /render`; see the
 [projector reference](/services/projector/)).
 
 ---
@@ -831,7 +831,7 @@ dashboard's egress summary.
 | Type | enum: `none` \| `tsa-only` \| `external` |
 | Default | `none` |
 
-The egress policy — what may leave the box:
+The egress policy, which states what may leave the box:
 
 - **`none`** — nothing leaves the box.
 - **`tsa-only`** — only the RFC 3161 TSA submission (the log's
@@ -873,7 +873,7 @@ The three real deployments of the pilot workspace, all validated:
   console 9389), EU residency, `ecdsa-p256` packs, egress `none`, full
   branding block (theme `#7c3aed`/`#f59e0b`, footer links).
 - **sovereign (`acme-cn`)** — three services (registry 9590, issuer 9593,
-  console 9589), CN residency, **`sm2`-only packs**, egress `none` — the
+console 9589), CN residency, **`sm2`-only packs**, egress `none`, the
   policy enforced by the validator, not by convention.
 
 See [multi-tenant operations](/operators/multi-tenant/) for how these run.

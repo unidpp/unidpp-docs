@@ -5,7 +5,7 @@ description: "What to watch: stack.sh status, the console's dashboard, and how t
 
 # Monitoring
 
-The stack observes itself with three honest surfaces — no metrics
+The stack observes itself with three honest surfaces, and no metrics
 infrastructure required, and each degrades visibly rather than lying.
 
 ## stack.sh status
@@ -25,16 +25,16 @@ installed, not just prescribed:
 
 ## The admin console
 
-`console.unidpp.org` in the reference deployment — every fact on it
+`console.unidpp.org` in the reference deployment; every fact on it
 comes from the service APIs or the manifest, never a second brain:
 
-- **Dashboard cards** — registry items, UNTDED data elements,
+- **Dashboard cards**: registry items, UNTDED data elements,
   passports, the log tree size; an unreachable service renders `—`,
   never a stale guess.
-- **The services matrix** — one row per manifest service: bind, role,
+- **The services matrix**: one row per manifest service: bind, role,
   the manifest-declared public URL (loopback-only when absent), and a
   live health probe.
-- **Egress inventory** — what may leave the box, derived from the
+- **Egress inventory**: what may leave the box, derived from the
   manifest's sovereignty policy; sealed rows where a policy forbids
   the call.
 
@@ -43,21 +43,21 @@ calls, so a down service costs a dash, not an outage of the page.
 
 ## Reading the public probes
 
-- **502 through a tunnel** — cloudflared is alive but the origin
+- **502 through a tunnel**: cloudflared is alive but the origin
   service is down: restart via `./stack.sh start`; the journal
   replays.
-- **000 / no route to host** — the tunnel process itself is down or
+- **000 / no route to host**: the tunnel process itself is down or
   the DNS record is missing: re-ensure with `./stack.sh start`
   (tunnels restart from their token files) and check the tunnel
   provisioning block in the pilot README.
-- **`/healthz` 200 but wrong data** — a stale binary or a foreign
+- **`/healthz` 200 but wrong data**: a stale binary or a foreign
   listener took the port: `status` catches this via the service
   identity check; stop by PID (`run/*.pid`), never by name.
 
 ## Performance: the NF-1 bench
 
 The performance requirement's three numbers are measured, not
-asserted — `unidpp-e2e` `scripts/bench-nf1.sh` (harness test 10 in
+asserted; `unidpp-e2e` `scripts/bench-nf1.sh` (harness test 10 in
 CI):
 
 | Number | Bar | Reference measurement |
@@ -73,7 +73,7 @@ $ cd unidpp-e2e && UNIDPP_BENCH_VIEWS=1 ./scripts/bench-nf1.sh
 ```
 
 The two offline numbers gate (a regression fails the harness); the
-served-views p95 is the reference-class measurement — CI reports it
+served-views p95 is the reference-class measurement, and CI reports it
 without gating, because a shared runner is not the reference
 machine class.
 

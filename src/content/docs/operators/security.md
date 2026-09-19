@@ -14,7 +14,7 @@ responsibility.
 The reference deployment is a **demonstration pilot**: no admin tokens, no
 TLS between services, seeded-dev keyrings. That is the correct posture for
 something meant to be probed publicly, and it is not a production posture.
-Production deployments — the whitelabel and sovereign tenants — differ from
+Production deployments, which are the whitelabel and sovereign tenants, differ from
 it by manifest and environment, not by code. Nothing in this section is
 aspirational: each statement names where it is enforced.
 
@@ -41,7 +41,7 @@ Rules that hold across all of them:
   variable is unset or empty. This is how the pilot runs; it is a load-time
   decision, visible in each service's discovery document (`auth` field).
 - **Reads stay public.** Consumers resolve passports, views, renders,
-  keyrings, and tree heads without authentication — that is the point of the
+  keyrings, and tree heads without authentication, which is the point of the
   read side.
 - **Tokens are compared without leaking timing.** The console compares the
   admin token in constant time; services reject wrong tokens with the same
@@ -55,10 +55,10 @@ Rules that hold across all of them:
 The console is the one surface with a login. See [the console manual](/operators/console/#the-auth-model)
 for the full model; in brief: token → (constant-time compare) → HttpOnly
 SameSite=Strict session cookie (`Secure` whenever the manifest declares
-`services.console.public_url` — the edge-TLS fact), 8-hour lifetime,
+`services.console.public_url`, which establishes the edge-TLS fact), 8-hour lifetime,
 server-side revocation on
 logout, and **exactly one mutation gated behind it** (manifest save).
-Without a token configured, the console is read-only by construction — no
+Without a token configured, the console is read-only by construction: no
 session can be minted, so the save path cannot be reached.
 
 Every interpolated string on every console page passes through one HTML
@@ -80,7 +80,7 @@ Two contradictions are refused at validation time:
 1. A `sovereign` profile with egress beyond `none` and no recorded
    `egress_override_reason`.
 2. A sovereign log configured with an `external_tsa_url` under a `none`
-   policy — the block contradicts the policy, reason or no reason.
+   policy, in which case the block contradicts the policy, reason or no reason.
 
 Egress claims are therefore part of the deployment record, not marketing
 copy: the file either validates or the deployment does not start.
@@ -94,7 +94,7 @@ copy: the file either validates or the deployment does not start.
   operator key, published in its discovery document.
 - **Dev seeds are documented and shared.** `seeded-dev` keyrings derive from
   fixed development seeds (`unidpp-log-dev-seed-v1` and siblings). Every
-  consumer of that seed produces the same key — which is exactly why it is
+  consumer of that seed produces the same key, which is exactly why it is
   fine for a demo and disqualifying for production. Production deployments
   set per-deployment seeds (`UNIDPP_ISSUER_SEED`, `UNIDPP_LOG_SEED`,
   `UNIDPP_TRUST_SIGN_SEED`, `UNIDPP_ARCHIVE_SIGN_SEED`, …) from the secret
@@ -133,13 +133,13 @@ copy: the file either validates or the deployment does not start.
    treat launcher environments and their logs accordingly; `stack.sh` and
    `up.sh` write service logs under `run/`, and services do not log their
    token values.
-4. Backups do not contain secrets by design — see
+4. Backups do not contain secrets by design; see
    [backup and restore](/operators/backup-restore/#what-backups-do-not-include).
 
 ## The per-surface review register
 
 One row per surface, each cell naming its enforcing mechanism or its
-honest absence — the register is the review, kept with the code and
+honest absence, and the register is the review, kept with the code and
 re-read at each service change (NF-4). "Token" means the
 `Authorization: Bearer` admin gate refusing with the resource named.
 
@@ -151,9 +151,9 @@ re-read at each service change (NF-4). "Token" means the
 | log | token-gated commitments | public receipts + tree heads | none (a transparency log is public by design) | deployment-scoped tree | log tests; the independent receipt check |
 | archive | token-gated (snapshot intake) | public snapshots | notary seed via `${VAR}` | deployment-scoped | archive tests (notary seal, anchoring) |
 | projector | none (read-only by design) | public views/renders | none | serves declared sources | projector tests (two-lens parity) |
-| gateway | **none on the ingest path** — an honest dev-pilot posture; production fronts it with the edge | public bindings | none | stateless render; ingest is per-subject idempotent | gateway tests (AD-3 parity, ingest idempotence) |
+| gateway | **none on the ingest path**, an honest dev-pilot posture; production fronts it with the edge | public bindings | none | stateless render; ingest is per-subject idempotent | gateway tests (AD-3 parity, ingest idempotence) |
 | resolver | token-gated (linkset writes) | public, `x-as-of`; **dark identities unresolvable publicly** | none | deployment-scoped linksets | resolver tests (RT-1: the dark-id absence) |
-| hub | none exist — the relay is stateless, willingness is the gate | public keyring + discovery | relay seed via `${VAR}` | nothing held to isolate | hub tests (the WILL gap, restart statelessness) |
+| hub | none exist, because the relay is stateless and willingness is the gate | public keyring + discovery | relay seed via `${VAR}` | nothing held to isolate | hub tests (the WILL gap, restart statelessness) |
 | console | session-gated (login, constant-time token compare, expiry) | public pages degrade honestly | the token lives in env, renders only as `${VAR}` | the manifest-boundary confinement (state paths confined per tenant, traversal refused) | console tests incl. the SV-7 isolation suite |
 | CLI | n/a (offline) | verifies under the operator's own pinned anchors | anchors are inputs, never fetched | n/a | the verify pipeline tests |
 | edge | reveal-gated reads per the segment policy | contact dumps gated by the policy object | device keys in the device | segment policies | the device drill; clause 5 g-h |
@@ -164,7 +164,7 @@ re-read at each service change (NF-4). "Token" means the
       mode).
 - [ ] Per-deployment signing seeds exported from the secret store; no dev
       seeds anywhere.
-- [ ] `sovereignty` reflects reality — `external` only where upstreams
+- [ ] `sovereignty` reflects reality, with `external` only where upstreams
       actually exist; sovereign tenants sealed or reasoned.
 - [ ] Console token set if the console runs at all; loopback bind unless a
       deliberate exposure exists.

@@ -25,7 +25,7 @@ concepts.
 ./unidpp-ops drill               # the restore rehearsal
 ```
 
-`prune` never deletes unless `--apply` names the act — deletion is an
+`prune` never deletes unless `--apply` names the act, because deletion is an
 explicit operator decision, not a default.
 
 ## The drill
@@ -33,25 +33,25 @@ explicit operator decision, not a default.
 A backup nobody has ever restored is a hope, not a capability. The
 drill proves the capability on live state:
 
-1. **backup** — a fresh snapshot;
+1. **backup**: a fresh snapshot;
 2. **restore** into a drill tenant the drill itself owns (production
    state is never touched; an existing drill tenant is refused);
-3. **parity** — every archive member byte-identical after restore
+3. **parity**: every archive member byte-identical after restore
    (the manifest is rewritten by design: journal paths and the tenant
-   name rebased to the drill tenant — that rewrite is then
+name rebased to the drill tenant, and that rewrite is then
    **validated** with `unidpp-config`);
-4. **report** — `backups/<label>.drill.json` (checksums, byte
+4. **report**: `backups/<label>.drill.json` (checksums, byte
    parity, manifest validation, consistency point);
-5. **cleanup** — the drill tenant is removed (unless `--keep`).
+5. **cleanup**: the drill tenant is removed (unless `--keep`).
 
 Run the drill after every upgrade rehearsal and before any
 infrastructure change. If it ever fails: do not touch production
-restore until the failure is understood — a failed drill is the
+restore until the failure is understood, because a failed drill is the
 cheapest possible discovery of a broken backup.
 
 ## Disaster recovery: recover
 
-`restore` lands a backup as a *tenant* — right for migration and
+`restore` lands a backup as a *tenant*, which is right for migration and
 rehearsal. When the deployment itself is lost, `recover` brings it
 back at its ORIGINAL shape:
 
@@ -65,7 +65,7 @@ Safety shape: every checksum verified first; any running service is
 refused (journals are held open); the current live state is renamed
 aside (`*.pre-recover.<stamp>`, never deleted); an interrupted
 recovery's leftovers refuse to be overwritten without `--force`.
-Members unpack at their original paths — no tenant rewriting, no
+Members unpack at their original paths, with no tenant rewriting and no
 manifest rewriting: the same deployment, standing up again.
 
 Rehearse it like everything else: `./unidpp-ops drill --recover`

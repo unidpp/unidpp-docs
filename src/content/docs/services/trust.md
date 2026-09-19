@@ -6,7 +6,7 @@ description: "The unidpp-trust service — the SIGNATIF trust graph: jurisdictio
 The trust service is the SIGNATIF trust-graph: jurisdiction trust lists per
 framework, an M-of-K multi-witness master list, and live
 reason-to-retroactivity revocations. **Every response is signed** in the
-tree-head domain — signature headers name their suites and key ids so a
+tree-head domain, and signature headers name their suites and key ids so a
 verifier picks the right public keys from `/keyring`.
 
 In the reference deployment it binds `127.0.0.1:8391`. Reads are public;
@@ -15,10 +15,10 @@ mutations and `/admin/log` require `UNIDPP_TRUST_ADMIN_TOKEN` when set.
 
 ## Gated evidence and the operator surface
 
-Evidence documents (the bytes behind attestations — certificate PDFs,
+Evidence documents (the bytes behind attestations, such as certificate PDFs,
 inspection reports) are never bare URLs: each is registered with a
 **required scope**, listed metadata-only, and released only under the
-scope — the exact bytes, signed by the service keyring, with every
+scope: the exact bytes, signed by the service keyring, with every
 release journaled as the access decision. An absent or unsatisfying
 scope is a stated 403 naming the required scope, never a silent 404.
 The **operator surface** (`GET /operators/{node}`) renders one
@@ -74,10 +74,10 @@ seed (see [security posture](/operators/security/#key-material-and-trust-anchors
 
 The reason codes decide whether history survives:
 
-- **Prospective reasons** — `key-compromise`, `cessation`, `supersession`,
+- **Prospective reasons**: `key-compromise`, `cessation`, `supersession`,
   `affiliation-change`: prior as-of verifications stay valid (timestamping
   protects, as with code signing).
-- **Retroactive reasons** — `misissuance`, `fraudulent-issuance`,
+- **Retroactive reasons**: `misissuance`, `fraudulent-issuance`,
   `authority-compromised`: void **ab initio** within the explicit distrust
   window `[start, end]`, re-valid outside it.
 
@@ -94,7 +94,7 @@ current-state answers revalidate; point-in-time (`?at=`) answers are
 
 SIGNATIF has no service-response domain; tree-head (the operator's signed
 statement of state, as used for transparency-log signed tree heads) is the
-documented adaptation — stated in the discovery document, not hidden.
+documented adaptation, stated in the discovery document and not hidden.
 
 ## Environment
 
@@ -122,5 +122,5 @@ Direct environment:
 - **Journal replay** on start; the graph, lists, and revocation ledger all
   restore from the journal.
 - **No silent unsigned answers.** If a response cannot carry its signature
-  headers, that is a bug, not a degradation mode — the signing keyring is
+headers, that is a bug and not a degradation mode, because the signing keyring is
   constructed at start or the process exits.

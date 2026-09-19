@@ -4,7 +4,7 @@ description: Five queries against the running reference stack that show the syst
 ---
 
 The reference stack runs seven services on loopback. This tour issues the five
-canonical queries — one per service boundary — and explains what each answer
+canonical queries, one per service boundary, and explains what each answer
 proves. If a command fails, see [run the reference stack](/get-started/reference-stack/)
 first.
 
@@ -23,10 +23,10 @@ $ cd unidpp-pilot-data && ./stack.sh status
 
 Every service answers `GET /healthz` with `ok` and serves a discovery document
 at `GET /` that names the service, its endpoints, and its configuration. The
-discovery documents are the contract — these docs summarize them; the services
+discovery documents are the contract; these docs summarize them, and the services
 remain the source of truth.
 
-## 1. Discovery — which services exist
+## 1. Discovery: which services exist
 
 The registry's discovery dataset (C3 services, C4 protocol bindings, C5
 verification mechanisms, C1 units) is what a consumer resolves before it
@@ -40,7 +40,7 @@ $ curl -s http://127.0.0.1:8390/services | jq '.services | length'
 Eight services are registered: the UniDPP family plus EN 18222, GS1 Digital
 Link, GB/T 33993, and UNTP protocol bindings.
 
-## 2. As-of applicability — which duties bind a product type at T
+## 2. As-of applicability: which duties bind a product type at T
 
 The pilot's headline query. Product type `momiji:e8` (an e-bike) is bound to
 jurisdiction profiles with dated effective windows:
@@ -57,9 +57,9 @@ $ curl -s 'http://127.0.0.1:8390/applicability?product_type=momiji:e8&at=2028-06
 
 At 2027-06-01 only Japan's road-traffic duty applies. A year later the EU
 machinery + battery duty joins it. Same product, same instant-shaped query,
-different legal reality — answered from the register, not from a rules engine.
+different legal reality, answered from the register rather than a rules engine.
 
-## 3. Two-lens view — one passport under two jurisdictions
+## 3. Two-lens view: one passport under two jurisdictions
 
 The projector renders the same passport under a registered profile at a chosen
 instant. The EU lens at 2028-06-01:
@@ -92,7 +92,7 @@ an explicit, auditable gap, never an invented value:
 ]
 ```
 
-## 4. Foreign render — EN 18222
+## 4. Foreign render: EN 18222
 
 The gateway renders the neutral core in foreign protocol shapes. This is the
 EN 18222 REST binding (the freeDPP wire shape):
@@ -103,7 +103,7 @@ $ curl -s 'http://127.0.0.1:8395/en18222/v1/dppsByProductId/4006381333931?repres
 "active"
 ```
 
-## 5. Trust — the anchors a verifier pins
+## 5. Trust: the anchors a verifier pins
 
 The trust service co-signs every response in the tree-head domain and
 publishes its keyring:
@@ -119,15 +119,15 @@ $ curl -s http://127.0.0.1:8391/keyring | jq '{mode, roles: (.roles | keys)}'
 }
 ```
 
-`seeded-dev` means the keyring derived from the documented dev seed — fine for
+`seeded-dev` means the keyring derived from the documented dev seed, which is fine for
 the pilot, wrong for production. [The security posture](/operators/security/)
 covers what changes.
 
 ## Where to go next
 
-- [Run the reference stack](/get-started/reference-stack/) — build and start
+- [Run the reference stack](/get-started/reference-stack/): build and start
   everything yourself.
 - [Your first passport, pack, and verification](/get-started/first-passport/) —
   the write path.
-- [The service references](/services/registry/) — every endpoint of every
+- [The service references](/services/registry/): every endpoint of every
   service.

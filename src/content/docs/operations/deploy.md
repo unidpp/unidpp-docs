@@ -19,7 +19,7 @@ binary, all wired by one operator manifest.
 
 `start` is the **idempotent repair**: healthy services are reused
 untouched, dead ones restart (journals replay on start), and every
-tunnel is re-ensured. A second run is a no-op — which makes it safe as
+tunnel is re-ensured. A second run is a no-op, which makes it safe as
 a cron watch:
 
 ```cron
@@ -29,7 +29,7 @@ a cron watch:
 ## What status actually checks
 
 - Every service (including the console and the JP peer node) answers
-  `/healthz` **and** identifies itself at `/` — a healthy listener of
+`/healthz` **and** identifies itself at `/`; a healthy listener of
   the wrong service fails the check, not just a dead port.
 - Every tunnel is probed **through its public hostname**: a tunnel
   process can be alive while its origin is down, and the world sees
@@ -58,6 +58,6 @@ A tenant is a manifest: `tenants/<name>/unidpp-operator.yaml` +
 journals. `./tenants/up.sh <name> [start|stop|status]` renders the
 service environment from the manifest (`unidpp-config render-env`)
 and runs exactly the declared services. Whitelabel and sovereign
-deployments are manifest deltas — see
+deployments are manifest deltas; see
 [Multi-tenant operations](/operators/multi-tenant/) and
 [Deployment profiles](/operators/profiles/).

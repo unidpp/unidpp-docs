@@ -7,7 +7,7 @@ description: "From dev seeds to real keys: every service's env-key surface, what
 
 Every service ships in **dev mode**: deterministic seeds derive the
 keyrings so transcripts and demos are reproducible. Production is the
-same binaries with real entropy in the environment — no code path
+same binaries with real entropy in the environment, with no code path
 changes, only configuration.
 
 ## The key surface per service
@@ -22,7 +22,7 @@ changes, only configuration.
 | archive | `UNIDPP_ARCHIVE_SIGN_SEED`, `UNIDPP_ARCHIVE_ADMIN_TOKEN` | snapshot notarization |
 | console | `UNIDPP_CONSOLE_ADMIN_TOKEN` | the admin session login |
 
-Secrets in manifests are `${VAR}` references — `unidpp-config`
+Secrets in manifests are `${VAR}` references, and `unidpp-config`
 substitutes them from the environment at render time, and the console
 renders them sealed (never resolved). A manifest in git is therefore
 publishable; the `.env` it references is not.
@@ -31,7 +31,7 @@ publishable; the `.env` it references is not.
 
 1. **Generate** the new key material out of band (e.g. 32 bytes of
    real entropy per seed) and stage it in the deployment's `.env`.
-2. **Backup first** — the durability contract covers the state that
+2. **Backup first**: the durability contract covers the state that
    predates the rotation ([Backups and restore drills](/operations/backups/)).
 3. **Restart the service**; its journal replays under the new key for
    signing NEW acts. Events already sealed keep their signatures —
@@ -39,7 +39,7 @@ publishable; the `.env` it references is not.
    anchors.
 4. **Re-pin the anchors**: verifiers pin the trust service's
    `GET /keyring`; supersession is a trust-graph act (register the
-   new key, declare the old one superseded — see the
+new key, declare the old one superseded; see the
    [trust API reference](/api/trust/)). Retroactive distrust of an
    authority requires a quorate attestation; key supersession does
    not.

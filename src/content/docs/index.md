@@ -3,7 +3,7 @@ title: UniDPP documentation
 description: Operator documentation for the UniDPP digital product passport platform.
 template: splash
 hero:
-  tagline: A deployment is data — the operator manifest is the product.
+tagline: A deployment is data, and the operator manifest is the product.
   actions:
     - text: Five-minute tour
       link: /get-started/tour/
@@ -19,7 +19,7 @@ hero:
 
 These pages document the running UniDPP platform: the operator manifest, the
 admin console, every service's endpoints and environment variables, and the
-operations procedures — against the reference deployment, not a mock. Every
+operations procedures, against the reference deployment rather than a mock. Every
 command shown was executed against the live stack; transcripts are reproduced
 as recorded.
 
@@ -29,11 +29,11 @@ UniDPP is a digital product passport platform built on one neutral core
 passport and many jurisdiction, sector, and characteristic profiles. No region
 is the universal envelope: the same passport renders as a UNTP credential
 triad, as an EN 18222 REST document, as an offline Tier-A pack, and as a
-per-jurisdiction lens view — each projection derived from one core, never
+per-jurisdiction lens view, each projection derived from one core and never
 forked.
 
-The framework itself — the fourteen invariants, the six layers, the seams and
-tiers — lives on
+The framework itself, comprising the fourteen invariants, the six layers, the seams and
+tiers, lives on
 [the main site](https://www.unidpp.org/framework/). These docs cover what an
 operator does with it.
 
@@ -49,14 +49,14 @@ operator does with it.
 
 ## The reading order
 
-1. [Five-minute tour](/get-started/tour/) — the five queries that show the
+1. [Five-minute tour](/get-started/tour/): the five queries that show the
    system working.
-2. [Run the reference stack](/get-started/reference-stack/) — build and start
+2. [Run the reference stack](/get-started/reference-stack/): build and start
    all seven services on one machine.
 3. [Your first passport, pack, and verification](/get-started/first-passport/) —
    issue a passport, mint the offline pack, verify it against the issuer's
    published anchor.
-4. [The operator manifest reference](/operators/manifest/) — every knob, typed,
+4. [The operator manifest reference](/operators/manifest/): every knob, typed,
    with defaults, examples, and validation rules. The backbone of these docs.
 
 ## Conventions
@@ -66,7 +66,7 @@ operator does with it.
   the JP peer on `8399`, and the operator console on `8389`.
 - The reference deployment runs in dev mode: no admin tokens, seeded-dev
   keyrings, everything loopback. It is a demonstration pilot. Production
-  deployments — whitelabel and sovereign tenants — are declared by manifest,
+deployments, whitelabel and sovereign tenants, are declared by manifest,
   not by code; see [deployment profiles](/operators/profiles/).
 - Transcripts show real output. Counts and timestamps drift as the registers
   grow; field shapes do not.

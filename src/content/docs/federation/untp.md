@@ -4,8 +4,8 @@ description: The gateway's two protocol bindings — the UNTP credential triad b
 ---
 
 No region is the universal envelope. The [gateway](/services/gateway/)
-renders the neutral core in foreign protocol shapes — a protocol is a render
-profile, not a fork — and imports them back with deterministic identity.
+renders the neutral core in foreign protocol shapes (a protocol is a render
+profile, not a fork) and imports them back with deterministic identity.
 Adding a protocol adds a render profile; the core never grows a region's
 fields.
 
@@ -45,7 +45,7 @@ application identifiers. The render names its profile
 ### Ingest (UNTP → core)
 
 `POST /untp/ingest` accepts a UNTP passport VC (bare or as a triad) and mints
-a core passport with a **deterministic identity** — idempotent per subject:
+a core passport with a **deterministic identity**, idempotent per subject:
 submitting the same VC twice yields one core passport, not two. Imported
 documents carry an empty event log (their events live in the source regime)
 and a receipt recording the origin. Render and ingest are inverse
@@ -66,7 +66,7 @@ $ curl -s 'http://127.0.0.1:8395/en18222/v1/dppsByProductId/4006381333931?repres
 - **compressed**: collection-keyed, native JSON values.
 
 The wire field set is mirrored from the freeDPP live-endpoint artifacts (the
-conformance corpus keeps both representations as fixtures) — an EN 18222
+conformance corpus keeps both representations as fixtures); an EN 18222
 client sees what it expects, including the frozen-wire rule: no `as_of`
 member on the EN 18222 body (the `x-as-of` header still carries it).
 
@@ -75,9 +75,9 @@ member on the EN 18222 body (the `x-as-of` header still carries it).
 The renderings are ports, not re-derivations: the UNTP adapter's semantics
 come from the Python reference adapters (`unidpp-py`), and the EN 18222 wire
 from the freeDPP artifacts. The gateway's discovery document states both
-provenances. What that buys an operator: when a question arises — *is this
+provenances. What that buys an operator: when a question arises (*is this
 field part of the compressed representation? does the triad include the
-resolver entry?* — the answer lives in the reference implementation and the
+resolver entry?*), the answer lives in the reference implementation and the
 conformance corpus, not in prose.
 
 ## Degradation and failure behavior

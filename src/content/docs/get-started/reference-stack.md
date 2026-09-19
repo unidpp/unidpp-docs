@@ -10,7 +10,7 @@ verifies the right service is on the right port before declaring success.
 
 ## Prerequisites
 
-- A checkout of the UniDPP family — the service repositories side by side,
+- A checkout of the UniDPP family, with the service repositories side by side,
   with `unidpp-pilot-data` among them:
   `unidpp-registry`, `unidpp-trust`, `unidpp-log`, `unidpp-issuer`,
   `unidpp-projector`, `unidpp-gateway`, `unidpp-archive`, `unidpp-console`,
@@ -49,7 +49,7 @@ What `start` actually does:
    right identity is adopted (`==> registry already healthy (reusing)`). A
    foreign listener on a needed port is a hard error naming the holder.
 3. **Wire the environment.** Every service starts with its `UNIDPP_*`
-   environment (binds, state files, upstreams) — the same variables
+environment (binds, state files, upstreams), which are the same variables
    [the operator manifest](/operators/manifest/) renders.
 4. **Wait for health**, then verify identity via the discovery document's
    `service` field (all family services answer `ok` on `/healthz`; the
@@ -58,7 +58,7 @@ What `start` actually does:
    journals on start.
 6. **Tunnels** (optional): if `tunnel.token`, `jp-tunnel.token`, or
    `console-tunnel.token` are present, a cloudflared named tunnel is adopted
-   or started per surface. No token, no tunnel — the stack stays loopback.
+or started per surface. No token, no tunnel, and the stack stays loopback.
 
 ## Seed
 
@@ -117,7 +117,7 @@ $ ./stack.sh status
 ```
 
 `status` exits non-zero if any service is down or a port is held by a foreign
-listener — it is safe to use as a monitoring probe.
+listener, and it is safe to use as a monitoring probe.
 
 ## Stop
 
@@ -151,6 +151,6 @@ this file set.
 The reference stack runs with **no admin tokens** and **seeded-dev keyrings**.
 Every mutation endpoint is open, and every signing key derives from documented
 development seeds. That is the correct posture for a demonstration pilot and
-the wrong posture for anything else — a real deployment sets admin tokens and
+the wrong posture for anything else; a real deployment sets admin tokens and
 production seeds in its [operator manifest](/operators/manifest/) and
 environment. The whitelabel and sovereign tenants demonstrate the difference.

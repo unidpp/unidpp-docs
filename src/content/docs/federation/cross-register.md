@@ -5,7 +5,7 @@ description: Mapping items between registers — the equivalence transform, the 
 
 A cross-register mapping is a registered item (class
 `cross-register-mapping`) that states a correspondence between identifiers or
-semantics in two registers — for example, that a Chinese national standard
+semantics in two registers, for example that a Chinese national standard
 corresponds to an IEC standard *for the purposes of* some conformity
 evidence. Mappings are versioned, dated, and integrity-checked like every
 other registry item; they are how peers and foreign registers reconcile
@@ -25,7 +25,7 @@ dedicated queries:
 
 ## The worked example (recorded)
 
-The pilot's seeded mapping — GB 4943.1-2022 ↔ IEC 62368-1 for charger
+The pilot's seeded mapping of GB 4943.1-2022 ↔ IEC 62368-1 for charger
 conformity evidence:
 
 ```sh
@@ -40,7 +40,7 @@ $ curl -s 'http://127.0.0.1:8390/cross-register-mappings?limit=2' \
 ```
 
 Note the shape of the claim: not "GB 4943.1 = IEC 62368-1" (two standards are
-never identical), but a scoped correspondence — *for the purposes of* — with
+never identical), but a scoped correspondence for stated purposes, with
 a version and an effective date. A mapping is a legal fact, and it is dated
 like one.
 
@@ -55,8 +55,8 @@ rejected at registration, not discovered at query time.
 ## Why mappings are global
 
 A mapping's value is that both sides trust it. A jurisdiction's register can
-hold its own mappings, but the mappings between *external* registers — GB ↔
-IEC, or a jurisdiction profile ↔ a sector profile — belong in the global
+hold its own mappings, but the mappings between *external* registers (GB ↔
+IEC, or a jurisdiction profile ↔ a sector profile) belong in the global
 register where every peer can resolve them. This is the split the
 [JP peer](/federation/jp-peer/#what-lives-where) page summarizes: the global
 node keeps what is governance-shaped; jurisdiction-shaped data lives with the
@@ -65,7 +65,7 @@ jurisdiction.
 ## What mappings are not
 
 - **Not transforms.** The transform class (`/transforms`) is executable
-  semantics — unit conversions, classifications, code-list mappings a
+semantics, covering unit conversions, classifications and code-list mappings a
   [projector](/services/projector/) view runs. A mapping is a registered
   claim about correspondence; a transform is a function. (The GB↔IEC item
   doubles as a transform in the pilot's seed corpus, which is why its

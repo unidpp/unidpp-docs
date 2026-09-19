@@ -1,12 +1,12 @@
 ---
 title: The 15-minute whitelabel deployment
-description: Your own digital product passport service in one manifest — the whitelabel walkthrough, mirroring the verified acme tenant, with the sovereign and peer variants.
+description: Your own digital product passport service in one manifest; the whitelabel walkth
 ---
 
 One file stands between the public reference deployment and your own branded
 passport service: the operator manifest. This walkthrough builds a whitelabel
-tenant — registry, issuer, console, your branding, your jurisdiction's pack
-suite — in about fifteen minutes. Every step below was executed against the
+tenant, being registry, issuer, console, your branding and your jurisdiction's pack
+suite, in about fifteen minutes. Every step below was executed against the
 pilot workspace; transcripts are as recorded (the tenant used for the
 transcripts is `acme`, the pilot's whitelabel tenant; the sovereign variant
 is `acme-cn`).
@@ -85,7 +85,7 @@ unidpp-config: manifest does not match the schema: unknown field `binds`, expect
 ```
 
 If your manifest references `${VAR}` tokens, export them before validating
-(unset references are load errors — secrets must resolve).
+(unset references are load errors, because secrets must resolve).
 
 ## 3. Start the tenant (1 minute)
 
@@ -99,7 +99,7 @@ tenant acme:
 
 The launcher renders each service's environment from the manifest
 (`unidpp-config render-env`) and starts the same binaries the reference
-deployment runs. Zero per-tenant code. `start` is idempotent — re-running
+deployment runs. Zero per-tenant code. `start` is idempotent: re-running
 reports `already running` and touches nothing:
 
 ```sh
@@ -131,7 +131,7 @@ $ curl -s http://127.0.0.1:9389/.well-known/unidpp-service | jq .
 }
 ```
 
-Your deployment's name, profile, and product — from the manifest, on the
+Your deployment's name, profile and product, from the manifest, on the
 console's identity endpoint. Open `http://127.0.0.1:9389/` and the dashboard
 carries your chrome:
 
@@ -187,7 +187,7 @@ UniDPP Tier-A verification
   ...
 ```
 
-Exit 0. The pack is yours — your suite, your anchor.
+Exit 0. The pack is yours: your suite, your anchor.
 
 ## 6. Set your admin tokens (2 minutes)
 
@@ -206,7 +206,7 @@ is read-only by construction (the login page says exactly that). Full rules:
 [security posture](/operators/security/).
 
 Also set production signing seeds for a real deployment
-(`UNIDPP_ISSUER_SEED` and siblings) — `mode: seeded-dev` in the keyring is
+(`UNIDPP_ISSUER_SEED` and siblings), so `mode: seeded-dev` in the keyring is
 the honest flag that you have not.
 
 ## 7. Your hostname (2 minutes)
@@ -215,7 +215,7 @@ Tenant services bind loopback; publication is a tunnel, never a bind change.
 The pilot's pattern: a cloudflared named tunnel per published surface, its
 token in a file the launcher adopts (`tunnel.token`, `jp-tunnel.token`,
 `console-tunnel.token` at the pilot root for the reference surfaces). The
-running pilot demonstrates all three — `stack.sh status` reports:
+running pilot demonstrates all three; `stack.sh status` reports:
 
 ```
 tunnel: running (pid 61606) -> registry.unidpp.org
@@ -229,7 +229,7 @@ chose. Everything else stays loopback.
 
 ## 8. Schedule backups (1 minute)
 
-Your tenant's state is its manifest plus its journals — safe to copy while
+Your tenant's state is its manifest plus its journals, safe to copy while
 services run, with the log tree head as the cross-service consistency point.
 The `unidpp-ops backup` / `restore` commands are landing (see the honest
 status and the manual procedure in
@@ -265,7 +265,7 @@ The validator does the enforcing: `sovereign` + any egress beyond `none`
 without a recorded `egress_override_reason` refuses to load, and a sovereign
 log with a TSA URL under a `none` policy is a contradiction, rejected. Every
 pack this issuer mints is SM2-signed. The same three-step procedure —
-validate, `up.sh <name> start`, probe — applies.
+validate, `up.sh <name> start`, probe, applies.
 
 ## The national-peer variant
 

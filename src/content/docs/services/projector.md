@@ -4,7 +4,7 @@ description: "The unidpp-projector service — lens projection: a passport under
 ---
 
 The lens projection service: render a passport under a registered profile at
-a chosen instant — the EU/JP two-lens moment as a service. Read-only by
+a chosen instant, the EU/JP two-lens moment as a service. Read-only by
 design; the `actor` parameter is recorded, not authenticated. In the
 reference deployment it binds `127.0.0.1:8394` and reads the registry at
 8390 plus the passport store under `passports/`.
@@ -52,10 +52,10 @@ reference, the language actually served).
 An element enters a view only if it passes the gates, and each missing
 element names the gate that stopped it:
 
-- **presence** — a sourcing event wrote the fact at or before the as-of
+- **presence**: a sourcing event wrote the fact at or before the as-of
   instant (`absent-as-of`);
-- **capability-gate** — the subject class meets the binding floor;
-- **below-trust-floor** — the sourcing event's trust marker is under the
+- **capability-gate**: the subject class meets the binding floor;
+- **below-trust-floor**: the sourcing event's trust marker is under the
   binding's floor.
 
 ## Sources and precedence {#environment}
@@ -73,7 +73,7 @@ fallback:
 | rollups | signed roll-up attestations when armed | field absent (never a placeholder) |
 
 Every profile in a response names its `source`: `registry`, `fixtures`, or
-`unreachable` — a degraded view says so in the body.
+`unreachable`, and a degraded view says so in the body.
 
 ## Environment
 
@@ -85,7 +85,7 @@ Manifest-rendered:
 | `UNIDPP_PROJECTOR_ADMIN_TOKEN` | accepted for consistency (read-only service) | unset |
 | `UNIDPP_PROJECTOR_STATE_FILE` | accepted; the projector keeps no journal | none |
 
-Direct environment (the projection sources — this is where a deployment
+Direct environment (the projection sources; this is where a deployment
 points the projector at its own data):
 
 | Variable | Meaning | Default |
@@ -97,7 +97,7 @@ points the projector at its own data):
 | `UNIDPP_PROJECTOR_ROLLUP_SEED` | roll-up sealing key seed (with attester = armed) | none |
 | `UNIDPP_PROJECTOR_ROLLUP_ATTESTER` | the attester id roll-ups name | none |
 
-A rollup seed without an attester is refused loudly — the projector never
+A rollup seed without an attester is refused loudly, and the projector never
 arms half-way.
 
 ## Degradation semantics

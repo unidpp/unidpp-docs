@@ -11,7 +11,7 @@ contract.
 > **Status of the tooling.** The `unidpp-ops` backup/restore commands are
 > <https://github.com/unidpp/unidpp-pilot-data> (`unidpp-ops`). The manual
 > `tar`+`shasum` procedure below is kept as the transparent form of the same
-> contract — read it to understand what the script does.
+> contract; read it to understand what the script does.
 > Everything below about the state layout and the consistency contract is
 > verified against the running deployment; the exact command surface
 > (`unidpp-ops backup <tenant>`, `unidpp-ops restore <archive> <tenant>`,
@@ -39,7 +39,7 @@ For a tenant, all of the above live inside `tenants/<name>/` (plus
 
 Every journal is **append-only JSONL**; services replay them on start. No
 service rewrites its journal, so a file copy taken while services append is
-at worst a torn tail — and every journal replay checks sequence, digest, and
+at worst a torn tail, and every journal replay checks sequence, digest, and
 torn-tail integrity, refusing to continue past a torn record rather than
 silently accepting a partial line.
 
@@ -47,7 +47,7 @@ The **consistency point** across services is the transparency log's signed
 tree head: at backup time, record `GET /log/tree/head` (tree size + root +
 signature). A restore that replays journals and then verifies the tree head
 against the recorded consistency point proves the backup is coherent across
-services — the log anchors the archive snapshots, and the issuer's verdicts
+services, because the log anchors the archive snapshots and the issuer's verdicts
 reference the log head.
 
 ```sh
@@ -76,15 +76,15 @@ verified: 27 member(s), consistency point size 5 root d23b199b...
 
 A tampered archive fails verification naming the corrupted member; a
 restore of the reference deployment's backup served the identical
-1 531 registry items — parity proven.
+1 531 registry items, with parity proven.
 
-What the tooling must produce — and what you should demand of any hand-rolled
+What the tooling must produce, and what you should demand of any hand-rolled
 equivalent:
 
 1. **Contents**: the operator manifest, every journal, the snapshot
    directory, the passport store, and the seed assets of the tenant.
 2. **A manifest-of-the-backup**: what was copied, when, and a SHA-256 per
-   file — the backup is verifiable the same way everything else in the
+file, so the backup is verifiable the same way everything else in the
    system is.
 3. **The consistency point**: the log tree head recorded at snapshot time
    (from the live log service if the deployment declares one).
@@ -99,7 +99,7 @@ equivalent:
    tenant without an explicit `--force`.
 2. **Verify checksums** before writing anything; a tampered or corrupt
    archive is a hard failure naming the file.
-3. **Validate the manifest** with `unidpp-config validate` — a restore of a
+3. **Validate the manifest** with `unidpp-config validate`; a restore of a
    manifest that no longer validates is refused.
 4. Start via `tenants/up.sh <tenant>`; journals replay.
 
@@ -129,8 +129,8 @@ $ ./tenants/up.sh acme-restored start   # journals replay
 ```
 
 The console's Backups page (landing with the tooling) will list backups in
-the configured directory, trigger one by invoking the script — the console
-never reimplements the logic — and show the consistency point. It is
+the configured directory, trigger one by invoking the script (the console
+never reimplements the logic) and show the consistency point. It is
 session-gated like every console mutation.
 
 ## What backups do not include
@@ -140,7 +140,7 @@ session-gated like every console mutation.
   by design, a stolen backup yields no tokens.
 - **Signing keys.** Keyrings derive from seed material in the environment
   (`UNIDPP_ISSUER_SEED`, `UNIDPP_LOG_SEED`, …). Back up the seed
-  configuration the same way you back up other secrets — separately, and
+configuration the same way you back up other secrets: separately, and
   more carefully. Lose the seed, lose the identity: re-issued anchors do not
   verify against previously published ones.
 - **Ephemeral runtime**: `run/` pids and logs are not state.

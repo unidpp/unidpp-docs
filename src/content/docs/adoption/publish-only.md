@@ -1,6 +1,6 @@
 ---
 title: Publish-only adoption
-description: One issuer, nothing else — passports, signed events and offline-verifiable packs, with no registry, log or trust service.
+description: One issuer, nothing else; passports, signed events and offline-verifiable 
 ---
 
 The publish-only adopter issues passports and mints packs, and runs
@@ -61,7 +61,7 @@ are configured through `UNIDPP_ISSUER_PACK_SUITE`).
 The quickstart's closing step is the point of the path: stop the
 issuer, then verify the pack offline with the officer's terminal
 against the keyring-pinned anchor. The verdict is pass. Publication
-is complete at mint — the packs do not call home, and neither does
+is complete at mint, because the packs do not call home and neither does
 the terminal that reads them.
 
 ## Growing the path

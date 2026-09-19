@@ -1,6 +1,6 @@
 ---
 title: Augment-existing adoption
-description: Keep the passport system you have — the gateway renders one UniDPP core through the EN 18222 and UNTP bindings your consumers already speak.
+description: Keep the passport system you have; the gateway renders one UniDPP core thr
 ---
 
 The augment-existing adopter already has consumers: EN 18222
@@ -43,7 +43,7 @@ $ curl -s http://127.0.0.1:18522/untp/product/4006381333931 \
 "(01)4006381333931"
 ```
 
-The two answers are the same identity in two spellings — the GS1
+The two answers are the same identity in two spellings (the GS1
 AI-delimited form UNTP carries and the bare key EN 18222 carries.
 The quickstart asserts exactly this parity, and that a passport
 newly issued at the upstream serves through the binding under its
@@ -60,7 +60,7 @@ re-issue.
 ## The reversibility check
 
 The quickstart's closing step removes the gateway and confirms the
-upstream issuer is whole — no state was lent out, none needs
+upstream issuer is whole: no state was lent out, and none needs
 returning. The adoption is additive and reversible by construction.
 For a sustained deployment of the same edge, see
 [federation gateway](/adoption/federation-gateway/).

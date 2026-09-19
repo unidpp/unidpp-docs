@@ -1,11 +1,11 @@
 ---
 title: Verify-only adoption
-description: One binary, no services — the officer's terminal unpacks, checks and grades a pack against a pinned anchor, and never phones home.
+description: One binary, no services; the officer's terminal unpacks, checks and grades
 ---
 
 The verify-only adopter answers one question at one place: *what am
 I looking at, and does it hold?* The adoption is a single binary —
-`unidpp`, the officer's terminal — and an anchor to pin. No services
+`unidpp`, the officer's terminal, and an anchor to pin. No services
 run. No network is required. The terminal unpacks a Tier-A carrier,
 checks its structure and signatures, and prints a graded verdict:
 pass, degraded (with the reason), or fail.
@@ -20,7 +20,7 @@ carrier is the retrieval, resolved by hand or scanner.
 - The anchor: the issuer public key, pinned from a jurisdiction
   trust list, the issuer's keyring, or paper accompanying the
   shipment. Without an anchor, signature slots cannot be verified and
-  the verdict degrades — stated, never silently passed.
+the verdict degrades, and the degradation is stated and never silently passed.
 - The pack: a file from a carrier (QR photograph, scanned text, or a
   transferred file).
 
@@ -47,7 +47,7 @@ carries.
 ## What the terminal catches on its own
 
 The quickstart's second half is the adversarial check. One byte of
-the pack flipped — the damage a relabeller does — and the verdict is
+the pack flipped (the damage a relabeller does), and the verdict is
 `fail` with exit code 2, no services consulted. The signature slot
 does that work: the pack's canonical body is signed by the issuer's
 pack key, and the pinned anchor is that key.

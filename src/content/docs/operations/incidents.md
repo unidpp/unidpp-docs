@@ -5,7 +5,7 @@ description: "The operator's decision tree: down services, dark tunnels, held po
 
 # Incident response
 
-Every scenario below ends in a state you can verify — that is the
+Every scenario below ends in a state you can verify, which is the
 design constraint: journals are append-only, backups are
 checksummed, and drills prove the restore path before you need it.
 
@@ -20,20 +20,20 @@ The tunnel is alive; the origin service is down.
 
 If the service refuses to start, read its log under `run/<name>.log`.
 A journal that fails to replay is a **restore situation**, not a
-delete-the-journal situation — the journal is the record.
+delete-the-journal situation, because the journal is the record.
 
 ## A port is held by the wrong listener
 
 `status` names the holder (the service identity check). Kill by the
-exact PID — `run/*.pid` for the stack's own, `lsof -nP -iTCP:<port>`
-for a foreign one — never by process name.
+exact PID (`run/*.pid` for the stack's own, `lsof -nP -iTCP:<port>`
+for a foreign one) and never by process name.
 
 ## A verification unexpectedly degrades
 
 Run the [verdict](/api/issuer/) with the same `--as-of`: the three
 readings (cryptographic, evidentiary, current-state) name the check
 that degraded. Trust-side questions (anchor rotation, revocations)
-answer from `GET /revocations` on the trust service — including the
+answer from `GET /revocations` on the trust service, including the
 retroactivity semantics and the evidentiary cutoff that protects
 pre-declaration verifiers.
 
@@ -43,15 +43,15 @@ The disk, the host, the room. Recovery is
 [`recover`](/operations/backups/#disaster-recovery-recover): stop
 everything, verify + unpack the newest backup at its original shape,
 restart, `status`. The proof you can do this under pressure is
-`drill --recover` — run it in your routine, not your incident.
+`drill --recover`; run it in your routine, not your incident.
 
 ## Suspicion of state corruption
 
-1. `./unidpp-ops verify <latest-archive>` — is the last good backup
+1. `./unidpp-ops verify <latest-archive>`: is the last good backup
    intact?
-2. `./unidpp-ops drill` — does restore still work end to end?
+2. `./unidpp-ops drill`: does restore still work end to end?
 3. Only then: `./unidpp-ops restore <archive> <tenant> --force` (the
-   current directory is renamed aside, never deleted — the incident's
+current directory is renamed aside, never deleted, and the incident's
    evidence survives by construction).
 
 ## The transparency log is unreachable

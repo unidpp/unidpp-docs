@@ -1,6 +1,6 @@
 ---
 title: Adoption paths
-description: Adoption is any subset of components in any combination, not a sequence — the six paths, what each adopter holds, and the no-orphan rule that binds them.
+description: Adoption is any subset of components in any combination, not a sequence; the
 ---
 
 UniDPP is adopted as a subset, not as a sequence. A customs authority
@@ -20,7 +20,7 @@ The framework guarantees this in two directions:
 - **No orphan capabilities.** Whatever a full host can do, a partial
   adopter can do at the same class level: adopted parts federate with
   the non-adopted remainder through frozen views, the inter-scheme
-  protocol and mapping items. This rule — FW-7 — is pinned by an
+protocol and mapping items. This rule, FW-7, is pinned by an
   adversarial audit (`unidpp-cli` `tests/no_orphan_audit.rs`) that
   reconstructs each capability at the smallest adopter's scope and
   asserts the identical digests and verdicts.
@@ -43,8 +43,8 @@ harness exercises.
 ## Choosing a path
 
 Choose by the question you are answering. If the question is *what
-am I looking at* — at a border, at a service counter, in a
-warehouse — the answer is verify-only. If it is *how do I publish*,
+am I looking at*, at a border, at a service counter or in a
+warehouse, the answer is verify-only. If it is *how do I publish*,
 it is publish-only. If it is *my consumers already speak EN 18222 or
 UNTP*, it is augment-existing. If it is *my jurisdiction needs a
 register of profiles, data elements and mappings*, it is registry

@@ -9,7 +9,7 @@ optional RFC 3161 external anchoring. In the reference deployment it binds
 `127.0.0.1:8392` as log `unidpp-pilot-log-1`.
 
 **Deliberately absent: any enumeration surface.** There is no endpoint that
-lists subjects or commitments — a transparency log is verifiable without
+lists subjects or commitments, because a transparency log is verifiable without
 being browsable. The journal file and receipts are the audit interfaces.
 
 ## Endpoints
@@ -44,7 +44,7 @@ $ curl -s http://127.0.0.1:8392/receipt/0 | jq '{seq, subject, log_id}'
 ```
 
 The discovery document publishes the operator key (id, suite, public key hex,
-fingerprint) — pin it alongside the log id.
+fingerprint) and pin it alongside the log id.
 
 ## Verifying a receipt
 
@@ -58,7 +58,7 @@ The recipe, from the discovery document:
 
 Invariants: sequence numbers are strictly monotonic; heads are signed at
 append time over `tree_size + root + timestamp` and never move backwards; no
-enumeration (see above). Quorum today is M=1 of K=1 — one honest operator —
+enumeration (see above). Quorum today is M=1 of K=1, one honest operator,
 with the documented succession path (M-of-K log-of-logs; the master-list
 verification already exists in the trust service).
 
@@ -85,11 +85,11 @@ Direct environment:
 
 - **TSA anchoring degrades explicitly.** Every append's tree head is also
   submitted to the TSA when configured; an unreachable or refusing TSA
-  records the failure — the anchor is never silently skipped.
+records the failure, and the anchor is never silently skipped.
 - **Bad configuration exits loudly.** A malformed `UNIDPP_LOG_BIND` is
   ignored with a warning; an invalid log id or suite prevents startup.
 - **Journal replay discipline.** The journal replays with the same
   monotonic-sequencing checks it appends with; a torn tail stops replay at
   the last whole record.
 - On a sovereign deployment, a configured TSA URL under a `none` egress
-  policy is refused at **manifest validation** — before anything runs.
+policy is refused at **manifest validation**, before anything runs.
