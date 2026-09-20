@@ -72,7 +72,7 @@ Run a backup operation.
 ### POST `/backups/drill`
 
 POST /backups/drill — run the restore rehearsal through the
-operator script (session-gated; the script owns the logic).
+durability program (session-gated; the program owns the logic).
 
 **Request body**: The drill form: the bundle to restore
 
