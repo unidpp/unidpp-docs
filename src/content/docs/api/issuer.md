@@ -202,7 +202,7 @@ List the locally registered profiles.
 
 Register a profile locally and forward it to the configured registry.
 
-**Request body**: `profile_id` and `definition` are required; optional `version` (default `1.0.0`), `register_id`, `jurisdiction`, and `data_points` (an array of non-empty strings)
+**Request body**: `profile_id` and `definition` are required; optional `version` (default `1.0.0`), `register_id`, `jurisdiction`, `issuer_class` (default `declaration`), and `data_points` (an array of non-empty strings). The registration is forwarded in its signed form: the issuer composes the manifest and signs it in the Profile domain
 
 **Responses**
 

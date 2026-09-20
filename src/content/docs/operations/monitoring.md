@@ -57,7 +57,7 @@ calls, so a down service costs a dash, not an outage of the page.
 ## Performance: the NF-1 bench
 
 The performance requirement's three numbers are measured, not
-asserted; `unidpp-e2e` `scripts/bench-nf1.sh` (harness test 10 in
+asserted; the family harness's NF-1 leg (harness test 10 in
 CI):
 
 | Number | Bar | Reference measurement |
@@ -69,7 +69,7 @@ CI):
 Run it on your own class of machine:
 
 ```sh
-$ cd unidpp-e2e && UNIDPP_BENCH_VIEWS=1 ./scripts/bench-nf1.sh
+$ cd unidpp-e2e && UNIDPP_BENCH_VIEWS=1 cargo run --release --manifest-path harness/Cargo.toml --bin unidpp-harness
 ```
 
 The two offline numbers gate (a regression fails the harness); the
