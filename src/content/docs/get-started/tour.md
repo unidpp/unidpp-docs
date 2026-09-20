@@ -3,7 +3,7 @@ title: Five-minute tour
 description: Five queries against the running reference stack that show the system working end to end.
 ---
 
-The reference stack runs seven services on loopback. This tour issues the five
+The reference stack runs ten services on loopback. This tour issues the five
 canonical queries, one per service boundary, and explains what each answer
 proves. If a command fails, see [run the reference stack](/get-started/reference-stack/)
 first.
@@ -11,7 +11,7 @@ first.
 ## 0. The stack is up
 
 ```sh
-$ cd unidpp-pilot-data && ./stack.sh status
+$ cd unidpp-pilot-data && ./ops/target/release/unidpp-stack status
   registry   (unidpp-registry)  http://127.0.0.1:8390  healthy
   trust      (unidpp-trust)     http://127.0.0.1:8391  healthy
   log        (unidpp-log)       http://127.0.0.1:8392  healthy
@@ -19,6 +19,9 @@ $ cd unidpp-pilot-data && ./stack.sh status
   projector  (unidpp-projector) http://127.0.0.1:8394  healthy
   gateway    (unidpp-gateway)   http://127.0.0.1:8395  healthy
   archive    (unidpp-archive)   http://127.0.0.1:8396  healthy
+  hub        (unidpp-hub)       http://127.0.0.1:8397  healthy
+  console    (unidpp-console)   http://127.0.0.1:8389  healthy
+  jp-registry (unidpp-registry) http://127.0.0.1:8399  healthy
 ```
 
 Every service answers `GET /healthz` with `ok` and serves a discovery document

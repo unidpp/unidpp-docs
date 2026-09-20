@@ -24,7 +24,7 @@ signatures.
 
 ## The quickstart
 
-The exercised form is `unidpp-e2e/scripts/quickstart-publish-only.sh`
+The exercised form is `unidpp-demo quickstart publish-only` in `unidpp-e2e`
 (CI test 7):
 
 ```sh

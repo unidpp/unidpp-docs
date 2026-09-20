@@ -19,8 +19,9 @@ schema, different validated guarantees.
 
 ## `reference`
 
-The public demonstration deployment: seven services, loopback binds, one
-tunnel to the public registry URL. Egress is `external` because the stack's
+The public demonstration deployment: ten services (the eight stack services,
+the console, and the JP peer), loopback binds, named tunnels to the chosen
+public surfaces. Egress is `external` because the stack's
 services call each other as upstreams (issuer → registry, gateway → issuer,
 archive → log). It runs in dev mode, with open mutations and seeded-dev keyrings,
 because it exists to be probed, not trusted.

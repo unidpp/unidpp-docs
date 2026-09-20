@@ -18,25 +18,25 @@ named tunnel.
 
 ### 1. The node is a service block, not a fork
 
-`stack.sh` starts the JP node with the rest of the stack, with the same binary,
-different journal, different port:
+`unidpp-stack up` starts the JP node with the rest of the stack, with the
+same binary, different journal, different port. The orchestrator's service
+table carries it as one entry:
 
 ```sh
-start_service jp-registry unidpp-registry 8399 60 \
-  UNIDPP_REGISTRY_BIND=127.0.0.1:8399 \
-  UNIDPP_REGISTRY_STATE_FILE="$JP_REGISTRY_JOURNAL"
+name: "jp-registry", repo: "unidpp-registry", port: 8399
+  UNIDPP_REGISTRY_BIND=127.0.0.1:8399
+  UNIDPP_REGISTRY_STATE_FILE=jp-registry-journal.jsonl
 ```
 
 No code differs from the global registry. A peer is a deployment decision.
 
 ### 2. Seed the jurisdiction's own data
 
-`seed-jp.sh` registers the JP road-traffic profile and its binding **on the
-JP node**, carrying JP data decided in JP:
+`unidpp-stack seed-jp` registers the JP road-traffic profile and its binding
+**on the JP node**, carrying JP data decided in JP:
 
 ```sh
-$ ./seed-jp.sh
-seeding the JP national peer node (http://127.0.0.1:8399)
+$ ./ops/target/release/unidpp-stack seed-jp
   [ok]   jp-road-traffic profile registered
   [ok]   jp-road-traffic binding registered
 JP node seeded: 1 profile + 1 applicability binding (its own journal, its own register)
@@ -63,8 +63,8 @@ consumer that must reconcile both uses
 
 The JP node reaches the public internet the way every UniDPP surface does:
 a named tunnel, ingress `registry-jp.unidpp.org` → `127.0.0.1:8399`, adopted
-or started by `stack.sh` when `jp-tunnel.token` is present. No token, no
-tunnel, and the node stays loopback, which is itself a valid (sovereign)
+or started by `unidpp-stack up` when `jp-tunnel.token` is present. No token,
+no tunnel, and the node stays loopback, which is itself a valid (sovereign)
 posture.
 
 ## What lives where

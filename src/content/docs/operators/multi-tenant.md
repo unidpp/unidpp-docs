@@ -1,16 +1,15 @@
 ---
 title: Multi-tenant operations
-description: Running whitelabel and sovereign deployments side by side, covering the tenant directory, up.sh, and what isolation means.
+description: Running whitelabel and sovereign deployments side by side, covering the tenant directory, the unidpp-stack tenant runner, and what isolation means.
 ---
 
 A tenant is a directory: one operator manifest plus its journals. Nothing
-else. The launcher (`tenants/up.sh`) reads the manifest, renders each
+else. The runner (`unidpp-stack tenant`) reads the manifest, renders each
 declared service's environment through `unidpp-config render-env`, and starts
 the same binaries the reference deployment runs. **Zero per-tenant code.**
 
 ```
 tenants/
-├── up.sh                    # the launcher: <name> [start|stop|status]
 ├── acme/
 │   ├── unidpp-operator.yaml # whitelabel, EU
 │   ├── registry-journal.jsonl
@@ -27,46 +26,47 @@ directory per tenant.
 ## The lifecycle
 
 ```sh
-$ ./tenants/up.sh acme start
-tenant acme:
+$ ./ops/target/release/unidpp-stack tenant acme up
+tenant acme (up):
   registry: started (pid 35999)
   issuer: started (pid 36003)
   console: started (pid 21035)
 
-$ ./tenants/up.sh acme status
+$ ./ops/target/release/unidpp-stack tenant acme status
 tenant acme (status):
   registry: running (pid 35999)
   issuer: running (pid 36003)
   console: running (pid 21035)
 
-$ ./tenants/up.sh acme stop
+$ ./ops/target/release/unidpp-stack tenant acme down
 tenant acme (stop):
   stopped acme/registry
   stopped acme/issuer
   stopped acme/console
 ```
 
-`start` is idempotent: a service with a live pid file is reported
-`already running` and left alone. `stop` kills by pid file; journals are
+`up` is idempotent: a service with a live pid file is reported
+`already running` and left alone. `down` kills by pid file; journals are
 never touched, so a stopped tenant restarts with its state replayed.
 
 ## Upgrades
 
 An upgrade is new binaries over unchanged state. The compatibility contract
 is the journal: every service replays its append-only JSONL on start, and
-the manifest's API version (`unidpp.org/v1`) is pinned, and a launcher or
-manifest the running schema does not accept is a loud error, not a
+the manifest's API version (`unidpp.org/v1`) is pinned, and a manifest the
+running schema does not accept is a loud error, not a
 silent-misconfiguration risk.
 
-The procedure, per the launcher's own behavior:
+The procedure, per the runner's own behavior:
 
-1. **Stop**: `./tenants/up.sh <name> stop` (or `./stack.sh stop` for the
-   reference deployment). Journals are preserved by both; nothing is wiped.
+1. **Stop**: `unidpp-stack tenant <name> down` (or `unidpp-stack down` for
+   the reference deployment). Journals are preserved by both; nothing is
+   wiped.
 2. **Build the new binaries**: `cargo build --release` per repository.
-   `stack.sh` rebuilds only when a binary is missing; force a rebuild of a
-   present-but-stale tree with `UNIDPP_FORCE_BUILD=1 ./stack.sh start`.
+   `unidpp-stack` rebuilds only when a binary is missing; force a rebuild
+   of a present-but-stale tree with `UNIDPP_FORCE_BUILD=1 unidpp-stack up`.
 3. **Start**: the same start command; every service replays its journal
-   (`stack.sh status` shows the journal record and item counts).
+   (`unidpp-stack status` shows the journal record and item counts).
 4. **Verify**: same acceptance as a
    [restore](/operators/backup-restore/): the registry serves the same item
    count as before the upgrade, and the log verifies its head
@@ -80,7 +80,7 @@ first when the jump is large, because the restore procedure is the rollback.
 
 
 The console needs one variable the manifest cannot express (its own manifest
-path), which `up.sh` supplies: `UNIDPP_CONSOLE_MANIFEST=tenants/<name>/unidpp-operator.yaml`.
+path), which the runner supplies: `UNIDPP_CONSOLE_MANIFEST=tenants/<name>/unidpp-operator.yaml`.
 
 ## What a tenant declares
 
@@ -108,7 +108,7 @@ What separates tenants from each other and from the reference deployment:
 - **Journals.** Each service's `state_file` points inside the tenant
   directory. State never crosses tenants.
 - **Ports.** Each tenant's binds are its own (acme on 93xx, acme-cn on 95xx).
-  The launcher does not invent ports; the manifest declares them and a
+  The runner does not invent ports; the manifest declares them and a
   collision is a manifest fix.
 - **Keys.** Each issuer derives its keyring from its seed environment.
   Two tenants' packs verify against two different published anchors. (Dev
@@ -127,7 +127,7 @@ The family's working convention:
 
 | Range | User |
 |---|---|
-| 8389-8396 | reference deployment (console + seven services) |
+| 8389-8397 | reference deployment (console, the seven core services, and the hub on 8397) |
 | 8399 | JP national peer registry |
 | 93xx | whitelabel tenants (acme: 9389 console, 9390 registry, 9393 issuer) |
 | 95xx | sovereign tenants (acme-cn: 9589 console, 9590 registry, 9593 issuer) |
@@ -164,7 +164,7 @@ changed.
    `tenants/acme/`, the closest profile).
 2. `unidpp-config validate tenants/<name>/unidpp-operator.yaml` until it
    passes.
-3. `./tenants/up.sh <name> start`.
+3. `./ops/target/release/unidpp-stack tenant <name> up`.
 4. Probe: `curl -s http://127.0.0.1:<console-port>/.well-known/unidpp-service`.
 
 The full procedure with branding, tokens, and tunnel is
@@ -179,7 +179,7 @@ aside, never delete:
 ./unidpp-ops decommission northwind
 #   stopped (if running) -> a final VERIFIED data-only bundle
 #   -> tenants/northwind -> tenants/northwind.retired.<stamp>
-#   reversal:  mv back && ./tenants/up.sh northwind start
+#   reversal:  mv back && ./ops/target/release/unidpp-stack tenant northwind up
 ```
 
 The bundle is the audit artifact; the rename-aside is the reversal

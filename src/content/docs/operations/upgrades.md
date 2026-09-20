@@ -38,8 +38,8 @@ and in announcing the maintenance window:
 1. `./unidpp-ops backup`: snapshot first, always.
 2. Swap the binaries (the [on-prem bundle](/operators/multi-tenant/)
    carries its own verified archive).
-3. Restart through `./stack.sh stop && ./stack.sh start`.
-4. `./stack.sh status`: everything healthy, public hostnames 200.
+3. Restart through `unidpp-stack down && unidpp-stack up`.
+4. `unidpp-stack status`: everything healthy, public hostnames 200.
 5. `./unidpp-ops verify <the step-1 archive>`: the net is intact.
 
 If anything fails: journals are append-only, so the pre-upgrade state

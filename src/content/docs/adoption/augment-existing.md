@@ -22,7 +22,7 @@ issuer behind it implements Part 2.
 
 ## The quickstart
 
-The exercised form is `unidpp-e2e/scripts/quickstart-gateway.sh`
+The exercised form is `unidpp-demo quickstart gateway` in `unidpp-e2e`
 (CI test 8):
 
 ```sh

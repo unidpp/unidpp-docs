@@ -24,7 +24,7 @@ is `acme-cn`).
 
 - The UniDPP family checked out side by side, with `unidpp-pilot-data` among
   the repositories, and the service binaries built
-  (`cargo build --release` per repo; `stack.sh` builds missing ones).
+  (`cargo build --release` per repo; `unidpp-stack` builds missing ones).
 - Pick a port decade nobody in your workspace uses. The pilot's convention:
   reference 838x-839x, whitelabel tenants 93xx, sovereign tenants 95xx. This
   walkthrough uses 9389 (console), 9390 (registry), 9393 (issuer).
@@ -90,24 +90,24 @@ If your manifest references `${VAR}` tokens, export them before validating
 ## 3. Start the tenant (1 minute)
 
 ```sh
-$ ./tenants/up.sh acme start
-tenant acme:
+$ ./ops/target/release/unidpp-stack tenant acme up
+tenant acme (up):
   registry: started (pid 35999)
   issuer: started (pid 36003)
   console: started (pid 21035)
 ```
 
-The launcher renders each service's environment from the manifest
+The runner renders each service's environment from the manifest
 (`unidpp-config render-env`) and starts the same binaries the reference
-deployment runs. Zero per-tenant code. `start` is idempotent: re-running
+deployment runs. Zero per-tenant code. `up` is idempotent: re-running
 reports `already running` and touches nothing:
 
 ```sh
-$ ./tenants/up.sh acme start
-tenant acme:
-  registry: already running
-  issuer: already running
-  console: already running
+$ ./ops/target/release/unidpp-stack tenant acme up
+tenant acme (up):
+  registry: already running (pid 35999)
+  issuer: already running (pid 36003)
+  console: already running (pid 21035)
 ```
 
 ## 4. Verify what is running (1 minute)
@@ -213,28 +213,30 @@ the honest flag that you have not.
 
 Tenant services bind loopback; publication is a tunnel, never a bind change.
 The pilot's pattern: a cloudflared named tunnel per published surface, its
-token in a file the launcher adopts (`tunnel.token`, `jp-tunnel.token`,
-`console-tunnel.token` at the pilot root for the reference surfaces). The
-running pilot demonstrates all three; `stack.sh status` reports:
+token in a file the orchestrator adopts (`tunnel.token`, `jp-tunnel.token`,
+`console-tunnel.token` at the pilot root for the reference surfaces; the
+orchestrator adopts `trust-tunnel.token` and `log-tunnel.token` the same way
+when they are present). The running pilot demonstrates the first three;
+`unidpp-stack status` reports:
 
 ```
-tunnel: running (pid 61606) -> registry.unidpp.org
-jp-tunnel: running (pid 61610) -> registry-jp.unidpp.org
+  tunnel: running -> https://registry.unidpp.org (public 200)
+  jp-tunnel: running -> https://registry-jp.unidpp.org (public 200)
 ```
 
 For your tenant: create a named tunnel with ingress
 `your.hostname` → `http://127.0.0.1:<your-console-or-registry-port>`, place
-its token where your launcher looks, and expose exactly the surface you
+its token where your runner looks, and expose exactly the surface you
 chose. Everything else stays loopback.
 
 ## 8. Schedule backups (1 minute)
 
 Your tenant's state is its manifest plus its journals, safe to copy while
 services run, with the log tree head as the cross-service consistency point.
-The `unidpp-ops backup` / `restore` commands are landing (see the honest
-status and the manual procedure in
-[backup and restore](/operators/backup-restore/)); today the manual `tar` +
-`shasum` procedure takes under a minute and restores by replay.
+The `unidpp-ops` program provides the `backup` and `restore` commands (see
+[backup and restore](/operators/backup-restore/)); the manual `tar` +
+`shasum` procedure remains the transparent form of the same contract, takes
+under a minute, and restores by replay.
 
 ## The sovereign variant (3 minutes away)
 
@@ -265,7 +267,7 @@ The validator does the enforcing: `sovereign` + any egress beyond `none`
 without a recorded `egress_override_reason` refuses to load, and a sovereign
 log with a TSA URL under a `none` policy is a contradiction, rejected. Every
 pack this issuer mints is SM2-signed. The same three-step procedure —
-validate, `up.sh <name> start`, probe, applies.
+validate, `unidpp-stack tenant <name> up`, probe, applies.
 
 ## The national-peer variant
 

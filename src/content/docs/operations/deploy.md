@@ -1,29 +1,30 @@
 ---
 title: "Operations: deployment and the always-on loop"
-description: "Run the stack: stack.sh start/stop/status, the containerized variant, tenants, and the always-on operating loop."
+description: "Run the stack: unidpp-stack up/down/status, the containerized variant, tenants, and the always-on operating loop."
 ---
 
 # Deployment and the always-on loop
 
 The reference deployment lives in
-[unidpp-pilot-data](https://github.com/unidpp/unidpp-pilot-data): nine
+[unidpp-pilot-data](https://github.com/unidpp/unidpp-pilot-data): ten
 services on `127.0.0.1:8389-8399`, each an append-only journal plus a
-binary, all wired by one operator manifest.
+binary, all wired by one operator manifest and orchestrated by the
+`unidpp-stack` program.
 
 ```sh
-./stack.sh start     # build-if-needed + start every service + wait healthy
-./stack.sh status    # the truth: per-service health, journals, and every
-                     # public hostname probed THROUGH its tunnel
-./stack.sh stop      # stop everything; journals are preserved
+./ops/target/release/unidpp-stack up     # build-if-needed + start every service + wait healthy
+./ops/target/release/unidpp-stack status # the truth: per-service health, journals, and every
+                                         # public hostname probed THROUGH its tunnel
+./ops/target/release/unidpp-stack down   # stop everything; journals are preserved
 ```
 
-`start` is the **idempotent repair**: healthy services are reused
+`up` is the **idempotent repair**: healthy services are reused
 untouched, dead ones restart (journals replay on start), and every
 tunnel is re-ensured. A second run is a no-op, which makes it safe as
 a cron watch:
 
 ```cron
-*/10 * * * * cd <pilot-dir> && ./stack.sh start >/dev/null 2>&1
+*/10 * * * * cd <pilot-dir> && ./ops/target/release/unidpp-stack up >/dev/null 2>&1
 ```
 
 ## What status actually checks
@@ -41,21 +42,21 @@ a cron watch:
 
 Never `pkill`/`killall` by process name on a host running the stack —
 the stack's services share binary names with test instances. Kill by
-the exact PID from `run/*.pid`, or `./stack.sh stop`. After any local
-test run that spawned services, `./stack.sh status` to confirm the
+the exact PID from `run/*.pid`, or `unidpp-stack down`. After any local
+test run that spawned services, `unidpp-stack status` to confirm the
 stack's integrity.
 
 ## The containerized variant
 
 `docker-compose.yml` in the same repo runs the identical stack
-containerized (same ports, same env wiring; `stack.sh` stays the
+containerized (same ports, same env wiring; `unidpp-stack` stays the
 primary path). Journals and the passport store are bind-mounted so
 state survives restarts.
 
 ## Tenants
 
 A tenant is a manifest: `tenants/<name>/unidpp-operator.yaml` +
-journals. `./tenants/up.sh <name> [start|stop|status]` renders the
+journals. `unidpp-stack tenant <name> [up|down|status]` renders the
 service environment from the manifest (`unidpp-config render-env`)
 and runs exactly the declared services. Whitelabel and sovereign
 deployments are manifest deltas; see

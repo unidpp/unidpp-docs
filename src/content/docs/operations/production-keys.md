@@ -50,5 +50,5 @@ new key, declare the old one superseded; see the
 
 Deterministic seeds make the reference stack reproducible: the same
 seed → the same public anchors → the same transcripts. They are
-published in the demo scripts on purpose. Never reuse them where a
+published in the demo program's source on purpose. Never reuse them where a
 real duty attaches.

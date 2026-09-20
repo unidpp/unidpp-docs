@@ -40,7 +40,8 @@ operator does with it.
 ## Who these docs are for
 
 - **Operators** run a deployment: one `unidpp-operator.yaml` file, the
-  `stack.sh` / `tenants/up.sh` launchers, and the admin console. Start with
+  `unidpp-stack` orchestrator (stack and tenant launches alike), and the
+  admin console. Start with
   [the operator's manual](/operators/manifest/).
 - **Integrators** call the services: the [service references](/services/registry/)
   list every endpoint, environment variable, error, and degradation rule.
@@ -52,7 +53,7 @@ operator does with it.
 1. [Five-minute tour](/get-started/tour/): the five queries that show the
    system working.
 2. [Run the reference stack](/get-started/reference-stack/): build and start
-   all seven services on one machine.
+   all ten services on one machine.
 3. [Your first passport, pack, and verification](/get-started/first-passport/) —
    issue a passport, mint the offline pack, verify it against the issuer's
    published anchor.
@@ -62,8 +63,9 @@ operator does with it.
 ## Conventions
 
 - Commands assume a checkout of the UniDPP family (the service repositories
-  side by side) with the reference deployment running on `127.0.0.1:8390-8396`,
-  the JP peer on `8399`, and the operator console on `8389`.
+  side by side) with the reference deployment running on `127.0.0.1:8390-8397`
+  (the hub on 8397), the JP peer on `8399`, and the operator console on
+  `8389`.
 - The reference deployment runs in dev mode: no admin tokens, seeded-dev
   keyrings, everything loopback. It is a demonstration pilot. Production
 deployments, whitelabel and sovereign tenants, are declared by manifest,

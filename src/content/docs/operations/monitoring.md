@@ -1,6 +1,6 @@
 ---
 title: "Operations: monitoring"
-description: "What to watch: stack.sh status, the console's dashboard, and how to read the public probes."
+description: "What to watch: unidpp-stack status, the console's dashboard, and how to read the public probes."
 ---
 
 # Monitoring
@@ -8,7 +8,7 @@ description: "What to watch: stack.sh status, the console's dashboard, and how t
 The stack observes itself with three honest surfaces, and no metrics
 infrastructure required, and each degrades visibly rather than lying.
 
-## stack.sh status
+## unidpp-stack status
 
 The one-command truth ([deployment](/operations/deploy/)): every
 service's health **and identity** (a healthy listener of the wrong
@@ -44,10 +44,10 @@ calls, so a down service costs a dash, not an outage of the page.
 ## Reading the public probes
 
 - **502 through a tunnel**: cloudflared is alive but the origin
-  service is down: restart via `./stack.sh start`; the journal
+  service is down: restart via `unidpp-stack up`; the journal
   replays.
 - **000 / no route to host**: the tunnel process itself is down or
-  the DNS record is missing: re-ensure with `./stack.sh start`
+  the DNS record is missing: re-ensure with `unidpp-stack up`
   (tunnels restart from their token files) and check the tunnel
   provisioning block in the pilot README.
 - **`/healthz` 200 but wrong data**: a stale binary or a foreign

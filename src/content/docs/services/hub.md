@@ -65,5 +65,5 @@ Configuration is three environment variables: `UNIDPP_HUB_BIND`,
 it the keyring runs in seeded-dev mode and says so on every start).
 Backups: nothing to back up. Upgrades: restart, because the hub held
 nothing before and holds nothing after. See the [hub attachment
-quickstart](https://github.com/unidpp/unidpp-e2e/blob/main/scripts/quickstart-hub.sh)
-for the walked path.
+quickstart](https://github.com/unidpp/unidpp-e2e) (`unidpp-demo quickstart
+hub`) for the walked path.

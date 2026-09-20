@@ -108,7 +108,7 @@ Direct environment (deployment-level, not manifest fields):
   responses. Point-in-time queries are the registry's core function, not an
   audit add-on.
 - **No dedup on applicability.** Binding the same profile twice creates two
-bindings, and the seed script's idempotence works by querying first. This is
+bindings, and `unidpp-stack seed`'s idempotence works by querying first. This is
   deliberate (bindings are dated facts), and an operator error you notice at
   query time.
 - **Intake checks.** Item intake validates the profile-manifest schema,

@@ -6,9 +6,10 @@ description: "The durability contract as a routine: nightly backups, retention r
 # Backups, schedules, and restore drills
 
 A deployment is data: the manifest, every journal, the seed assets.
-`unidpp-ops` (in
-[unidpp-pilot-data](https://github.com/unidpp/unidpp-pilot-data))
-packages that contract as four commands and a routine around them.
+The `unidpp-ops` program (in
+[unidpp-pilot-data](https://github.com/unidpp/unidpp-pilot-data),
+built from `ops-tools/`) packages that contract as its commands and a
+routine around them.
 See also [Backup and restore](/operators/backup-restore/) for the
 concepts.
 
@@ -56,9 +57,9 @@ rehearsal. When the deployment itself is lost, `recover` brings it
 back at its ORIGINAL shape:
 
 ```sh
-./stack.sh stop                    # recover refuses while services run
-./unidpp-ops recover <archive>     # verify -> rename aside -> unpack
-./stack.sh start && ./stack.sh status
+./ops/target/release/unidpp-stack down # recover refuses while services run
+./unidpp-ops recover <archive>          # verify -> rename aside -> unpack
+./ops/target/release/unidpp-stack up && ./ops/target/release/unidpp-stack status
 ```
 
 Safety shape: every checksum verified first; any running service is

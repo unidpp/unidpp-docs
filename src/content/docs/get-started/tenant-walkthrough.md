@@ -39,11 +39,11 @@ re-renders in the new colors on the next load.
 ## 3. Start it
 
 ```sh
-./tenants/up.sh northwind start
+./ops/target/release/unidpp-stack tenant northwind up
 #   registry: started (pid …)
 #   issuer: started (pid …)
 #   console: started (pid …)
-./tenants/up.sh northwind status
+./ops/target/release/unidpp-stack tenant northwind status
 ```
 
 The runner renders each service's environment from the manifest

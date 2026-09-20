@@ -75,4 +75,4 @@ error names the file and the reason.
   truncates the live manifest.
 - **Unset secret variables are advisory.** A `${VAR}` missing from the
 console's environment is explained (export it and save again), and the editor
-  stages the file; the launcher resolves the environment.
+  stages the file; the runner resolves the environment.

@@ -9,14 +9,14 @@ while services run, and the `unidpp-ops backup`/`unidpp-ops restore` tooling
 contract.
 
 > **Status of the tooling.** The `unidpp-ops` backup/restore commands are
-> <https://github.com/unidpp/unidpp-pilot-data> (`unidpp-ops`). The manual
+> implemented by the [`unidpp-ops` program](https://github.com/unidpp/unidpp-pilot-data)
+> (built from `ops-tools/` in unidpp-pilot-data). The manual
 > `tar`+`shasum` procedure below is kept as the transparent form of the same
-> contract; read it to understand what the script does.
+> contract; read it to understand what the program does.
 > Everything below about the state layout and the consistency contract is
 > verified against the running deployment; the exact command surface
 > (`unidpp-ops backup <tenant>`, `unidpp-ops restore <archive> <tenant>`,
-> the console Backups page) is the contract the tool implements. Until it
-> lands, the manual procedure at the end of this page is the honest path.
+> the console Backups page) is the contract the tool implements.
 
 ## What constitutes a deployment's state
 
@@ -101,7 +101,7 @@ file, so the backup is verifiable the same way everything else in the
    archive is a hard failure naming the file.
 3. **Validate the manifest** with `unidpp-config validate`; a restore of a
    manifest that no longer validates is refused.
-4. Start via `tenants/up.sh <tenant>`; journals replay.
+4. Start via `unidpp-stack tenant <tenant> up`; journals replay.
 
 **Acceptance** (the test the tooling must pass): backup → restore → start →
 the registry serves the same item count as before, and the log verifies its
@@ -125,12 +125,12 @@ $ mkdir -p unidpp-pilot-data/tenants/acme-restored
 $ tar -C unidpp-pilot-data/tenants/acme-restored -xzf acme-backup-<stamp>.tgz
 # (adjust the manifest's state_file paths if the directory name changed)
 $ unidpp-config validate unidpp-pilot-data/tenants/acme-restored/unidpp-operator.yaml
-$ ./tenants/up.sh acme-restored start   # journals replay
+$ ./ops/target/release/unidpp-stack tenant acme-restored up   # journals replay
 ```
 
-The console's Backups page (landing with the tooling) will list backups in
-the configured directory, trigger one by invoking the script (the console
-never reimplements the logic) and show the consistency point. It is
+The console's Backups page lists backups in
+the configured directory, triggers one by invoking the program (the console
+never reimplements the logic), and shows the consistency point. It is
 session-gated like every console mutation.
 
 ## What backups do not include

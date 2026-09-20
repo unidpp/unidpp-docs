@@ -29,11 +29,11 @@ protocol and mapping items. This rule, FW-7, is pinned by an
 
 | Path | What the adopter holds | Quickstart |
 |---|---|---|
-| [Verify-only](/adoption/verify-only/) | One binary, the officer's terminal | `scripts/quickstart-verify-only.sh` |
-| [Publish-only](/adoption/publish-only/) | One issuer deployment | `scripts/quickstart-publish-only.sh` |
-| [Augment-existing](/adoption/augment-existing/) | An existing system plus the gateway | `scripts/quickstart-gateway.sh` |
+| [Verify-only](/adoption/verify-only/) | One binary, the officer's terminal | `unidpp-demo quickstart verify-only` |
+| [Publish-only](/adoption/publish-only/) | One issuer deployment | `unidpp-demo quickstart publish-only` |
+| [Augment-existing](/adoption/augment-existing/) | An existing system plus the gateway | `unidpp-demo quickstart gateway` |
 | [Registry participant](/adoption/registry-participant/) | The registry service | — |
-| [Federation gateway](/adoption/federation-gateway/) | The gateway, sustained | `scripts/quickstart-gateway.sh` |
+| [Federation gateway](/adoption/federation-gateway/) | The gateway, sustained | `unidpp-demo quickstart gateway` |
 | [Full host](/adoption/full-host/) | The reference stack and console | [Run the reference stack](/get-started/reference-stack/) |
 
 The first three quickstarts run in continuous integration

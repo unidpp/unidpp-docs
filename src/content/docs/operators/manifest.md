@@ -13,7 +13,7 @@ between the reference deployment and a tenant: the manifest is the product.
 This page documents **every field** of the manifest schema
 (`api_version: unidpp.org/v1`). Each knob below has an anchor (`#api_version`,
 `#services-issuer-pack_suites`, …), and the field list is machine-checked against
-the schema's struct definitions by the coverage script in the docs repository.
+the schema's exported JSON Schema by the coverage check in the docs repository.
 
 ## The file
 
@@ -107,8 +107,9 @@ UNIDPP_LOG_STATE_FILE=run/log-journal.jsonl
 `render-env <service> <manifest>` prints exactly the `UNIDPP_*` variables the
 named service's own environment-based configuration reads, one `KEY=value`
 per line in stable order. It fails when the deployment declares no such
-service block or the name is unknown. `stack.sh` and `tenants/up.sh` launch
-processes from this rendering, which is how manifests drive unmodified binaries.
+service block or the name is unknown. `unidpp-stack` launches processes
+(stack and tenant launches alike) from this rendering, which is how manifests
+drive unmodified binaries.
 
 ---
 
@@ -165,7 +166,7 @@ for the preview. Fields: [`organization`](#branding-organization),
 | Default | no services |
 
 Per-service configuration blocks. **An absent service block means that
-service is not part of this deployment**, and the launcher will neither start it
+service is not part of this deployment**, and `unidpp-stack` will neither start it
 nor render its environment. Present blocks:
 [`registry`](#services-registry), [`trust`](#services-trust), [`log`](#services-log),
 [`issuer`](#services-issuer), [`projector`](#services-projector),
@@ -732,7 +733,7 @@ references never resolving on screen).
 
 The service's append-only JSONL journal, which is the audit log that replays on
 start. Absent = no persistence across restarts. Paths are relative to the
-process working directory; `stack.sh` and `tenants/up.sh` launch from the
+process working directory; `unidpp-stack` launches from the
 pilot-data root, which is why the reference manifest says
 `registry-journal.jsonl` for one service and `run/…` for others.
 
@@ -893,8 +894,9 @@ load.
 
 The three real deployments of the pilot workspace, all validated:
 
-- **reference** — the manifest shown [above](#the-file): seven services, dual
-  pack suites, external egress.
+- **reference** — the manifest shown [above](#the-file): seven service
+  blocks in the excerpt (the live pilot manifest adds the `console` and
+  `hub` blocks), dual pack suites, external egress.
 - **whitelabel (`acme-eu`)** — three services (registry 9390, issuer 9393,
   console 9389), EU residency, `ecdsa-p256` packs, egress `none`, full
   branding block (theme `#7c3aed`/`#f59e0b`, footer links).
@@ -906,12 +908,13 @@ See [multi-tenant operations](/operators/multi-tenant/) for how these run.
 
 ## Coverage check
 
-The docs repository carries a coverage script that extracts every serde
-field name from `unidpp-config`'s schema definitions and checks each has a
+The docs repository carries a coverage check that extracts every field
+name from the exported operator-manifest JSON Schema (of `unidpp-config`,
+the model) and checks each has a
 documented anchor on this page. Run it from the docs repo:
 
 ```sh
-tools/check-manifest-coverage.sh ../unidpp-config/src/lib.rs src/content/docs/operators/manifest.md
+npm run check:manifest
 ```
 
 It prints one line per field and a final `coverage: N/N fields documented`.

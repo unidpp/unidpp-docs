@@ -26,7 +26,7 @@ the verdict degrades, and the degradation is stated and never silently passed.
 
 ## The quickstart
 
-The exercised form is `unidpp-e2e/scripts/quickstart-verify-only.sh`
+The exercised form is `unidpp-demo quickstart verify-only` in `unidpp-e2e`
 (CI test 6). Its steps, as an operator runs them:
 
 ```sh

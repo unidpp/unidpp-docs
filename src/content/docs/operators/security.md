@@ -130,10 +130,10 @@ copy: the file either validates or the deployment does not start.
 2. The **manifest** references them (`${VAR}`); the console editor renders
    references, never resolved values, and the loader refuses unset
    references.
-3. `render-env` output (what a launcher consumes) contains resolved values —
-   treat launcher environments and their logs accordingly; `stack.sh` and
-   `up.sh` write service logs under `run/`, and services do not log their
-   token values.
+3. `render-env` output (what a runner consumes) contains resolved values —
+   treat runner environments and their logs accordingly; `unidpp-stack`
+   writes service logs under `run/` (and `run/tenants/<name>/` for tenant
+   launches), and services do not log their token values.
 4. Backups do not contain secrets by design; see
    [backup and restore](/operators/backup-restore/#what-backups-do-not-include).
 

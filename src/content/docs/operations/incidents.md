@@ -14,8 +14,8 @@ checksummed, and drills prove the restore path before you need it.
 The tunnel is alive; the origin service is down.
 
 ```sh
-./stack.sh status        # confirms: which origin, which tunnel
-./stack.sh start         # the idempotent repair: only the dead restart
+./ops/target/release/unidpp-stack status # confirms: which origin, which tunnel
+./ops/target/release/unidpp-stack up      # the idempotent repair: only the dead restart
 ```
 
 If the service refuses to start, read its log under `run/<name>.log`.
@@ -64,7 +64,7 @@ service says so. Reconnection is a restart; the log's journal replays.
 ## Communications
 
 The reference deployment's status surface IS the incident channel:
-`stack.sh status` output and the console's services matrix are
+`unidpp-stack status` output and the console's services matrix are
 pasteable evidence. For a tenant-facing incident, the tenant's
 manifest name and the affected service binds identify the blast
 radius without exposing anything else.

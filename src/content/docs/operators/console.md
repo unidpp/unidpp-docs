@@ -12,15 +12,15 @@ from `unidpp-operator.yaml` + environment.
 
 ## Starting it
 
-The console is a service block like any other. `stack.sh` starts it on
-`127.0.0.1:8389` for the reference deployment; a tenant's `up.sh` starts it
-from the tenant manifest:
+The console is a service block like any other. `unidpp-stack up` starts it
+on `127.0.0.1:8389` for the reference deployment;
+`unidpp-stack tenant <name> up` starts it from the tenant manifest:
 
 ```sh
-$ ./tenants/up.sh acme start
-tenant acme:
-  registry: already running
-  issuer: already running
+$ ./ops/target/release/unidpp-stack tenant acme up
+tenant acme (up):
+  registry: already running (pid 35999)
+  issuer: already running (pid 36003)
   console: started (pid 21035)
 ```
 
@@ -136,7 +136,7 @@ configuration saves require <code>UNIDPP_CONSOLE_ADMIN_TOKEN</code>.</p>
 ```
 
 This is the pilot reference console's posture (and the acme tenant's, as
-started by `up.sh` without an exported token). It is the correct posture for
+started by `unidpp-stack tenant` without an exported token). It is the correct posture for
 a demonstration; a production deployment exports the token before starting
 the console.
 
