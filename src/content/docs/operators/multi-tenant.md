@@ -116,9 +116,9 @@ What separates tenants from each other and from the reference deployment:
 - **Branding and policy.** Per-tenant manifest: names, theme, footer, pack
   suites, residency, egress.
 
-What is **not** isolated: the binaries (shared, by design), the host, and —
-What is **not** isolated: the binaries (shared, by design), the host, and,
-a process group on your box; treat host access accordingly.
+What is **not** isolated: the binaries (shared, by design), the host, and
+the process table — every tenant is a process group on your box; treat
+host access accordingly.
 
 ## Port allocation
 
@@ -193,6 +193,7 @@ Whitelabel as a separate deployment ships as one verified artifact:
 ```
 
 The bundle carries the tenant's manifest (secrets stay `${VAR}`
+references; render-env substitutes them at the target host), the
 release binaries for exactly the services the manifest declares, its
 own runner (`run.sh`, with binaries from `./bin` and manifest at the
 bundle root), an `.env` template, and a runbook. Its sidecar lists
