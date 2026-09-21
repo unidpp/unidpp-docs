@@ -69,8 +69,7 @@ The procedure, per the runner's own behavior:
    (`unidpp-stack status` shows the journal record and item counts).
 4. **Verify**: same acceptance as a
    [restore](/operators/backup-restore/): the registry serves the same item
-   count as before the upgrade, and the log verifies its head
-   count as before the upgrade, and the log verifies its head
+   count as before the upgrade, and the log verifies its head (a tree size
    that moved backwards is a hard fault).
 
 Between stop and start there is no migration step to forget: if the new
@@ -193,7 +192,6 @@ Whitelabel as a separate deployment ships as one verified artifact:
 ./unidpp-ops bundle acme-cn
 ```
 
-The bundle carries the tenant's manifest (secrets stay `${VAR}`
 The bundle carries the tenant's manifest (secrets stay `${VAR}`
 release binaries for exactly the services the manifest declares, its
 own runner (`run.sh`, with binaries from `./bin` and manifest at the
