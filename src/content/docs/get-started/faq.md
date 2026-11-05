@@ -201,6 +201,14 @@ into an assembly whose passport references the passports of its members
 installation is a typed event with the method, slot and pairing recorded
 (clause 7).
 
+### How do I decide how deep my passport must go?
+
+Your regulation, your industry scheme or your own disclosure decision states
+the depth, and the framework records that statement as data. The six
+dimensions exist so that a depth requirement has an unambiguous place to
+land, and a reader consults a passport through a lens that asks only for the
+depth that the reading requires (clause 13).
+
 ### What is the difference between state and ownership?
 
 State is the condition of the product, such as produced, installed, repaired

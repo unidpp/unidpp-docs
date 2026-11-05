@@ -48,10 +48,19 @@ passport exists.
 A passport can be shallow or deep, and the depth decomposes into six
 independent dimensions, which together are exhaustive: component coverage,
 product composition, lifecycle state, ownership, upstream traceability and
-production traceability. A use case states how deeply it looks along each
-dimension by selecting a lens (clause 13), and the verification verdict states
-what the record actually covered (clause 10), so a reader never confuses what
-a passport declares with what a verifier could reach.
+production traceability. The completeness of the set follows from the
+questions it answers: what the product is made of, in parts and in quantities
+(coverage and composition); what has happened to it (state); who has held it
+(ownership); where its matter came from (upstream traceability); and how it
+was made (production traceability). A question that names matter, such as
+where the metal of a screw was smelted, belongs to upstream traceability,
+while a question that names machines, such as which machine machined the
+screw, belongs to production traceability; the two are stated separately
+because a chain can be deep in one and shallow in the other, and each states
+its own reach. A use case states how deeply it looks along each dimension by
+selecting a lens (clause 13), and the verification verdict states what the
+record actually covered (clause 10), so a reader never confuses what a
+passport declares with what a verifier could reach.
 
 ### 1. Component coverage
 
@@ -83,7 +92,10 @@ Lifecycle state answers the question of what has happened to the product:
 produced, placed on the market, installed into a larger product, repaired,
 retired, recycled or destroyed. The state rides a typed event log (clause 7),
 the lawful transitions between states are enforced at write time, and an
-illegal transition is rejected rather than recorded. The state machine also
+illegal transition is rejected rather than recorded. The dimension is depth
+in time as well as in vocabulary: the record can carry a product beyond its
+first sale, beyond its first product and beyond its first life. The state
+machine also
 knows the crossings that ordinary status lists miss, such as a product
 re-entering trade after recycling as end-of-waste material (clause 8).
 
@@ -109,12 +121,31 @@ verification states what was reachable rather than what was assumed (clause
 ### 6. Production traceability
 
 Production traceability answers the question of how the product was made:
-which machines, which lines and which facilities. The machines participate as
-principals of their own (clause 5), so a machine's commitments enter the
-record as signed statements rather than as prose. Where a quantity is
+which machines, which lines and which facilities. The machining of the screw
+appears in this dimension, as the machine that machined it committing under
+its own principal identity, while the metal the screw was machined from
+appears in the upstream dimension above. The two chains can differ in depth
+without contradiction, and each states its reach as data. Where a quantity is
 measured rather than declared, the measurement enters with its method, its
 calibration chain and its uncertainty (clause 15), because a measurement
 without those three is a claim rather than a result.
+
+### One product, six questions
+
+A single battery shows the six dimensions working together. The battery
+carries its own passport because a regulation demands one, and its passport
+names the cathode-material lot from which it was made, a lot whose own
+passport carries a tonne of incoming material split into balanced trade
+quantities (composition and upstream). The laptop that the battery powers
+references the battery as a covered component, alongside a mainboard that
+carries its own passport and screws that carry none (coverage). The battery's
+record states that a service centre repaired it after an incident, and the
+repair changed its state (lifecycle state); that it was resold on the
+second-hand market in the following year (ownership); and that its cells were
+formed on a named formation line, whose machines committed their statements
+under their own keys (production). When the laptop reaches recycling, the
+battery's materials re-enter trade as end-of-waste product, and the six
+questions begin again over the derived material.
 
 ## How one model records all six dimensions
 
