@@ -1,69 +1,78 @@
 ---
-title: Run the reference stack
-description: Build and start the full UniDPP pilot stack on one machine, seed it, and stop it cleanly.
+title: Run the reference deployment
+description: Operate UniDPP as the reference deployment does — one process, one port, seeded demo data, the console, and the public surfaces — with unidpp-stack.
 ---
 
-The reference deployment is orchestrated by one program:
-`unidpp-stack` in the `unidpp-pilot-data` repository (source at `ops/`,
-invoked from the pilot directory as `./ops/target/release/unidpp-stack`). It
-builds each service if needed, starts them dependency-ordered, waits for each
-to be healthy, and verifies the right service is on the right port before
-declaring success.
+The reference deployment at unidpp.org runs the same one binary this
+documentation installs ([Install and run](/get-started/install-and-run/)),
+operated by one program: `unidpp-stack` in the `unidpp-pilot-data`
+repository (source at `ops/`, invoked from the pilot directory as
+`./ops/target/release/unidpp-stack`). One command starts the whole estate,
+one command verifies it against its committed contracts, and every command
+is idempotent.
 
-## Prerequisites
+## The shape
 
-- A checkout of the UniDPP family, with the service repositories side by side,
-  with `unidpp-pilot-data` among them:
-  `unidpp-registry`, `unidpp-trust`, `unidpp-log`, `unidpp-issuer`,
-  `unidpp-projector`, `unidpp-gateway`, `unidpp-archive`, `unidpp-console`,
-  `unidpp-cli`, `unidpp-config`.
-- Rust toolchain (`cargo`) for the initial build.
-- `curl`, `jq` for the queries this page shows.
-
-Ports used: **8389-8397** (the console, the eight stack services — registry,
-trust, log, issuer, projector, gateway, archive, and the hub on 8397), and
-**8399** (the JP peer registry). All loopback by design; public exposure is a
-per-deployment decision made through a tunnel, not a bind change.
+One process serves every module on **8090**; the operator console keeps its
+own process on **8389** until it folds into the same process. Five public
+hostnames — `registry.unidpp.org`, `registry-jp.unidpp.org`,
+`trust.unidpp.org`, `log.unidpp.org`, `console.unidpp.org` — are deployment
+aliases: each serves the deployment's union contract at `/openapi.yaml`, and
+each module answers at its prefix on every alias, so
+`registry.unidpp.org/trust/healthz` is the trust module's health check. The
+federation peer lives inside the same process as a second registry mounted
+at `/registry-jp` with its own journal.
 
 ## Start
 
 ```sh
 $ cd unidpp-pilot-data
-$ ./ops/target/release/unidpp-stack up
-==> starting registry on http://127.0.0.1:8390
-==> starting trust on http://127.0.0.1:8391
-==> starting log on http://127.0.0.1:8392
-==> starting issuer on http://127.0.0.1:8393
-==> starting projector on http://127.0.0.1:8394
-==> starting gateway on http://127.0.0.1:8395
-==> starting archive on http://127.0.0.1:8396
-==> starting hub on http://127.0.0.1:8397
-==> starting console on http://127.0.0.1:8389
-==> starting jp-registry on http://127.0.0.1:8399
-==> stack up: 8390 registry · 8391 trust · 8392 log · 8393 issuer
-               8394 projector · 8395 gateway · 8396 archive
-               8397 hub (stateless relay) · 8389 console · 8399 JP peer
-==> next: unidpp-stack seed-jp   (idempotent)
+$ ./ops/target/release/unidpp-stack one-up
+==> starting the one deployment on http://127.0.0.1:8090
+==> all eight modules answer behind their prefixes
+==> starting cloudflared named tunnel (registry.unidpp.org -> 127.0.0.1:8090)
+...
+==> one deployment up: http://127.0.0.1:8090
+               registry · trust · log · issuer · views · render · archive · relay · registry-jp
+==> console: 127.0.0.1:8389 (own process until R3 folds it in)
+==> next: unidpp-stack one-verify
 ```
 
-What `up` actually does:
+What `one-up` actually does:
 
-1. **Build if needed.** Each service binary is built (`cargo build --release`)
-   only when missing; `UNIDPP_FORCE_BUILD=1` rebuilds unconditionally.
-2. **Adopt or refuse.** A service already healthy on its port and answering the
-   right identity is adopted (`==> registry already healthy on http://127.0.0.1:8390
-   (reusing)`). A foreign listener on a needed port is a hard error naming the holder.
-3. **Wire the environment.** Every service starts with its `UNIDPP_*`
-environment (binds, state files, upstreams), which are the same variables
-   [the operator manifest](/operators/manifest/) renders.
-4. **Wait for health**, then verify identity via the discovery document's
-   `service` field (all family services answer `ok` on `/healthz`; the
-   identity check is what tells them apart on a shared box).
-5. **Journals replay.** Nothing is wiped; state comes back from the JSONL
+1. **Builds if needed.** The `unidpp-server` binary is built only when
+   missing.
+2. **Adopts or refuses.** A healthy listener answering the deployment's
+   identity is adopted; a foreign listener on the port is a hard error
+   naming the holder.
+3. **Wires one environment.** The one process starts with every module's
+   `UNIDPP_*` keys — the same names [the operator manifest](/operators/manifest/)
+   renders — with the pilot's real journals: the registry journal stays the
+   seed of record at the repo root, and the peer's journal feeds the
+   `/registry-jp` mount.
+4. **Waits for every module** behind its prefix, not only for the process.
+5. **Journals replay.** Nothing is wiped; state returns from the JSONL
    journals on start.
-6. **Tunnels** (optional): if `tunnel.token`, `jp-tunnel.token`, or
-   `console-tunnel.token` are present, a cloudflared named tunnel is adopted
-or started per surface. No token, no tunnel, and the stack stays loopback.
+6. **Starts the tunnels** whose token files exist, each hostname pointing at
+   the one origin. No token, no tunnel, loopback only.
+
+## Verify
+
+```sh
+$ ./ops/target/release/unidpp-stack one-verify
+  union        /openapi.yaml  CURRENT
+  registry     /registry     CURRENT
+  trust        /trust        CURRENT
+  ...
+  relay        /relay        CURRENT
+one-verify: the union and every module serve their committed contracts
+```
+
+`one-verify` pins the deployment twice: the union document must equal the
+server repository's committed golden, and every module's served contract
+must equal its own repository's golden, byte for byte. A stale build or a
+foreign deployment fails here with the module named, and the command exits
+non-zero, which is what makes it safe as a monitoring probe.
 
 ## Seed
 
@@ -71,82 +80,47 @@ or started per surface. No token, no tunnel, and the stack stays loopback.
 $ ./ops/target/release/unidpp-stack seed
 == [1] discovery seed (C3/C4/C5 + C1 units)
   already present (10 units — journal replay)
-== [2] item seed (10 pilot items)
-  present    urn:unidpp:profile:extraction
-  ...
-== [5] demo passport (live issuer)
-  already issued urn:unidpp:passport:pilot-e8-j000842 (issuer journal replay)
-== [6] Tier-A pack + CLI verify (anchor from the issuer /keyring)
-  verified: PASS (exit 0) — the three readings named, coverage complete
-== [7] notarized Tier-C snapshot (anchored in the transparency log)
-== [8] projector two-lens views (at 2028-06-01T00:00:00Z)
-== [9] gateway renders (UNTP triad + EN 18222)
+...
 == [10] as-of applicability for momiji:e8
-  at 2027-06-01: ['urn:unidpp:profile:jp-road-traffic']
-  at 2028-06-01: ['urn:unidpp:profile:eu-machinery-battery', 'urn:unidpp:profile:jp-road-traffic']
-== seed complete — the stack stays up (unidpp-stack status, unidpp-stack down)
-```
-
-The seed is **idempotent**: item and profile registrations tolerate `409`, the
-demo passport is issued once, events are appended only up to the expected
-sequence. Re-running against a seeded stack is safe and produces the demo
-artifacts under `demo/` (the passport view, the Tier-A pack, the CLI
-verification report, the notarized snapshot, both lens views, both gateway
-renders, the as-of proofs).
-
-The JP peer node is seeded separately (it has its own journal and register):
-
-```sh
+== seed complete — the stack stays up
 $ ./ops/target/release/unidpp-stack seed-jp
   [skip] jp-road-traffic profile already present
-  [skip] jp-road-traffic binding already present
 JP node seeded: 1 profile + 1 applicability binding (its own journal, its own register)
 ```
 
-## Status
+The walkthrough seed drives the live modules through the demonstration
+passport and writes its artifacts under `demo/`. It is idempotent:
+registrations tolerate `409`, the demo passport is issued once, events
+append only up to the expected sequence. The JP peer's seed addresses the
+`/registry-jp` mount and is idempotent the same way.
+
+## Status and stop
 
 ```sh
-$ ./ops/target/release/unidpp-stack status
-  registry   (unidpp-registry)  http://127.0.0.1:8390  healthy
-  trust      (unidpp-trust)     http://127.0.0.1:8391  healthy
-  log        (unidpp-log)       http://127.0.0.1:8392  healthy
-  issuer     (unidpp-issuer)    http://127.0.0.1:8393  healthy
-  projector  (unidpp-projector) http://127.0.0.1:8394  healthy
-  gateway    (unidpp-gateway)   http://127.0.0.1:8395  healthy
-  archive    (unidpp-archive)   http://127.0.0.1:8396  healthy
-  hub        (unidpp-hub)       http://127.0.0.1:8397  healthy
-  console    (unidpp-console)   http://127.0.0.1:8389  healthy
-  jp-registry (unidpp-registry) http://127.0.0.1:8399  healthy
-  registry journal: 1550 records -> 1531 items, 8 discovery services
-  applicability (momiji:e8 @2028-06-01): urn:unidpp:profile:eu-machinery-battery, urn:unidpp:profile:jp-road-traffic
-  log tree head: size 5 · root d23b199b96ed73ea…
-  demo artifacts: 13 files under demo/
+$ ./ops/target/release/unidpp-stack one-status
+  one-server  http://127.0.0.1:8090  healthy  v0.1.0  (pid 59403)
+    registry     /registry     healthy
+    ...
+$ ./ops/target/release/unidpp-stack one-down
+==> journals preserved
 ```
 
-`status` exits non-zero if any service is down or a port is held by a foreign
-listener, and it is safe to use as a monitoring probe.
-
-## Stop
-
-```sh
-$ ./ops/target/release/unidpp-stack down
-==> console stopped (pid 1234)
-==> archive stopped (pid 1235)
-...
-==> journals preserved (registry-journal.jsonl, run/*-journal.jsonl)
-```
-
-Stop never deletes state. The journals replay on the next start (`unidpp-stack up`).
+`one-status` shows the process, every module's prefix health, the console
+and each tunnel. `one-down` stops the deployment and its tunnels and never
+deletes state; the journals replay on the next start. A crontab watch runs
+`one-up` every ten minutes, so a deployment that dies comes back, including
+its tunnels — the tunnel binary is resolved absolutely, because the watch
+runs under cron, whose path carries none of the operator's shell extras.
 
 ## Where the state lives
 
 | Path | What |
 |---|---|
 | `registry-journal.jsonl` | the registry's append-only journal (the seed of record) |
-| `jp-registry-journal.jsonl` | the JP peer's journal |
+| `jp-registry-journal.jsonl` | the federation peer's journal |
 | `run/*-journal.jsonl` | trust, log, issuer, archive journals |
 | `run/archive-snapshots/` | one AIP file per notarized snapshot |
-| `run/*.pid`, `run/*.log` | process handles and per-service logs |
+| `run/one-server.pid`, `run/one-server.log` | the deployment's process handle and log |
 | `passports/` | the projector's passport document store |
 | `demo/` | artifacts produced by `unidpp-stack seed` |
 
@@ -155,9 +129,10 @@ this file set.
 
 ## A note on dev mode
 
-The reference stack runs with **no admin tokens** and **seeded-dev keyrings**.
-Every mutation endpoint is open, and every signing key derives from documented
-development seeds. That is the correct posture for a demonstration pilot and
-the wrong posture for anything else; a real deployment sets admin tokens and
-production seeds in its [operator manifest](/operators/manifest/) and
-environment. The whitelabel and sovereign tenants demonstrate the difference.
+The reference deployment runs with **no admin tokens** and **seeded-dev
+keyrings**. Every mutation endpoint is open, and every signing key derives
+from documented development seeds. That is the correct posture for a
+demonstration pilot and the wrong posture for anything else; a real
+deployment sets admin tokens and production seeds in its
+[operator manifest](/operators/manifest/) and environment. The whitelabel
+and sovereign tenants demonstrate the difference.
