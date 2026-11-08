@@ -17,17 +17,21 @@ Two paths exist, and both produce the same binary.
 **Build from source** (the path that works today):
 
 ```sh
-git clone https://github.com/unidpp/unidpp-server
-git clone https://github.com/unidpp/unidpp-registry     # and the family
+for r in unidpp-server unidpp-registry unidpp-trust unidpp-log \
+         unidpp-issuer unidpp-projector unidpp-gateway unidpp-archive \
+         unidpp-hub unidpp-console unidpp-core unidpp-signatif \
+         unidpp-cli unidpp-config; do
+  git clone https://github.com/unidpp/$r
+done
 cd unidpp-server && cargo build --release
 ```
 
-The server compiles the eight module crates by path, so the module
-repositories — `unidpp-registry`, `unidpp-trust`, `unidpp-log`,
-`unidpp-issuer`, `unidpp-projector`, `unidpp-gateway`, `unidpp-archive`,
-`unidpp-hub` — and their two shared crates, `unidpp-core` and
-`unidpp-signatif`, sit side by side with `unidpp-server` in one parent
-directory. The clone-and-build sequence above is exactly that layout.
+The server compiles the module crates by path, so every repository above
+sits side by side in one parent directory: the eight data modules and the
+console, their two shared crates (`unidpp-core`, `unidpp-signatif`), the
+manifest model (`unidpp-config`), and the offline verifier
+(`unidpp-cli`, used in the verification step below). The loop clones
+exactly that layout; the build succeeds with nothing else present.
 
 **Download a release binary.** The release workflow builds Linux x86-64 and
 macOS ARM64 distributions on every tagged version, with a SHA-256 sum beside
@@ -76,6 +80,67 @@ bytes its repository pins as a golden — sits at `/<module>/openapi.yaml`.
 [The five-minute tour](/get-started/tour/) explains what the modules are;
 [the reference deployment](/get-started/reference-stack/) shows the same
 binary operated as a service with seed data, backups and a console.
+
+## Mint a passport and verify it offline
+
+With the deployment running, the whole passport story is four calls and one
+local command. Issue, append the first event, and mint the pack:
+
+```sh
+$ curl -s -X POST http://127.0.0.1:8090/issuer/passports \
+    -H 'content-type: application/json' -d '{
+      "identity": "local:demo:B-0001",
+      "type_ref": "demo:battery",
+      "capability": "S2",
+      "eo_id": "urn:unidpp:actor:demo",
+      "resolver_uri": "https://example.org/r/demo-0001",
+      "passport_id": "urn:unidpp:passport:demo-0001",
+      "config": []
+    }' | jq -c '{passport_id, status}'
+$ curl -s -X POST http://127.0.0.1:8090/issuer/passports/urn%3Aunidpp%3Apassport%3Ademo-0001/events \
+    -H 'content-type: application/json' -d '{
+      "type": "issuance",
+      "data": {"Issuance": {"derived": false, "inputs": []}},
+      "actor": "demo-operator",
+      "actor_role": "economic operator",
+      "at": "2026-11-08T00:00:00Z"
+    }' | jq -c '{seq, event_type}'
+$ curl -s -X POST http://127.0.0.1:8090/issuer/passports/urn%3Aunidpp%3Apassport%3Ademo-0001/pack \
+    -H 'content-type: application/json' -d '{}' -o pack-response.json
+$ jq -r '.pack' pack-response.json > pack.hex
+```
+
+Verification is offline: the pack plus the issuer's published anchor, and
+nothing else. The verifier binary lives in `unidpp-cli` (already cloned;
+build it once):
+
+```sh
+$ (cd ../unidpp-cli && cargo build --release)
+$ anchor=$(curl -s http://127.0.0.1:8090/issuer/keyring | jq -r '.roles.pack.public')
+$ ../unidpp-cli/target/release/unidpp verify pack.hex --anchor "$anchor" --max-age 0 --json | jq '.verdict'
+"pass"
+```
+
+Exit codes are the contract: **0** pass, **1** degraded (verifiable but
+incomplete — a pack minted while the issuer cannot reach the log verifies
+degraded, because nothing anchors its event log), **2** fail. The same
+verdict format is what a border officer's terminal prints.
+
+## Replay the format's proof vectors
+
+The wire format is pinned by a vector corpus that every implementation
+reproduces byte for byte, and the TypeScript SDK carries the corpus
+vendored. From the same parent directory:
+
+```sh
+$ cd ../unidpp-ts && npm ci && npm test
+ Test Files  6 passed (6)
+      Tests  79 passed (79)
+```
+
+A run that reproduces the vectors is a format-conformant implementation by
+the second-implementation rule; the Ruby and Python SDKs hold their own
+copies of the same corpus.
 
 ## What a real deployment adds
 
