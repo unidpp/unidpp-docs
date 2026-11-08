@@ -7,7 +7,7 @@ The lens projection service: render a passport under a registered profile at
 a chosen instant, the EU/JP two-lens moment as a service. Read-only by
 design; the `actor` parameter is recorded, not authenticated. In the
 reference deployment it binds `127.0.0.1:8394` and reads the registry at
-8390 plus the passport store under `passports/`.
+`/registry` plus the passport store under `passports/`.
 
 ## Endpoints
 
@@ -23,7 +23,7 @@ reference deployment it binds `127.0.0.1:8394` and reads the registry at
 The same passport under two registered lens profiles at the same instant:
 
 ```sh
-$ curl -s -G 'http://127.0.0.1:8394/view' \
+$ curl -s -G 'http://127.0.0.1:8090/views/view' \
     --data-urlencode 'passport=urn:unidpp:passport:pilot-e8-j000842' \
     --data-urlencode 'profile=urn:unidpp:profile:pilot-eu-lens' \
     --data-urlencode 'actor=importer' --data-urlencode 'at=2028-06-01T00:00:00Z' \

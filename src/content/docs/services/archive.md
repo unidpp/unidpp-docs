@@ -6,7 +6,7 @@ description: "The unidpp-archive service, which provides Tier-C notarized snapsh
 The Tier-C notarized archive: as-of snapshot packs with OAIS-style metadata,
 Ed25519 notarization, optional transparency-log anchoring, and byte-identical
 re-serving. In the reference deployment it binds `127.0.0.1:8396` and anchors
-into the log at 8392.
+into the log module at `/log`.
 
 The OAIS mapping (ISO 14721, simplified for passports): the issuer submits
 the SIP (`POST /snapshots` body), the archive holds the AIP (state + log
@@ -29,10 +29,10 @@ Ingest requires `UNIDPP_ARCHIVE_ADMIN_TOKEN` when set (open in dev mode).
 ## Example (recorded)
 
 ```sh
-$ curl -s 'http://127.0.0.1:8396/snapshots' | jq '.snapshots[0] | {snapshot_id}'
+$ curl -s 'http://127.0.0.1:8090/archive/snapshots' | jq '.snapshots[0] | {snapshot_id}'
 { "snapshot_id": "s-000000000000" }
 
-$ curl -s http://127.0.0.1:8392/receipt/0 | jq '{seq, subject}'
+$ curl -s http://127.0.0.1:8090/log/receipt/0 | jq '{seq, subject}'
 { "seq": 0, "subject": "urn:unidpp:archive:snapshot:s-000000000000" }
 ```
 

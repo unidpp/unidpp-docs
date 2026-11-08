@@ -45,12 +45,12 @@ services:
   issuer:
     bind: 127.0.0.1:8393
     pack_suites: [ecdsa-p256, sm2]
-    registry_url: http://127.0.0.1:8390
+    registry_url: http://127.0.0.1:8090/registryNone
   projector:
     bind: 127.0.0.1:8394
   gateway:
     bind: 127.0.0.1:8395
-    issuer_url: http://127.0.0.1:8393
+    issuer_url: http://127.0.0.1:8090/issuerNone
   archive:
     bind: 127.0.0.1:8396
 sovereignty:
@@ -523,7 +523,7 @@ circuit-styles). Known suites: `ecdsa-p256`, `sm2`. The default EU posture is
 |---|---|
 | Type | string (URL), optional |
 | Default | absent (no registry forwarding) |
-| Example | `registry_url: http://127.0.0.1:8390` |
+| Example | `registry_url: http://127.0.0.1:8090/registryNone` |
 
 The registry the issuer forwards profile registrations and applicability
 bindings to (its `/admin/profiles` and `/admin/applicability` endpoints
@@ -620,7 +620,7 @@ policy configured is a stated 409.
 |---|---|
 | Type | string (URL), optional |
 | Default | absent (fixture mode) |
-| Example | `issuer_url: http://127.0.0.1:8393` |
+| Example | `issuer_url: http://127.0.0.1:8090/issuerNone` |
 
 The issuer upstream whose passports the gateway renders. Absent = the gateway
 serves its built-in fixtures only (`issuer-upstream-with-fixture-fallback`:

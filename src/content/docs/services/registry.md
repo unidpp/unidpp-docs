@@ -7,7 +7,7 @@ The registry is the register service: item registration under ISO 19135
 discipline (version supersession, point-in-time resolution), applicability
 bindings, and the discovery registry (C3 services, C4 protocol bindings, C5
 verification mechanisms, C1 units). In the reference deployment it binds
-`127.0.0.1:8390`; the JP peer runs the same binary on `8399` with its own
+`/registry`; the JP peer is the same module at `/registry-jp` with its own
 journal.
 
 Reads are public. Mutations require a Bearer token when
@@ -50,19 +50,19 @@ Item classes: `data-element`, `profile`, `crypto-suite`, `transform`,
 ## Examples (recorded against the reference deployment)
 
 ```sh
-$ curl -s 'http://127.0.0.1:8390/items?limit=1' | jq '{count}'
+$ curl -s 'http://127.0.0.1:8090/registry/items?limit=1' | jq '{count}'
 { "count": 1531 }
 
-$ curl -s 'http://127.0.0.1:8390/applicability?product_type=momiji:e8&at=2027-06-01T00:00:00Z' \
+$ curl -s 'http://127.0.0.1:8090/registry/applicability?product_type=momiji:e8&at=2027-06-01T00:00:00Z' \
     | jq '[.applicability[].binding.profile_item]'
 ["urn:unidpp:profile:jp-road-traffic"]
 
-$ curl -s 'http://127.0.0.1:8390/units' | jq '.items | length'
+$ curl -s 'http://127.0.0.1:8090/registry/units' | jq '.items | length'
 10
 
 # As-of resolution: before the JP profile's effective window (2027-04-01),
 # no version is in force — version is null, not an error.
-$ curl -s 'http://127.0.0.1:8390/items/urn%3Aunidpp%3Aprofile%3Ajp-road-traffic?at=2026-01-01T00:00:00Z' \
+$ curl -s 'http://127.0.0.1:8090/registry/items/urn%3Aunidpp%3Aprofile%3Ajp-road-traffic?at=2026-01-01T00:00:00Z' \
     | jq '{identifier, version: .version.status}'
 { "identifier": "urn:unidpp:profile:jp-road-traffic", "version": null }
 ```
@@ -74,7 +74,7 @@ CDDAL plain-text dictionary form when the request's `Accept` lists
 `text/cddal`; JSON is the default and the fallback:
 
 ```sh
-$ curl -s -H 'Accept: text/cddal' http://127.0.0.1:8390/units | head -5
+$ curl -s -H 'Accept: text/cddal' http://127.0.0.1:8090/registry/units | head -5
 TERM unit-a
   register: unidpp-seed
   class: unit

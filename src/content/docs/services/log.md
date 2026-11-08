@@ -6,7 +6,7 @@ description: "The unidpp-log service — the transparency-log anchor: RFC 6962 M
 The transparency log: sequenced Merkle commitments (RFC 6962, Confium
 constants) with signed inclusion receipts, monotonic signed tree heads, and
 optional RFC 3161 external anchoring. In the reference deployment it binds
-`127.0.0.1:8392` as log `unidpp-pilot-log-1`.
+the `/log` module as log `unidpp-pilot-log-1`.
 
 **Deliberately absent: any enumeration surface.** There is no endpoint that
 lists subjects or commitments, because a transparency log is verifiable without
@@ -28,14 +28,14 @@ Appending requires `UNIDPP_LOG_APPEND_TOKEN` when set (open in dev mode).
 ## Example (recorded against the reference deployment)
 
 ```sh
-$ curl -s http://127.0.0.1:8392/tree/head | jq '{tree_size, root: .root[0:16], log_id}'
+$ curl -s http://127.0.0.1:8090/log/tree/head | jq '{tree_size, root: .root[0:16], log_id}'
 {
   "tree_size": 5,
   "root": "d23b199b96ed73ea",
   "log_id": "unidpp-pilot-log-1"
 }
 
-$ curl -s http://127.0.0.1:8392/receipt/0 | jq '{seq, subject, log_id}'
+$ curl -s http://127.0.0.1:8090/log/receipt/0 | jq '{seq, subject, log_id}'
 {
   "seq": 0,
   "subject": "urn:unidpp:archive:snapshot:s-000000000000",

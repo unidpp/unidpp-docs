@@ -9,10 +9,10 @@ served from its own register; the global registry keeps what is global
 (scheme namespaces, cross-register mappings). Jurisdiction-shaped data lives
 with the jurisdiction.
 
-The pilot runs one national peer: the JP node, the same `unidpp-registry`
-binary with its own journal (`jp-registry-journal.jsonl`), bound to
-`127.0.0.1:8399` and published at `registry-jp.unidpp.org` through its own
-named tunnel.
+The pilot runs one national peer: the JP node, the same registry module
+mounted a second time inside the one process, with its own journal
+(`jp-registry-journal.jsonl`) at `/registry-jp` on the shared origin,
+published at `registry-jp.unidpp.org` through its own named tunnel.
 
 ## The walkthrough
 
@@ -24,7 +24,7 @@ table carries it as one entry:
 
 ```sh
 name: "jp-registry", repo: "unidpp-registry", port: 8399
-  UNIDPP_REGISTRY_BIND=127.0.0.1:8399
+  UNIDPP_SERVER_JP_STATE_FILE=data/jp-registry-journal.jsonl
   UNIDPP_REGISTRY_STATE_FILE=jp-registry-journal.jsonl
 ```
 
@@ -49,7 +49,7 @@ same profile exists as one of the pilot's ten items alongside the EU profile
 ### 3. The peer answers its own register
 
 ```sh
-$ curl -s 'http://127.0.0.1:8399/applicability?product_type=momiji:e8&at=2028-06-01T00:00:00Z' \
+$ curl -s 'http://127.0.0.1:8090/registry-jp/applicability?product_type=momiji:e8&at=2028-06-01T00:00:00Z' \
     | jq '[.applicability[].binding.profile_item]'
 ["urn:unidpp:profile:jp-road-traffic"]
 ```
@@ -62,7 +62,7 @@ consumer that must reconcile both uses
 ### 4. Publication
 
 The JP node reaches the public internet the way every UniDPP surface does:
-a named tunnel, ingress `registry-jp.unidpp.org` → `127.0.0.1:8399`, adopted
+a named tunnel, ingress `registry-jp.unidpp.org` → `127.0.0.1:8090`, adopted
 or started by `unidpp-stack up` when `jp-tunnel.token` is present. No token,
 no tunnel, and the node stays loopback, which is itself a valid (sovereign)
 posture.
@@ -86,7 +86,8 @@ The registry starter kit demonstrates the shape; operationally, running a
 second peer on the same host is running a second registry block:
 
 1. A journal file of its own.
-2. A bind of its own (the family convention keeps 8399 for JP; a third peer
+2. A data root of its own (the reference deployment keeps `/registry-jp`
+   inside the one process; a third peer
    takes another port).
 3. Its own tunnel token if published.
 4. Its seed assets in the pilot's case; your jurisdiction's items in yours.

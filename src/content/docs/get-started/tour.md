@@ -3,31 +3,33 @@ title: Five-minute tour
 description: Five queries against the running reference stack that show the system working end to end.
 ---
 
-The reference stack runs ten services on loopback. This tour issues the five
-canonical queries, one per service boundary, and explains what each answer
-proves. If a command fails, see [run the reference stack](/get-started/reference-stack/)
+The reference deployment serves the whole estate as one process on loopback
+port 8090, every module at its prefix. This tour issues the five canonical
+queries, one per module boundary, and explains what each answer proves. If a
+command fails, see [run the reference deployment](/get-started/reference-stack/)
 first.
 
-## 0. The stack is up
+## 0. The deployment is up
 
 ```sh
-$ cd unidpp-pilot-data && ./ops/target/release/unidpp-stack status
-  registry   (unidpp-registry)  http://127.0.0.1:8390  healthy
-  trust      (unidpp-trust)     http://127.0.0.1:8391  healthy
-  log        (unidpp-log)       http://127.0.0.1:8392  healthy
-  issuer     (unidpp-issuer)    http://127.0.0.1:8393  healthy
-  projector  (unidpp-projector) http://127.0.0.1:8394  healthy
-  gateway    (unidpp-gateway)   http://127.0.0.1:8395  healthy
-  archive    (unidpp-archive)   http://127.0.0.1:8396  healthy
-  hub        (unidpp-hub)       http://127.0.0.1:8397  healthy
-  console    (unidpp-console)   http://127.0.0.1:8389  healthy
-  jp-registry (unidpp-registry) http://127.0.0.1:8399  healthy
+$ cd unidpp-pilot-data && ./ops/target/release/unidpp-stack one-status
+  one-server  http://127.0.0.1:8090  healthy  v0.1.0  (pid 59403)
+    registry     /registry     healthy
+    trust        /trust        healthy
+    log          /log          healthy
+    issuer       /issuer       healthy
+    views        /views        healthy
+    render       /render       healthy
+    archive      /archive      healthy
+    relay        /relay        healthy
+    peer         /registry-jp   mounted
+  console     /console on the one origin  healthy
 ```
 
-Every service answers `GET /healthz` with `ok` and serves a discovery document
-at `GET /` that names the service, its endpoints, and its configuration. The
-discovery documents are the contract; these docs summarize them, and the services
-remain the source of truth.
+Every module answers `GET /<module>/healthz` with `ok` and serves its
+discovery document at `GET /<module>/` that names the module, its endpoints,
+and its configuration. The served contracts are the truth; these docs
+summarize them.
 
 ## 1. Discovery: which services exist
 
@@ -36,7 +38,7 @@ verification mechanisms, C1 units) is what a consumer resolves before it
 calls anything.
 
 ```sh
-$ curl -s http://127.0.0.1:8390/services | jq '.services | length'
+$ curl -s http://127.0.0.1:8090/registry/services | jq '.services | length'
 8
 ```
 
@@ -49,11 +51,11 @@ The pilot's headline query. Product type `momiji:e8` (an e-bike) is bound to
 jurisdiction profiles with dated effective windows:
 
 ```sh
-$ curl -s 'http://127.0.0.1:8390/applicability?product_type=momiji:e8&at=2027-06-01T00:00:00Z' \
+$ curl -s 'http://127.0.0.1:8090/registry/applicability?product_type=momiji:e8&at=2027-06-01T00:00:00Z' \
     | jq '[.applicability[].binding.profile_item]'
 ["urn:unidpp:profile:jp-road-traffic"]
 
-$ curl -s 'http://127.0.0.1:8390/applicability?product_type=momiji:e8&at=2028-06-01T00:00:00Z' \
+$ curl -s 'http://127.0.0.1:8090/registry/applicability?product_type=momiji:e8&at=2028-06-01T00:00:00Z' \
     | jq '[.applicability[].binding.profile_item]'
 ["urn:unidpp:profile:eu-machinery-battery","urn:unidpp:profile:jp-road-traffic"]
 ```
@@ -68,7 +70,7 @@ The projector renders the same passport under a registered profile at a chosen
 instant. The EU lens at 2028-06-01:
 
 ```sh
-$ curl -s -G 'http://127.0.0.1:8394/view' \
+$ curl -s -G 'http://127.0.0.1:8090/views/view' \
     --data-urlencode 'passport=urn:unidpp:passport:pilot-e8-j000842' \
     --data-urlencode 'profile=urn:unidpp:profile:pilot-eu-lens' \
     --data-urlencode 'actor=importer' --data-urlencode 'at=2028-06-01T00:00:00Z' \
@@ -101,7 +103,7 @@ The gateway renders the neutral core in foreign protocol shapes. This is the
 EN 18222 REST binding (the freeDPP wire shape):
 
 ```sh
-$ curl -s 'http://127.0.0.1:8395/en18222/v1/dppsByProductId/4006381333931?representation=full' \
+$ curl -s 'http://127.0.0.1:8090/render/en18222/v1/dppsByProductId/4006381333931?representation=full' \
     | jq '.dppStatus'
 "active"
 ```
@@ -112,7 +114,7 @@ The trust service co-signs every response in the tree-head domain and
 publishes its keyring:
 
 ```sh
-$ curl -s http://127.0.0.1:8391/keyring | jq '{mode, roles: (.roles | keys)}'
+$ curl -s http://127.0.0.1:8090/trust/keyring | jq '{mode, roles: (.roles | keys)}'
 {
   "mode": "seeded-dev",
   "roles": [

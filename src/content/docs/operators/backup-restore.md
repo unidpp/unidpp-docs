@@ -51,7 +51,7 @@ services, because the log anchors the archive snapshots and the issuer's verdict
 reference the log head.
 
 ```sh
-$ curl -s http://127.0.0.1:8392/tree/head | jq '{tree_size, root: .root[0:16], log_id}'
+$ curl -s http://127.0.0.1:8090/log/tree/head | jq '{tree_size, root: .root[0:16], log_id}'
 {
   "tree_size": 5,
   "root": "d23b199b96ed73ea",
@@ -111,7 +111,7 @@ head against the recorded consistency point.
 
 ```sh
 # 1. Record the consistency point (if the deployment declares a log).
-$ curl -s http://127.0.0.1:8392/tree/head > /tmp/tree-head-$(date -u +%Y%m%dT%H%M%SZ).json
+$ curl -s http://127.0.0.1:8090/log/tree/head > /tmp/tree-head-$(date -u +%Y%m%dT%H%M%SZ).json
 
 # 2. Copy the tenant's state (services stay up).
 $ tar -C unidpp-pilot-data -czf acme-backup-$(date -u +%Y%m%dT%H%M%SZ).tgz \

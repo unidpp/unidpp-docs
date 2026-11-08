@@ -53,17 +53,17 @@ authoritative list, not this table.
 What the pilot actually runs, service by service, and which framework seam
 each occupies:
 
-| Service | Port (reference) | Tier/seam | Role |
+| Module | Prefix (reference) | Tier/seam | Role |
 |---|---|---|---|
-| [registry](/services/registry/) | 8390 | register | ISO 19135 items, discovery (C3/C4/C5), units, EXPRESS models, cross-register mappings |
-| [trust](/services/trust/) | 8391 | trust | SIGNATIF trust graph, lists, master list, revocations |
-| [log](/services/log/) | 8392 | transparency | RFC 6962 commitments, receipts, tree heads |
-| [issuer](/services/issuer/) | 8393 | issuance | passport lifecycle, typed events, Tier-A packs, verdicts |
-| [projector](/services/projector/) | 8394 | projection | lens views (EU/JP), presentation renders |
-| [gateway](/services/gateway/) | 8395 | interop | UNTP triad + EN 18222 renders, UNTP ingest |
-| [archive](/services/archive/) | 8396 | Tier-C | OAIS notarized snapshots, log-anchored |
-| [console](/services/console/) | 8389 | operations | the manifest surface |
-| registry (JP peer) | 8399 | federation | the national-peer node, which is see [running a national peer](/federation/jp-peer/) |
+| [registry](/services/registry/) | `/registry` | register | ISO 19135 items, discovery (C3/C4/C5), units, EXPRESS models, cross-register mappings |
+| [trust](/services/trust/) | `/trust` | trust | SIGNATIF trust graph, lists, master list, revocations |
+| [log](/services/log/) | `/log` | transparency | RFC 6962 commitments, receipts, tree heads |
+| [issuer](/services/issuer/) | `/issuer` | issuance | passport lifecycle, typed events, Tier-A packs, verdicts |
+| [views](/services/projector/) | `/views` | projection | lens views (EU/JP), presentation renders |
+| [render](/services/gateway/) | `/render` | interop | UNTP triad + EN 18222 renders, UNTP ingest |
+| [archive](/services/archive/) | `/archive` | Tier-C | OAIS notarized snapshots, log-anchored |
+| [console](/services/console/) | `/console` | operations | the manifest surface |
+| registry (JP peer) | `/registry-jp` | federation | the national-peer node, which is see [running a national peer](/federation/jp-peer/) |
 
 The tiers (A: the offline pack; B: the online passport; C: the notarized
 archive) are defined in the framework's

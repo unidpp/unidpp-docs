@@ -126,8 +126,7 @@ The family's working convention:
 
 | Range | User |
 |---|---|
-| 8389-8397 | reference deployment (console, the seven core services, and the hub on 8397) |
-| 8399 | JP national peer registry |
+| 8090 | the reference deployment (every module at its prefix, the console at `/console`) |
 | 93xx | whitelabel tenants (acme: 9389 console, 9390 registry, 9393 issuer) |
 | 95xx | sovereign tenants (acme-cn: 9589 console, 9590 registry, 9593 issuer) |
 
@@ -139,7 +138,7 @@ tenant, pick a decade and stay in it.
 Everything in the [service references](/services/registry/) applies to a
 tenant's services, with the same endpoints and shapes on the tenant bind. Example: the
 whitelabel tenant's issuer answers on 9393 exactly as the reference issuer
-answers on 8393:
+answers on the tenant's issuer base:
 
 ```sh
 $ curl -s http://127.0.0.1:9393/keyring | jq '{mode, roles: (.roles | keys)}'

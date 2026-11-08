@@ -106,7 +106,7 @@ pins the SM2 anchor from the issuer's keyring and verifies accordingly.
 
 ## Choosing ports
 
-Reference services occupy 8389-8396 and 8399 (the JP peer). Tenants take
+The reference deployment serves every module on 8090. Tenant stacks take
 their own ranges; the acme tenants use 939x, the CN tenant 959x, declared
 per service block in the manifest. A tenant's ports are its own; collisions
 between tenants are a manifest problem you find at validation or launch, not

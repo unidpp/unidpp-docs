@@ -29,7 +29,7 @@ The pilot's seeded mapping of GB 4943.1-2022 ↔ IEC 62368-1 for charger
 conformity evidence:
 
 ```sh
-$ curl -s 'http://127.0.0.1:8390/cross-register-mappings?limit=2' \
+$ curl -s 'http://127.0.0.1:8090/registry/cross-register-mappings?limit=2' \
     | jq '.items[0] | {identifier, title, version: .version.status, effective: .version.effective_from}'
 {
   "identifier": "urn:unidpp:map:gb4943-iec62368",

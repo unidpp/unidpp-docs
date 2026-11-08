@@ -7,13 +7,13 @@ description: "Run the stack: unidpp-stack up/down/status, the containerized vari
 
 The reference deployment lives in
 [unidpp-pilot-data](https://github.com/unidpp/unidpp-pilot-data): ten
-services on `127.0.0.1:8389-8399`, each an append-only journal plus a
-binary, all wired by one operator manifest and orchestrated by the
-`unidpp-stack` program.
+one process serving every module at its prefix on `127.0.0.1:8090`, each
+module an append-only journal plus its handlers, all wired by one operator
+manifest and orchestrated by the `unidpp-stack` program.
 
 ```sh
-./ops/target/release/unidpp-stack up     # build-if-needed + start every service + wait healthy
-./ops/target/release/unidpp-stack status # the truth: per-service health, journals, and every
+./ops/target/release/unidpp-stack one-up     # build-if-needed + start the deployment + wait for every module
+./ops/target/release/unidpp-stack one-status # the truth: per-module health, journals, and every
                                          # public hostname probed THROUGH its tunnel
 ./ops/target/release/unidpp-stack down   # stop everything; journals are preserved
 ```

@@ -63,9 +63,8 @@ operator does with it.
 ## Conventions
 
 - Commands assume a checkout of the UniDPP family (the service repositories
-  side by side) with the reference deployment running on `127.0.0.1:8390-8397`
-  (the hub on 8397), the JP peer on `8399`, and the operator console on
-  `8389`.
+  side by side) with the reference deployment serving every module —
+  the console included — on `127.0.0.1:8090`.
 - The reference deployment runs in dev mode: no admin tokens, seeded-dev
   keyrings, everything loopback. It is a demonstration pilot. Production
 deployments, whitelabel and sovereign tenants, are declared by manifest,

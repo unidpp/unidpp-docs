@@ -54,7 +54,7 @@ See the [API reference](/api/trust/).
 ## Example (recorded against the reference deployment)
 
 ```sh
-$ curl -s http://127.0.0.1:8391/keyring | jq '{mode, roles: (.roles | keys)}'
+$ curl -s http://127.0.0.1:8090/trust/keyring | jq '{mode, roles: (.roles | keys)}'
 {
   "mode": "seeded-dev",
   "roles": [
@@ -63,7 +63,7 @@ $ curl -s http://127.0.0.1:8391/keyring | jq '{mode, roles: (.roles | keys)}'
   ]
 }
 
-$ curl -s http://127.0.0.1:8391/trust-lists | jq '.trust_lists | length'
+$ curl -s http://127.0.0.1:8090/trust/trust-lists | jq '.trust_lists | length'
 1
 ```
 

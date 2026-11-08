@@ -12,8 +12,9 @@ from `unidpp-operator.yaml` + environment.
 
 ## Starting it
 
-The console is a service block like any other. `unidpp-stack up` starts it
-on `127.0.0.1:8389` for the reference deployment;
+The console rides inside the one deployment: the reference deployment
+serves it at `127.0.0.1:8090/console` (REARCH R3); a standalone console
+binary still binds its own address for tenant stacks;
 `unidpp-stack tenant <name> up` starts it from the tenant manifest:
 
 ```sh
@@ -43,7 +44,7 @@ The console identifies itself at the well-known path, which is what stack
 orchestrators probe to tell it apart from other listeners:
 
 ```sh
-$ curl -s http://127.0.0.1:8389/.well-known/unidpp-service | jq .
+$ curl -s http://127.0.0.1:8090/console/.well-known/unidpp-service | jq .
 {
   "service": "unidpp-console",
   "deployment": "unidpp-reference",

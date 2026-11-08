@@ -7,7 +7,7 @@ The admin console as a service. The operator-facing manual, covering every page,
 auth model and what the console can and cannot do, is
 [the console manual](/operators/console/); this page is the endpoint and
 environment reference. In the reference deployment the console binds
-`127.0.0.1:8389`.
+`/console` on the one origin.
 
 The console is a surface, not a second brain: every fact comes from a
 service's API or from the manifest; the only mutation is the validated,
@@ -33,7 +33,7 @@ session-gated save of the manifest file itself.
 ## Identity probe (recorded)
 
 ```sh
-$ curl -s http://127.0.0.1:8389/.well-known/unidpp-service | jq .
+$ curl -s http://127.0.0.1:8090/console/.well-known/unidpp-service | jq .
 {
   "service": "unidpp-console",
   "deployment": "unidpp-reference",

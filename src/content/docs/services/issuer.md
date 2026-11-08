@@ -38,7 +38,7 @@ The walkthrough for the first four lifecycle calls is
 One call, three legs:
 
 ```sh
-$ curl -s 'http://127.0.0.1:8393/passports/urn%3Aunidpp%3Apassport%3Apilot-e8-j000842/verdict' \
+$ curl -s 'http://127.0.0.1:8090/issuer/passports/urn%3Aunidpp%3Apassport%3Apilot-e8-j000842/verdict' \
     | jq '{reading_answered, log_outcome: .log.outcome, log_marker: .log.trust_marker,
            events: .log.evidentiary.events_total, corrections: .log.evidentiary.corrections,
            freshness: .log.freshness}'
@@ -66,7 +66,7 @@ semantics); the default comes from the deployment environment.
 (`CreatePassport`, event appends, packs, …) with its full payload:
 
 ```sh
-$ curl -s 'http://127.0.0.1:8393/admin/log?limit=1' | jq '{total, first: .records[0].op | keys}'
+$ curl -s 'http://127.0.0.1:8090/issuer/admin/log?limit=1' | jq '{total, first: .records[0].op | keys}'
 { "total": 8, "first": ["CreatePassport"] }
 ```
 

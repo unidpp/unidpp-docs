@@ -42,11 +42,11 @@ doctrine), and every gate refusal states itself. See the
 ## Examples (recorded)
 
 ```sh
-$ curl -s 'http://127.0.0.1:8395/en18222/v1/dppsByProductId/4006381333931?representation=full' \
+$ curl -s 'http://127.0.0.1:8090/render/en18222/v1/dppsByProductId/4006381333931?representation=full' \
     | jq '.dppStatus'
 "active"
 
-$ curl -s -G 'http://127.0.0.1:8395/untp/product/urn%3Aunidpp%3Apassport%3Apilot-e8-j000842' \
+$ curl -s -G 'http://127.0.0.1:8090/render/untp/product/urn%3Aunidpp%3Apassport%3Apilot-e8-j000842' \
     | jq '{source: .rendering.source, outcome: .verdict.outcome,
            signatures_verified: .verdict.coverage.signatures.verified}'
 {
