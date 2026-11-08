@@ -63,7 +63,10 @@ export default defineConfig({
         },
         {
           label: 'Architecture',
-          items: [{ label: 'Architecture pointers', slug: 'architecture' }],
+          items: [
+            { label: 'Architecture pointers', slug: 'architecture' },
+            { label: 'Extending the model', slug: 'extensibility' },
+          ],
         },
         {
           label: 'Federation',
