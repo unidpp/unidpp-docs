@@ -13,8 +13,8 @@ is idempotent.
 
 ## The shape
 
-One process serves every module on **8090**; the operator console keeps its
-own process on **8389** until it folds into the same process. Five public
+One process serves every module — the operator console included — on
+**8090**. Five public
 hostnames — `registry.unidpp.org`, `registry-jp.unidpp.org`,
 `trust.unidpp.org`, `log.unidpp.org`, `console.unidpp.org` — are deployment
 aliases: each serves the deployment's union contract at `/openapi.yaml`, and
@@ -33,8 +33,7 @@ $ ./ops/target/release/unidpp-stack one-up
 ==> starting cloudflared named tunnel (registry.unidpp.org -> 127.0.0.1:8090)
 ...
 ==> one deployment up: http://127.0.0.1:8090
-               registry · trust · log · issuer · views · render · archive · relay · registry-jp
-==> console: 127.0.0.1:8389 (own process until R3 folds it in)
+               registry · trust · log · issuer · views · render · archive · relay · registry-jp · console
 ==> next: unidpp-stack one-verify
 ```
 
@@ -105,8 +104,8 @@ $ ./ops/target/release/unidpp-stack one-down
 ==> journals preserved
 ```
 
-`one-status` shows the process, every module's prefix health, the console
-and each tunnel. `one-down` stops the deployment and its tunnels and never
+`one-status` shows the process, every module's prefix health — the
+operator console at `/console` among them — and each tunnel. `one-down` stops the deployment and its tunnels and never
 deletes state; the journals replay on the next start. A crontab watch runs
 `one-up` every ten minutes, so a deployment that dies comes back, including
 its tunnels — the tunnel binary is resolved absolutely, because the watch
