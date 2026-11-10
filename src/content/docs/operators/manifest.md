@@ -138,7 +138,8 @@ speaks. Anything else is refused at load with the offending value named.
 | Default | — |
 
 The deployment identity and shape. Fields: [`name`](#deployment-name),
-[`profile`](#deployment-profile), [`base_url`](#deployment-base_url).
+[`profile`](#deployment-profile), [`base_url`](#deployment-base_url),
+[`bind`](#deployment-bind).
 
 <a id="branding"></a>
 ### `branding`
@@ -251,6 +252,25 @@ The deployment shape. See [deployment profiles](/operators/profiles/):
 The public base URL of the deployment's primary surface. Informational for
 now and is used in the console dashboard; the deployment's own binds and upstreams
 are declared per service.
+
+---
+
+<a id="deployment-bind"></a>
+### `deployment.bind`
+
+| | |
+|---|---|
+| Type | string (address) |
+| Required | no (defaults to `127.0.0.1:8090`) |
+| Example | `bind: 127.0.0.1:9689` |
+
+The one bind the deployment serves on. Every declared module answers
+behind its prefix on this address — `/registry`, `/issuer`, the
+console at `/console`, and the union contract at `/openapi.yaml` —
+and `unidpp-config bind` prints the effective value. The on-prem
+bundle's runner starts the one `unidpp-server` process on this bind;
+per-service `bind` entries under `services` remain the standalone
+binaries' addresses.
 
 ---
 

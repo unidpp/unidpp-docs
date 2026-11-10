@@ -182,6 +182,14 @@
           "description": "The public base URL of the deployment's primary surface.",
           "type": "string"
         },
+        "bind": {
+          "default": null,
+          "description": "The one bind the deployment serves on (REARCH R1: every\nmodule behind its prefix on one address). Absent means the\nloopback default [`DEPLOYMENT_BIND`].",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "name": {
           "description": "The deployment's name (tenant name; unique per operator).",
           "type": "string"

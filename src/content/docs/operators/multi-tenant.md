@@ -192,13 +192,14 @@ Whitelabel as a separate deployment ships as one verified artifact:
 ```
 
 The bundle carries the tenant's manifest (secrets stay `${VAR}`
-references; render-env substitutes them at the target host), the
-release binaries for exactly the services the manifest declares, its
-own runner (`unidpp-run`, with binaries from `./bin` and manifest at the
-bundle root), an `.env` template, and a runbook. Its sidecar lists
-every member's SHA-256, and a bundle verifies exactly like a backup
-(`./unidpp-ops verify <bundle>.tar.gz`), so the receiving host
-proves integrity independently of its producer. First boot on the
-target: `./bin/unidpp-config validate`, fill `.env`, `./unidpp-run
-start`; the bundle starts from its own contents (CI smokes exactly
-this).
+references; render-env substitutes them at the target host), the one
+`unidpp-server` engine binary (every declared module serves behind its
+prefix in one process), its own runner (`unidpp-run`, with the engine
+from `./bin` and manifest at the bundle root), an `.env` template, and
+a runbook. Its sidecar lists every member's SHA-256, and a bundle
+verifies exactly like a backup (`./unidpp-ops verify <bundle>.tar.gz`),
+so the receiving host proves integrity independently of its producer.
+First boot on the target: `./bin/unidpp-config validate`, fill `.env`,
+`./unidpp-run start`; the bundle starts one process from its own
+contents and serves every module at its prefix on the deployment's
+bind (CI smokes exactly this).
