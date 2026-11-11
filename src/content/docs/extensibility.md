@@ -67,8 +67,28 @@ The authoring surface today is registered, signed data. A class
 author defines a profile as a manifest against the formal schema,
 signs it, and submits it through registry intake; instances carry
 their features as fact paths, and views render through the registered
-lens. UniDPP does not yet ship a guided class designer, a per-class
-instance intake of its own, or a mapping workbench for bespoke
-classes; the registry intake and the signed profile form are the
-authoring surface, and the fact path is the surface every other
-extension rides.
+lens. The registry now also carries the class descriptor (clause 5):
+an author-defined passport class declares its machine-checkable
+shape as a registered, signed item of the class `class-descriptor`,
+naming its features as dotted fact paths over the four canonical
+value kinds, the vocabularies and unit references those features
+carry, the capability classes that may carry the class, and the rule
+references the class relies on. The register surfaces the registered
+descriptors beside its service descriptors, so a verifier meeting an
+unknown class resolves the descriptor of that class.
+
+An instance of an author-defined class registers as an item of the
+class `instance` (clause 5) whose manifest states the descriptor it
+instantiates and carries the twin-fact map. Registry intake resolves
+the descriptor point-in-time and refuses a required fact that is
+missing, a value of the wrong kind, a member outside a declared
+vocabulary, a unit reference that no registered unit names, and an
+instance of an unknown class; every refusal names the failing fact
+path. Facts the descriptor does not declare are the open map, and
+intake takes them as data.
+
+UniDPP does not yet ship a guided class designer, the
+rule-expression language that gives the rule references their
+reading, or a mapping workbench for bespoke classes; the registry
+intake, the signed descriptor and profile forms, and the fact path
+are the authoring surface those extensions will ride.
