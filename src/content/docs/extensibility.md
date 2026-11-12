@@ -99,8 +99,12 @@ declared kinds, and every reference resolves to a declared rule);
 the instance intake evaluates every referenced rule and names the
 failing rule and its expression when one reads false.
 
-UniDPP does not yet ship a mapping workbench for bespoke classes
-(the console's class designer now covers authoring, worked-instance
-validation, signing and submission); the registry intake, the signed
-descriptor and profile forms, the rule-expression language, and the
-fact path are the authoring surface the workbench will ride.
+The console's mapping workbench covers the bespoke class's
+cross-register correspondences (clause 15): the author composes the
+mapping item — source, target, version, and the tiered kind — and
+the workbench returns the canonical bytes and the digest the corpus
+pins, composes two drafts into a chain preview, and submits into
+the register, whose intake enforces the tier duties the clause
+names. The registry intake, the signed descriptor and profile
+forms, the rule-expression language, and the fact path carry the
+rest of the authoring surface.
