@@ -35,9 +35,9 @@ exactly that layout; the build succeeds with nothing else present.
 
 **Download a release binary.** The release workflow builds Linux x86-64 and
 macOS ARM64 distributions on every tagged version, with a SHA-256 sum beside
-each archive. The first tagged version awaits the maintainer's decision, as
-version numbers are the project owner's call; the workflow itself is in the
-repository.
+each archive. The releases live on the repository's releases page
+(v0.1.0 and v0.1.1 carry the one-binary estate); the workflow itself is in
+the repository.
 
 ## Run
 

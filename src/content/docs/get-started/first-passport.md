@@ -8,8 +8,13 @@ event, mint the offline Tier-A pack, and verify the pack offline against the
 issuer's published anchor. The transcript was recorded against a tenant
 issuer (the whitelabel `acme` tenant, loopback `127.0.0.1:9393`), the same
 calls work against any [issuer](/services/issuer/) deployment, including a
-reference stack you own. Point a fresh tenant at the commands and its journals
-stay isolated: see [the 15-minute whitelabel deployment](/quickstart-whitelabel/).
+reference stack you own. On a one-binary deployment (or the Cloudflare
+estate) the issuer's paths carry the module prefix: `/passports` is
+`/issuer/passports`, and the issuer's keyring — the anchor set this page
+pins at the verification step — is `GET /issuer/keyring`, whose `roles.pack`
+carries the key that verifies the packs that same issuer mints. Point a
+fresh tenant at the commands and its journals stay isolated: see [the
+15-minute whitelabel deployment](/quickstart-whitelabel/).
 
 ## 1. The issuer is up and its keyring is published
 
