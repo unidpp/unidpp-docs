@@ -87,8 +87,20 @@ instance of an unknown class; every refusal names the failing fact
 path. Facts the descriptor does not declare are the open map, and
 intake takes them as data.
 
-UniDPP does not yet ship a guided class designer, the
-rule-expression language that gives the rule references their
-reading, or a mapping workbench for bespoke classes; the registry
-intake, the signed descriptor and profile forms, and the fact path
-are the authoring surface those extensions will ride.
+The rule references a descriptor carries take their deterministic
+reading through the rule-expression language (clause 5). A rule is a
+boolean expression over the instance's facts: comparisons against
+thresholds and literals, membership tests, and the and/or/not
+connectives, evaluated with fixed semantics so the same expression
+over the same facts reads the same in every implementation. The
+descriptor intake validates every expression (it parses, it names
+only declared fact paths, it compares literals only against the
+declared kinds, and every reference resolves to a declared rule);
+the instance intake evaluates every referenced rule and names the
+failing rule and its expression when one reads false.
+
+UniDPP does not yet ship a mapping workbench for bespoke classes
+(the console's class designer now covers authoring, worked-instance
+validation, signing and submission); the registry intake, the signed
+descriptor and profile forms, the rule-expression language, and the
+fact path are the authoring surface the workbench will ride.
