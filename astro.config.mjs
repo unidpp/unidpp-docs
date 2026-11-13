@@ -72,6 +72,7 @@ export default defineConfig({
           label: 'Federation',
           items: [
             { label: 'Running a national peer (JP)', slug: 'federation/jp-peer' },
+            { label: 'The cross-border seam (S13)', slug: 'federation/cross-border-seam' },
             { label: 'Cross-register mappings', slug: 'federation/cross-register' },
             { label: 'UNTP and EN 18222 interop', slug: 'federation/untp' },
           ],

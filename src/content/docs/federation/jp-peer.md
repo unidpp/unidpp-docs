@@ -95,3 +95,17 @@ second peer on the same host is running a second registry block:
 In a manifest-shaped deployment, a peer is a tenant directory whose manifest
 declares exactly one service block (`registry`), the sovereign profile with
 `data_residency` pinned to the jurisdiction fits naturally.
+
+## The peer on the estate
+
+The public hostname `registry-jp.unidpp.org` serves the Workers
+deployment, where the peer is the tenant dispatch rather than a second
+process: the hostname's requests resolve into JP-suffixed Durable Object
+namespaces, so the register, the journals, and every other surface carry
+the JP tenant's data separately from the global estate's. The
+cross-border seam is part of that dispatch — the JP tenant serves its own
+node registry, its own policies, and its own exchange journal behind
+`/s13` — as documented under [the cross-border
+seam](/federation/cross-border-seam/). The native walkthrough above
+describes the one-binary pilot deployment; the tenant dispatch carries
+the same isolation doctrine to the estate.
