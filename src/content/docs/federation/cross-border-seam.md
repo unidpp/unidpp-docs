@@ -41,7 +41,9 @@ decisions come back in journal sequence.
 ## The estate surface
 
 The estate serves the seam behind the `/s13` prefix on every
-deployment, tenanted like every other surface:
+deployment — the Cloudflare Worker's tenants and the self-hosted
+one-binary release alike, the same routes, the same wire, the same
+seed degrades — tenanted like every other surface on the edge:
 
 | Endpoint | What it does |
 |---|---|
